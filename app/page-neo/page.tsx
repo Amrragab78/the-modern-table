@@ -183,13 +183,13 @@ export default function NeoLuxuryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative">
+    <div className="min-h-screen bg-[#051622] text-[#F2F2F2] overflow-hidden relative">
       {/* Animated Background Gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-black via-[#0a0a0a] to-black z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(212,175,55,0.03),transparent_50%)]"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#D4AF37] rounded-full mix-blend-multiply filter blur-[128px] opacity-5 animate-blob"></div>
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#B87333] rounded-full mix-blend-multiply filter blur-[128px] opacity-5 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-[#D4AF37] rounded-full mix-blend-multiply filter blur-[128px] opacity-5 animate-blob animation-delay-4000"></div>
+      <div className="fixed inset-0 bg-gradient-to-br from-[#051622] via-[#0a2540] to-[#051622] z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(229,199,119,0.03),transparent_50%)]"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#E5C777] rounded-full mix-blend-multiply filter blur-[128px] opacity-5 animate-blob"></div>
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#8DA9C4] rounded-full mix-blend-multiply filter blur-[128px] opacity-5 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-[#E5C777] rounded-full mix-blend-multiply filter blur-[128px] opacity-5 animate-blob animation-delay-4000"></div>
       </div>
 
       {currentPage === 'home' && (
@@ -201,8 +201,8 @@ export default function NeoLuxuryPage() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-black/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(212,175,55,0.1)] border-b border-[#D4AF37]/30"
-            : "bg-black/20 backdrop-blur-md border-b border-[#D4AF37]/10"
+            ? "bg-[#051622]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(229,199,119,0.1)] border-b border-[#E5C777]/30"
+            : "bg-[#051622]/20 backdrop-blur-md border-b border-[#E5C777]/10"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex justify-between items-center">
@@ -212,54 +212,54 @@ export default function NeoLuxuryPage() {
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <div className="relative">
-              <UtensilsCrossed className="text-[#D4AF37] relative z-10" size={28} />
-              <div className="absolute inset-0 bg-[#D4AF37] blur-xl opacity-50"></div>
+              <UtensilsCrossed className="text-[#E5C777] relative z-10" size={28} />
+              <div className="absolute inset-0 bg-[#E5C777] blur-xl opacity-50"></div>
             </div>
-            <h1 className={`${playfair.className} text-2xl md:text-3xl font-normal tracking-[0.2em] text-[#f3f3f3]`}>
-              RESTAURANT <span className="text-[#D4AF37] font-bold bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#D4AF37] bg-clip-text text-transparent">OS</span>
+            <h1 className={`${playfair.className} text-2xl md:text-3xl font-normal tracking-[0.2em] text-[#F2F2F2]`}>
+              RESTAURANT <span className="text-[#E5C777] font-bold">OS</span>
             </h1>
           </motion.div>
           <nav className={`${inter.className} hidden md:flex gap-8 text-sm tracking-wider font-medium items-center`}>
             <motion.button
               onClick={() => setCurrentPage('reserve')}
-              className="relative group cursor-pointer text-gray-300"
+              className="relative group cursor-pointer text-[#F2F2F2]"
               whileHover={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               Reserve
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E5C777] group-hover:w-full transition-all duration-300"></span>
             </motion.button>
             
             <Link href="/page-neo/dining-menu">
               <motion.button
-                className="relative group cursor-pointer text-gray-300"
+                className="relative group cursor-pointer text-[#F2F2F2]"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Dining Menu
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E5C777] group-hover:w-full transition-all duration-300"></span>
               </motion.button>
             </Link>
             
             <Link href="/page-neo/takeout">
               <motion.button
-                className="relative group cursor-pointer text-gray-300"
+                className="relative group cursor-pointer text-[#F2F2F2]"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Take Out
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E5C777] group-hover:w-full transition-all duration-300"></span>
               </motion.button>
             </Link>
             
             <motion.button
               onClick={() => setCurrentPage('contact')}
-              className="relative group cursor-pointer text-gray-300"
+              className="relative group cursor-pointer text-[#F2F2F2]"
               whileHover={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               Contact
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E5C777] group-hover:w-full transition-all duration-300"></span>
             </motion.button>
 
             {/* Menu Dropdown - Last Item (rightmost) */}
@@ -269,29 +269,29 @@ export default function NeoLuxuryPage() {
               onMouseLeave={() => setShowMenuDropdown(false)}
             >
               <motion.button
-                className="relative group cursor-pointer text-gray-300 flex items-center gap-1"
+                className="relative group cursor-pointer text-[#F2F2F2] flex items-center gap-1"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Menu
                 <ChevronDown size={14} className={`transition-transform ${showMenuDropdown ? 'rotate-180' : ''}`} />
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E5C777] group-hover:w-full transition-all duration-300"></span>
               </motion.button>
               
               {showMenuDropdown && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="absolute top-full left-0 mt-2 w-56 bg-black/95 backdrop-blur-xl border border-[#D4AF37]/30 rounded-xl shadow-2xl overflow-hidden z-[100]"
+                  className="absolute top-full left-0 mt-2 w-56 bg-[#051622]/95 backdrop-blur-xl border border-[#E5C777]/30 rounded-xl shadow-2xl overflow-hidden z-[100]"
                 >
                   {menuCategories.map((category, idx) => (
                     <Link key={idx} href={category.path}>
                       <motion.div
-                        className="px-4 py-3 hover:bg-[#D4AF37]/10 transition-colors cursor-pointer border-b border-[#D4AF37]/10 last:border-none"
+                        className="px-4 py-3 hover:bg-[#E5C777]/10 transition-colors cursor-pointer border-b border-[#E5C777]/10 last:border-none"
                         whileHover={{ x: 5 }}
                       >
-                        <div className="text-white font-medium text-sm">{category.name}</div>
-                        <div className="text-gray-400 text-xs">{category.desc}</div>
+                        <div className="text-[#F2F2F2] font-medium text-sm">{category.name}</div>
+                        <div className="text-[#8DA9C4] text-xs">{category.desc}</div>
                       </motion.div>
                     </Link>
                   ))}
@@ -311,14 +311,14 @@ export default function NeoLuxuryPage() {
         >
           <motion.img
             src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=2400"
-            alt="Fine Dining"
+            alt="Fine Dining Experience"
             loading="eager"
             className="absolute inset-0 w-full h-full object-cover"
             initial={{ scale: 1.2 }}
             animate={{ scale: 1.05 }}
             transition={{ duration: 20, ease: 'linear', repeat: Infinity, repeatType: "reverse" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#051622]/80 via-[#051622]/60 to-[#051622]"></div>
         </motion.div>
 
       {/* Floating Particles */}
@@ -326,7 +326,7 @@ export default function NeoLuxuryPage() {
         {particles.map((p, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-[#D4AF37] rounded-full"
+            className={`absolute w-1 h-1 rounded-full ${i % 2 === 0 ? 'bg-[#E5C777]' : 'bg-[#8DA9C4]'}`}
             initial={{ x: p.x, y: p.y, opacity: p.opacity }}
             animate={{
               y: [p.y, p.y - (Math.random() * 100 + 50)],
@@ -352,25 +352,25 @@ export default function NeoLuxuryPage() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="inline-flex items-center gap-2 mb-6 px-6 py-2 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30 backdrop-blur-sm"
+            className="inline-flex items-center gap-2 mb-6 px-6 py-2 rounded-full bg-[#051622]/30 border border-[#E5C777]/30 backdrop-blur-sm"
           >
-            <Sparkles className="text-[#D4AF37]" size={18} />
-            <span className={`${inter.className} text-sm tracking-widest text-[#D4AF37] font-medium`}>CULINARY EXCELLENCE</span>
+            <Sparkles className="text-[#E5C777]" size={18} />
+            <span className={`${inter.className} text-sm tracking-widest text-[#E5C777] font-medium`}>CULINARY EXCELLENCE</span>
           </motion.div>
 
           <motion.h2 
-            className={`${playfair.className} text-6xl md:text-8xl leading-[1.1] font-bold mb-8`}
+            className={`${playfair.className} text-5xl md:text-6xl leading-[1.1] font-bold mb-8`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             An Evening Worth{" "}
             <span className="relative inline-block">
-              <span className="relative z-10 bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#D4AF37] bg-clip-text text-transparent animate-gradient">
+              <span className="relative z-10 bg-gradient-to-r from-[#E5C777] via-[#8DA9C4] to-[#E5C777] bg-clip-text text-transparent animate-gradient">
                 Remembering
               </span>
               <motion.span
-                className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#D4AF37] blur-2xl opacity-30"
+                className="absolute inset-0 bg-gradient-to-r from-[#E5C777] via-[#8DA9C4] to-[#E5C777] blur-2xl opacity-30"
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               ></motion.span>
@@ -393,7 +393,7 @@ export default function NeoLuxuryPage() {
           >
             <motion.button
               onClick={() => setCurrentPage('reserve')}
-              className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-semibold text-lg overflow-hidden"
+              className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-[#E5C777] text-[#051622] font-semibold text-lg overflow-hidden shadow-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               aria-label="Reserve Your Table"
@@ -402,13 +402,13 @@ export default function NeoLuxuryPage() {
                 Reserve Your Table
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </span>
+              <div className="absolute inset-0 bg-[#8DA9C4]/0 group-hover:bg-[#8DA9C4]/20 transition-colors blur-xl"></div>
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-[#FFD700] to-[#D4AF37]"
-                initial={{ x: '-100%' }}
-                whileHover={{ x: 0 }}
+                className="absolute inset-0 shadow-[0_0_30px_rgba(141,169,196,0.4)]"
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               ></motion.div>
-              <div className="absolute inset-0 bg-white/20 blur-xl group-hover:bg-white/30 transition-colors"></div>
             </motion.button>
           </motion.div>
         </motion.div>

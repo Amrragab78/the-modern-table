@@ -21,10 +21,10 @@ export default function DiningMenuPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative">
+    <div className="min-h-screen bg-[#F2F2F2] text-[#051622] overflow-hidden relative">
       {/* Background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-black via-[#0a0a0a] to-black z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(212,175,55,0.03),transparent_50%)]"></div>
+      <div className="fixed inset-0 bg-gradient-to-br from-[#F2F2F2] via-white to-[#F2F2F2] z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(229,199,119,0.05),transparent_50%)]"></div>
       </div>
 
       {/* Navbar */}
@@ -32,7 +32,7 @@ export default function DiningMenuPage() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(212,175,55,0.1)] border-b border-[#D4AF37]/30"
+        className="fixed top-0 left-0 w-full z-50 bg-[#051622]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(229,199,119,0.1)] border-b border-[#E5C777]/30"
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex justify-between items-center">
           <Link href="/page-neo">
@@ -40,16 +40,16 @@ export default function DiningMenuPage() {
               className="flex items-center gap-3 cursor-pointer"
               whileHover={{ scale: 1.05 }}
             >
-              <UtensilsCrossed className="text-[#D4AF37]" size={28} />
-              <h1 className={`${playfair.className} text-2xl md:text-3xl font-normal tracking-[0.2em]`}>
-                RESTAURANT <span className="text-[#D4AF37] font-bold">OS</span>
+              <UtensilsCrossed className="text-[#E5C777]" size={28} />
+              <h1 className={`${playfair.className} text-2xl md:text-3xl font-normal tracking-[0.2em] text-[#F2F2F2]`}>
+                RESTAURANT <span className="text-[#E5C777] font-bold">OS</span>
               </h1>
             </motion.div>
           </Link>
           
           <Link href="/page-neo">
             <motion.button
-              className={`${inter.className} flex items-center gap-2 text-[#D4AF37] hover:text-[#FFD700] transition-colors`}
+              className={`${inter.className} flex items-center gap-2 text-[#E5C777] hover:text-[#8DA9C4] transition-colors`}
               whileHover={{ x: -5 }}
             >
               <ArrowLeft size={20} />
@@ -69,13 +69,11 @@ export default function DiningMenuPage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h1 className={`${playfair.className} text-6xl md:text-7xl font-bold mb-4`}>
-              <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">
-                Dining Menu
-              </span>
+            <h1 className={`${playfair.className} text-6xl md:text-7xl font-bold mb-4 text-[#051622]`}>
+              Dining Menu
             </h1>
             <div className="flex justify-center mt-6">
-              <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent"></div>
+              <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#E5C777] to-transparent"></div>
             </div>
           </motion.div>
 
@@ -89,37 +87,37 @@ export default function DiningMenuPage() {
               className="mb-16"
             >
               {/* Category Title */}
-              <div className="text-center mb-8">
-                <h2 className={`${playfair.className} text-4xl md:text-5xl font-bold text-[#D4AF37] mb-4`}>
+              <div className="text-center mb-10">
+                <h2 className={`${playfair.className} text-4xl md:text-5xl font-bold text-[#051622] mb-4`}>
                   {category.label}
                 </h2>
                 <div className="flex justify-center">
-                  <div className="w-20 h-0.5 bg-[#D4AF37]/30"></div>
+                  <div className="w-24 h-0.5 bg-[#E5C777]"></div>
                 </div>
               </div>
 
               {/* Dishes */}
-              <div className="space-y-8">
+              <div className="space-y-10">
                 {menu[category.key].map((dish, dishIndex) => (
                   <motion.div
                     key={dishIndex}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: categoryIndex * 0.1 + dishIndex * 0.05 }}
-                    className="border-b border-[#D4AF37]/10 pb-6 last:border-0"
+                    className="border-b border-[#E5C777]/20 pb-8 last:border-0"
                   >
                     {/* Dish Name and Price */}
-                    <div className="flex justify-between items-start mb-3">
-                      <h3 className={`${playfair.className} text-2xl md:text-3xl font-semibold text-white text-center flex-1`}>
+                    <div className="flex justify-between items-start mb-4">
+                      <h3 className={`${playfair.className} text-2xl md:text-3xl font-semibold text-[#051622] text-center flex-1`}>
                         {dish.name}
                       </h3>
-                      <span className={`${playfair.className} text-2xl md:text-3xl font-bold text-[#D4AF37] ml-6 whitespace-nowrap`}>
+                      <span className={`${playfair.className} text-2xl md:text-3xl font-bold text-[#051622] ml-6 whitespace-nowrap`}>
                         {dish.price}
                       </span>
                     </div>
 
                     {/* Description */}
-                    <p className={`${inter.className} text-gray-400 text-center text-sm md:text-base leading-relaxed max-w-3xl mx-auto`}>
+                    <p className={`${inter.className} text-[#051622]/70 text-center text-sm md:text-base leading-relaxed max-w-3xl mx-auto`}>
                       {dish.desc}
                     </p>
                   </motion.div>
@@ -128,8 +126,8 @@ export default function DiningMenuPage() {
 
               {/* Section Divider */}
               {categoryIndex < categories.length - 1 && (
-                <div className="flex justify-center mt-12">
-                  <div className="w-full max-w-xs h-px bg-gradient-to-r from-transparent via-[#D4AF37]/20 to-transparent"></div>
+                <div className="flex justify-center mt-16">
+                  <div className="w-full max-w-xs h-px bg-gradient-to-r from-transparent via-[#E5C777]/30 to-transparent"></div>
                 </div>
               )}
             </motion.section>
@@ -140,12 +138,12 @@ export default function DiningMenuPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-center mt-16 pt-8 border-t border-[#D4AF37]/20"
+            className="text-center mt-16 pt-8 border-t border-[#E5C777]/20"
           >
-            <p className={`${inter.className} text-gray-500 text-sm`}>
+            <p className={`${inter.className} text-[#051622]/60 text-sm`}>
               All prices subject to applicable taxes
             </p>
-            <p className={`${inter.className} text-gray-600 text-xs mt-2`}>
+            <p className={`${inter.className} text-[#051622]/50 text-xs mt-2`}>
               Please inform your server of any dietary restrictions or allergies
             </p>
           </motion.div>
