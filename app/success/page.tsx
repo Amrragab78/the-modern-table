@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle, ArrowLeft } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
@@ -10,7 +10,7 @@ import { useSearchParams } from "next/navigation";
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400","600","700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300","400","500","600"] });
 
-export default function SuccessPage() {
+function SuccessPageContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
   const orderId = searchParams.get('order_id');
@@ -130,5 +130,17 @@ export default function SuccessPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#D4AF37]"></div>
+      </div>
+    }>
+      <SuccessPageContent />
+    </Suspense>
   );
 }

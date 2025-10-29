@@ -83,8 +83,8 @@ const CATEGORIES = ["All", "Starters", "Mains", "Desserts"] as const;
 type Category = (typeof CATEGORIES)[number];
 type Page = "home" | "menu" | "contact";
 
-const Section = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
-  <section className={`w-full max-w-6xl mx-auto px-4 md:px-6 ${className}`}>{children}</section>
+const Section = ({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) => (
+  <section id={id} className={`w-full max-w-6xl mx-auto px-4 md:px-6 ${className}`}>{children}</section>
 );
 
 const Badge = ({ children }: { children: React.ReactNode }) => (

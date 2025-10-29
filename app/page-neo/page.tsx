@@ -230,6 +230,17 @@ export default function NeoLuxuryPage() {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
             </motion.button>
             
+            <Link href="/page-neo/dining-menu">
+              <motion.button
+                className="relative group cursor-pointer text-gray-300"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                Dining Menu
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
+              </motion.button>
+            </Link>
+            
             <Link href="/page-neo/takeout">
               <motion.button
                 className="relative group cursor-pointer text-gray-300"
