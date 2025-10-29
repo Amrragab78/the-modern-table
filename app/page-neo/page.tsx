@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { UtensilsCrossed, ArrowRight, Sparkles, Star, Phone, Mail, MapPin, Clock, ChevronDown } from "lucide-react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { UtensilsCrossed, ArrowRight, Sparkles, Star, Phone, Mail, MapPin, Clock, ChevronDown, Menu, X } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
 
@@ -123,6 +123,8 @@ export default function NeoLuxuryPage() {
   const [scrolled, setScrolled] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [showMenuDropdown, setShowMenuDropdown] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showMobileCategoriesDropdown, setShowMobileCategoriesDropdown] = useState(false);
 
   // Floating particles state
   const [particles, setParticles] = useState<{ x: number; y: number; opacity: number }[]>([]);
@@ -152,6 +154,18 @@ export default function NeoLuxuryPage() {
     });
     return () => cancelAnimationFrame(handle);
   }, []);
+
+  // Disable scroll when mobile menu is open
+  useEffect(() => {
+    if (showMobileMenu) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showMobileMenu]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -219,6 +233,16 @@ export default function NeoLuxuryPage() {
               RESTAURANT <span className="text-[#E5C777] font-bold">OS</span>
             </h1>
           </motion.div>
+          {/* Mobile Hamburger Button */}
+          <motion.button
+            onClick={() => setShowMobileMenu(true)}
+            className="md:hidden text-[#E5C777] p-2"
+            whileTap={{ scale: 0.95 }}
+            aria-label="Open Menu"
+          >
+            <Menu size={28} />
+          </motion.button>
+
           <nav className={`${inter.className} hidden md:flex gap-8 text-sm tracking-wider font-medium items-center`}>
             <motion.button
               onClick={() => setCurrentPage('reserve')}
@@ -1002,6 +1026,136 @@ export default function NeoLuxuryPage() {
           </div>
         </div>
       )}
+
+      {/* Full-Screen Mobile Menu Overlay */}
+      <AnimatePresence>
+        {showMobileMenu && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[100] bg-[#051622] md:hidden"
+          >
+            {/* Close Button */}
+            <motion.button
+              onClick={() => setShowMobileMenu(false)}
+              className="absolute top-6 right-6 text-[#E5C777] p-2"
+              whileTap={{ scale: 0.95 }}
+              aria-label="Close Menu"
+            >
+              <X size={32} />
+            </motion.button>
+
+            {/* Menu Content */}
+            <div className="h-full flex flex-col items-center justify-center px-8 overflow-y-auto py-20">
+              <motion.nav
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+                className={`${playfair.className} flex flex-col items-center gap-8 w-full max-w-md`}
+              >
+                {/* Home */}
+                <motion.button
+                  onClick={() => {
+                    setCurrentPage('home');
+                    setShowMobileMenu(false);
+                  }}
+                  className="text-4xl font-bold text-[#F2F2F2] hover:text-[#E5C777] transition-colors"
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Home
+                </motion.button>
+
+                {/* Dining Menu */}
+                <Link href="/page-neo/dining-menu" className="w-full text-center">
+                  <motion.div
+                    className="text-4xl font-bold text-[#F2F2F2] hover:text-[#E5C777] transition-colors"
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowMobileMenu(false)}
+                  >
+                    Dining Menu
+                  </motion.div>
+                </Link>
+
+                {/* Take Out */}
+                <Link href="/page-neo/takeout" className="w-full text-center">
+                  <motion.div
+                    className="text-4xl font-bold text-[#F2F2F2] hover:text-[#E5C777] transition-colors"
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowMobileMenu(false)}
+                  >
+                    Take Out
+                  </motion.div>
+                </Link>
+
+                {/* Reserve */}
+                <motion.button
+                  onClick={() => {
+                    setCurrentPage('reserve');
+                    setShowMobileMenu(false);
+                  }}
+                  className="text-4xl font-bold text-[#F2F2F2] hover:text-[#E5C777] transition-colors"
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Reserve
+                </motion.button>
+
+                {/* Contact */}
+                <motion.button
+                  onClick={() => {
+                    setCurrentPage('contact');
+                    setShowMobileMenu(false);
+                  }}
+                  className="text-4xl font-bold text-[#F2F2F2] hover:text-[#E5C777] transition-colors"
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Contact
+                </motion.button>
+
+                {/* Menu Categories Dropdown */}
+                <div className="w-full">
+                  <motion.button
+                    onClick={() => setShowMobileCategoriesDropdown(!showMobileCategoriesDropdown)}
+                    className="text-4xl font-bold text-[#F2F2F2] hover:text-[#E5C777] transition-colors flex items-center justify-center gap-2 w-full"
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Menu Categories
+                    <ChevronDown
+                      size={28}
+                      className={`transition-transform ${showMobileCategoriesDropdown ? 'rotate-180' : ''}`}
+                    />
+                  </motion.button>
+
+                  <AnimatePresence>
+                    {showMobileCategoriesDropdown && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className={`${inter.className} mt-6 space-y-4 overflow-hidden`}
+                      >
+                        {menuCategories.map((category, idx) => (
+                          <Link key={idx} href={category.path}>
+                            <motion.div
+                              onClick={() => setShowMobileMenu(false)}
+                              className="text-xl text-[#8DA9C4] hover:text-[#E5C777] transition-colors text-center py-2"
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              {category.name}
+                            </motion.div>
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.nav>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Global Styles */}
       <style jsx global>{`
