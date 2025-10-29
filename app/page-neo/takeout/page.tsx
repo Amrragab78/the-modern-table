@@ -6,9 +6,12 @@ import { UtensilsCrossed, ArrowLeft, ShoppingCart, Plus, Minus, X, Clock } from 
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
 import { menu, MenuItem } from "../../data/menuData";
+import { loadStripe } from "@stripe/stripe-js";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400","600","700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300","400","500","600"] });
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 interface CartItem extends MenuItem {
   quantity: number;
@@ -21,8 +24,7 @@ export default function TakeoutPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
   const [checkoutData, setCheckoutData] = useState({ name: '', phone: '', pickupTime: '' });
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(null);
-  const [cardData, setCardData] = useState({ name: '', number: '', expiry: '', cvv: '' });
+  const [paymentType, setPaymentType] = useState<'online' | 'offline'>('online');
 
   const categories = [
     { key: 'appetizers' as const, label: 'Appetizers' },
@@ -71,30 +73,71 @@ export default function TakeoutPage() {
     }, 0).toFixed(2);
   };
 
-  const handleCheckout = (e: React.FormEvent) => {
+  const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!checkoutData.name || !checkoutData.phone || !checkoutData.pickupTime) {
       alert('Please fill in all required fields');
-      return;
-    }
-    if (!paymentMethod) {
-      alert('Please select a payment method');
-      return;
-    }
-    if (paymentMethod === 'card' && (!cardData.number || !cardData.expiry || !cardData.cvv)) {
-      alert('Please fill in all card details');
       return;
     }
     if (cart.length === 0) {
       alert('Your cart is empty');
       return;
     }
-    alert('✅ Thank you! Your take-out order has been placed successfully. You will receive a confirmation shortly.');
-    setCart([]);
-    setCheckoutData({ name: '', phone: '', pickupTime: '' });
-    setPaymentMethod(null);
-    setCardData({ name: '', number: '', expiry: '', cvv: '' });
-    setShowCart(false);
+
+    try {
+      if (paymentType === 'offline') {
+        // Handle Pay at Pickup
+        const response = await fetch('/api/create-offline-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            items: cart,
+            customerInfo: checkoutData,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+          alert('Error creating order: ' + data.error);
+          return;
+        }
+
+        if (data.success) {
+          // Redirect to success page with offline order details
+          window.location.href = `/success?order_id=${data.orderId}&name=${encodeURIComponent(data.customerName)}&payment_type=offline`;
+        }
+      } else {
+        // Handle Stripe Online Payment
+        const response = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            items: cart,
+            customerInfo: checkoutData,
+          }),
+        });
+
+        const { url, error } = await response.json();
+
+        if (error) {
+          alert('Error creating checkout session: ' + error);
+          return;
+        }
+
+        // Redirect to Stripe Checkout
+        if (url) {
+          window.location.href = url;
+        }
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('An error occurred during checkout. Please try again.');
+    }
   };
 
   const currentItems = menu[selectedCategory];
@@ -334,101 +377,42 @@ export default function TakeoutPage() {
                           />
                         </div>
 
-                        {/* Payment Section */}
-                        <div className="mt-10 bg-black/40 border border-[#D4AF37]/30 rounded-2xl p-6 space-y-6">
-                          <h3 className="text-[#D4AF37] text-xl font-semibold mb-4">Payment Method</h3>
-                          <div className="flex flex-wrap gap-6 text-sm">
-                            {['Card', 'Apple Pay', 'Google Pay'].map((method) => {
-                              const value = method.toLowerCase().replace(' pay', '');
-                              return (
-                                <label key={method} className="flex items-center gap-2 cursor-pointer">
-                                  <input
-                                    type="radio"
-                                    name="paymentMethod"
-                                    value={value}
-                                    checked={paymentMethod === value}
-                                    onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
-                                    className="accent-[#D4AF37]"
-                                  />
-                                  <span className={paymentMethod === value ? 'text-[#FFD700]' : 'text-gray-300'}>
-                                    {method}
-                                  </span>
-                                </label>
-                              );
-                            })}
+                        <div>
+                          <label className={`${inter.className} block text-sm text-gray-300 mb-3`}>Payment Method *</label>
+                          <div className="space-y-3">
+                            <label className="flex items-center gap-3 p-3 bg-black/40 border border-[#D4AF37]/20 rounded-lg cursor-pointer hover:border-[#D4AF37]/40 transition-colors">
+                              <input
+                                type="radio"
+                                name="paymentType"
+                                value="online"
+                                checked={paymentType === 'online'}
+                                onChange={(e) => setPaymentType(e.target.value as 'online' | 'offline')}
+                                className="w-4 h-4 text-[#D4AF37] bg-black border-[#D4AF37]/30 focus:ring-[#D4AF37] focus:ring-2"
+                              />
+                              <span className={`${inter.className} text-white`}>Pay Online with Stripe</span>
+                            </label>
+                            <label className="flex items-center gap-3 p-3 bg-black/40 border border-[#D4AF37]/20 rounded-lg cursor-pointer hover:border-[#D4AF37]/40 transition-colors">
+                              <input
+                                type="radio"
+                                name="paymentType"
+                                value="offline"
+                                checked={paymentType === 'offline'}
+                                onChange={(e) => setPaymentType(e.target.value as 'online' | 'offline')}
+                                className="w-4 h-4 text-[#D4AF37] bg-black border-[#D4AF37]/30 focus:ring-[#D4AF37] focus:ring-2"
+                              />
+                              <span className={`${inter.className} text-white`}>Pay at Pickup</span>
+                            </label>
                           </div>
-
-                          {paymentMethod === 'card' && (
-                            <div className="mt-8 space-y-4">
-                              <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                  <label className="block text-sm text-gray-400 mb-1">Name on Card</label>
-                                  <input
-                                    type="text"
-                                    value={cardData.name || ''}
-                                    onChange={(e) => setCardData({ ...cardData, name: e.target.value })}
-                                    className="w-full p-3 rounded-lg bg-black/60 border border-[#D4AF37]/30 text-white focus:border-[#FFD700] focus:outline-none"
-                                    placeholder="John Doe"
-                                  />
-                                </div>
-                                <div>
-                                  <label className="block text-sm text-gray-400 mb-1">Card Number</label>
-                                  <input
-                                    type="text"
-                                    value={cardData.number}
-                                    onChange={(e) => setCardData({ ...cardData, number: e.target.value })}
-                                    className="w-full p-3 rounded-lg bg-black/60 border border-[#D4AF37]/30 text-white focus:border-[#FFD700] focus:outline-none"
-                                    placeholder="1234 5678 9012 3456"
-                                    maxLength={19}
-                                  />
-                                </div>
-                              </div>
-
-                              <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                  <label className="block text-sm text-gray-400 mb-1">Expiration (MM/YY)</label>
-                                  <input
-                                    type="text"
-                                    value={cardData.expiry}
-                                    onChange={(e) => setCardData({ ...cardData, expiry: e.target.value })}
-                                    className="w-full p-3 rounded-lg bg-black/60 border border-[#D4AF37]/30 text-white focus:border-[#FFD700] focus:outline-none"
-                                    placeholder="09/27"
-                                  />
-                                </div>
-                                <div>
-                                  <label className="block text-sm text-gray-400 mb-1">CVV</label>
-                                  <input
-                                    type="text"
-                                    value={cardData.cvv}
-                                    onChange={(e) => setCardData({ ...cardData, cvv: e.target.value })}
-                                    className="w-full p-3 rounded-lg bg-black/60 border border-[#D4AF37]/30 text-white focus:border-[#FFD700] focus:outline-none"
-                                    placeholder="123"
-                                    maxLength={4}
-                                  />
-                                </div>
-                              </div>
-
-                                <div className="pt-4">
-                                  <span className="text-sm text-gray-400">Cards Accepted:</span>
-                                  <div className="flex gap-3 mt-2 items-center">
-                                    <img src="https://cdn.worldvectorlogo.com/logos/visa-2.svg" alt="Visa" className="h-8 w-auto" />
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-8 w-auto" />
-                                    <img src="https://cdn.worldvectorlogo.com/logos/american-express-1.svg" alt="Amex" className="h-8 w-auto" />
-                                    <img src="https://cdn.worldvectorlogo.com/logos/discover-1.svg" alt="Discover" className="h-8 w-auto" />
-                                  </div>
-                                </div>
-                            </div>
-                          )}
-
-                          <motion.button
-                            type="submit"
-                            whileHover={{ scale: 1.03 }}
-                            whileTap={{ scale: 0.97 }}
-                            className="w-full py-5 mt-8 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-semibold text-lg"
-                          >
-                            Submit Order
-                          </motion.button>
                         </div>
+
+                        <motion.button
+                          type="submit"
+                          whileHover={{ scale: 1.03 }}
+                          whileTap={{ scale: 0.97 }}
+                          className="w-full py-5 mt-6 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-semibold text-lg"
+                        >
+                          {paymentType === 'online' ? 'Pay with Stripe' : 'Complete Order'}
+                        </motion.button>
                       </form>
                     </div>
                   </>
