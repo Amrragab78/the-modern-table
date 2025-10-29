@@ -1,0 +1,1023 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { UtensilsCrossed, ArrowRight, Sparkles, Star, Phone, Mail, MapPin, Clock, ChevronDown } from "lucide-react";
+import { Playfair_Display, Inter } from "next/font/google";
+import Link from "next/link";
+
+const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400","600","700"] });
+const inter = Inter({ subsets: ["latin"], weight: ["300","400","500","600"] });
+
+// Menu categories for navigation
+const menuCategories = [
+  { name: "Appetizers", path: "/page-neo/appetizers", desc: "Start your culinary journey", image: "https://images.pexels.com/photos/1395319/pexels-photo-1395319.jpeg?auto=compress&cs=tinysrgb&w=1200" },
+  { name: "Seafood Entrées", path: "/page-neo/seafood", desc: "Fresh from the ocean", image: "https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg?auto=compress&cs=tinysrgb&w=1200" },
+  { name: "Premium Meats", path: "/page-neo/meats", desc: "The finest cuts", image: "https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=1200" },
+  { name: "Artisan Pasta", path: "/page-neo/pasta", desc: "Handcrafted with tradition", image: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1200" },
+  { name: "Divine Desserts", path: "/page-neo/desserts", desc: "Sweet conclusions", image: "https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=1200" },
+  { name: "Premium Beverages", path: "/page-neo/beverages", desc: "Refreshing non-alcoholic drinks", image: "https://images.pexels.com/photos/1283219/pexels-photo-1283219.jpeg?auto=compress&cs=tinysrgb&w=1200" },
+  { name: "Take Out", path: "/page-neo/takeout", desc: "Order online and pick up", image: "https://images.pexels.com/photos/4253312/pexels-photo-4253312.jpeg?auto=compress&cs=tinysrgb&w=1200" },
+];
+
+// Sample menu items for preview (no longer used in full menu section)
+const menuItems = [
+    {
+      name: "Lobster Risotto",
+      img: "https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      desc: "Creamy saffron risotto served with Maine lobster.",
+      price: "$59",
+      category: "Seafood"
+    },
+    {
+      name: "Wagyu Beef Steak",
+      img: "https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      desc: "Prime cut wagyu with truffle butter and seasonal vegetables.",
+      price: "$89",
+      category: "Premium"
+    },
+    {
+      name: "Chocolate Lava Cake",
+      img: "https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      desc: "Decadent dark chocolate with vanilla ice cream.",
+      price: "$18",
+      category: "Dessert"
+    },
+    {
+      name: "Pan-Seared Scallops",
+      img: "https://images.pexels.com/photos/566566/pexels-photo-566566.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      desc: "Fresh sea scallops with cauliflower puree and microgreens.",
+      price: "$52",
+      category: "Seafood"
+    },
+    {
+      name: "Truffle Pasta",
+      img: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      desc: "Handmade pasta with black truffle and parmesan cream.",
+      price: "$45",
+      category: "Pasta"
+    },
+    {
+      name: "Sushi Platter",
+      img: "https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      desc: "Premium selection of nigiri and sashimi with wasabi.",
+      price: "$68",
+      category: "Seafood"
+    },
+    {
+      name: "Duck Confit",
+      img: "https://images.pexels.com/photos/3763816/pexels-photo-3763816.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      desc: "Slow-cooked duck leg with orange glaze and root vegetables.",
+      price: "$56",
+      category: "Poultry"
+    },
+    {
+      name: "Grilled Salmon",
+      img: "https://images.pexels.com/photos/1516415/pexels-photo-1516415.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      desc: "Atlantic salmon with lemon butter and asparagus.",
+      price: "$48",
+      category: "Seafood"
+    },
+    {
+      name: "Beef Carpaccio",
+      img: "https://images.pexels.com/photos/2232433/pexels-photo-2232433.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      desc: "Thinly sliced raw beef with arugula and parmesan.",
+      price: "$38",
+      category: "Appetizer"
+    },
+    {
+      name: "Oysters Rockefeller",
+      img: "https://images.pexels.com/photos/566345/pexels-photo-566345.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      desc: "Fresh oysters baked with herbs and breadcrumbs.",
+      price: "$42",
+      category: "Seafood"
+    },
+    {
+      name: "Lamb Rack",
+      img: "https://images.pexels.com/photos/361184/asparagus-steak-veal-steak-veal-361184.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      desc: "Herb-crusted lamb rack with rosemary jus.",
+      price: "$72",
+      category: "Premium"
+    },
+    {
+      name: "Caesar Salad",
+      img: "https://images.pexels.com/photos/2097090/pexels-photo-2097090.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      desc: "Classic Caesar with crispy romaine and garlic croutons.",
+      price: "$22",
+      category: "Salad"
+    },
+  ];
+
+export default function NeoLuxuryPage() {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [reservationData, setReservationData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    date: '',
+    time: '',
+    guests: '',
+    requests: ''
+  });
+  const [currentPage, setCurrentPage] = useState('home');
+  const [scrolled, setScrolled] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const [showMenuDropdown, setShowMenuDropdown] = useState(false);
+
+  // Floating particles state
+  const [particles, setParticles] = useState<{ x: number; y: number; opacity: number }[]>([]);
+
+  // Scroll-based animation for hero background
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 100);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Generate floating particles only on client, safely
+  useEffect(() => {
+    if (typeof window === "undefined") return; // Prevent SSR crash
+    const handle = requestAnimationFrame(() => {
+      const generated = Array.from({ length: 20 }).map(() => ({
+        x: Math.random() * (window.innerWidth || 1920),
+        y: Math.random() * (window.innerHeight || 1080),
+        opacity: Math.random() * 0.5 + 0.2,
+      }));
+      setParticles(generated);
+    });
+    return () => cancelAnimationFrame(handle);
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) {
+      alert('Please fill in all fields');
+      return;
+    }
+    alert('Thank you for contacting us! We will get back to you shortly.');
+    setFormData({ name: '', email: '', message: '' });
+  };
+
+  const handleReservation = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!reservationData.name || !reservationData.email || !reservationData.phone || 
+        !reservationData.date || !reservationData.time || !reservationData.guests) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    alert('Reservation request submitted! We will contact you shortly.');
+    setReservationData({
+      name: '',
+      email: '',
+      phone: '',
+      date: '',
+      time: '',
+      guests: '',
+      requests: ''
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-black text-white overflow-hidden relative">
+      {/* Animated Background Gradient */}
+      <div className="fixed inset-0 bg-gradient-to-br from-black via-[#0a0a0a] to-black z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(212,175,55,0.03),transparent_50%)]"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#D4AF37] rounded-full mix-blend-multiply filter blur-[128px] opacity-5 animate-blob"></div>
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#B87333] rounded-full mix-blend-multiply filter blur-[128px] opacity-5 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-[#D4AF37] rounded-full mix-blend-multiply filter blur-[128px] opacity-5 animate-blob animation-delay-4000"></div>
+      </div>
+
+      {currentPage === 'home' && (
+        <>
+      {/* Enhanced Navbar with Glassmorphism */}
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+          scrolled
+            ? "bg-black/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(212,175,55,0.1)] border-b border-[#D4AF37]/30"
+            : "bg-black/20 backdrop-blur-md border-b border-[#D4AF37]/10"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex justify-between items-center">
+          <motion.div 
+            className="flex items-center gap-3"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
+            <div className="relative">
+              <UtensilsCrossed className="text-[#D4AF37] relative z-10" size={28} />
+              <div className="absolute inset-0 bg-[#D4AF37] blur-xl opacity-50"></div>
+            </div>
+            <h1 className={`${playfair.className} text-2xl md:text-3xl font-normal tracking-[0.2em] text-[#f3f3f3]`}>
+              RESTAURANT <span className="text-[#D4AF37] font-bold bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#D4AF37] bg-clip-text text-transparent">OS</span>
+            </h1>
+          </motion.div>
+          <nav className={`${inter.className} hidden md:flex gap-8 text-sm tracking-wider font-medium items-center`}>
+            <motion.button
+              onClick={() => setCurrentPage('reserve')}
+              className="relative group cursor-pointer text-gray-300"
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              Reserve
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
+            </motion.button>
+            
+            <Link href="/page-neo/takeout">
+              <motion.button
+                className="relative group cursor-pointer text-gray-300"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                Take Out
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
+              </motion.button>
+            </Link>
+            
+            <motion.button
+              onClick={() => setCurrentPage('contact')}
+              className="relative group cursor-pointer text-gray-300"
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              Contact
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
+            </motion.button>
+
+            {/* Menu Dropdown - Last Item (rightmost) */}
+            <div 
+              className="relative"
+              onMouseEnter={() => setShowMenuDropdown(true)}
+              onMouseLeave={() => setShowMenuDropdown(false)}
+            >
+              <motion.button
+                className="relative group cursor-pointer text-gray-300 flex items-center gap-1"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                Menu
+                <ChevronDown size={14} className={`transition-transform ${showMenuDropdown ? 'rotate-180' : ''}`} />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#FFD700] group-hover:w-full transition-all duration-300"></span>
+              </motion.button>
+              
+              {showMenuDropdown && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute top-full left-0 mt-2 w-56 bg-black/95 backdrop-blur-xl border border-[#D4AF37]/30 rounded-xl shadow-2xl overflow-hidden z-[100]"
+                >
+                  {menuCategories.map((category, idx) => (
+                    <Link key={idx} href={category.path}>
+                      <motion.div
+                        className="px-4 py-3 hover:bg-[#D4AF37]/10 transition-colors cursor-pointer border-b border-[#D4AF37]/10 last:border-none"
+                        whileHover={{ x: 5 }}
+                      >
+                        <div className="text-white font-medium text-sm">{category.name}</div>
+                        <div className="text-gray-400 text-xs">{category.desc}</div>
+                      </motion.div>
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </div>
+          </nav>
+        </div>
+      </motion.header>
+
+      {/* Hero Section with Parallax */}
+      <section id="hero" className="relative flex flex-col justify-center items-center text-center h-screen px-4 overflow-hidden">
+        {/* Animated Background */}
+        <motion.div 
+          className="absolute inset-0"
+          style={{ opacity, scale }}
+        >
+          <motion.img
+            src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=2400"
+            alt="Fine Dining"
+            loading="eager"
+            className="absolute inset-0 w-full h-full object-cover"
+            initial={{ scale: 1.2 }}
+            animate={{ scale: 1.05 }}
+            transition={{ duration: 20, ease: 'linear', repeat: Infinity, repeatType: "reverse" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black"></div>
+        </motion.div>
+
+      {/* Floating Particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {particles.map((p, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-[#D4AF37] rounded-full"
+            initial={{ x: p.x, y: p.y, opacity: p.opacity }}
+            animate={{
+              y: [p.y, p.y - (Math.random() * 100 + 50)],
+              opacity: [p.opacity, 0],
+            }}
+            transition={{
+              duration: Math.random() * 3 + 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+      </div>
+
+        {/* Hero Content */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
+          className="relative z-10 max-w-5xl mx-auto"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="inline-flex items-center gap-2 mb-6 px-6 py-2 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30 backdrop-blur-sm"
+          >
+            <Sparkles className="text-[#D4AF37]" size={18} />
+            <span className={`${inter.className} text-sm tracking-widest text-[#D4AF37] font-medium`}>CULINARY EXCELLENCE</span>
+          </motion.div>
+
+          <motion.h2 
+            className={`${playfair.className} text-6xl md:text-8xl leading-[1.1] font-bold mb-8`}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            An Evening Worth{" "}
+            <span className="relative inline-block">
+              <span className="relative z-10 bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#D4AF37] bg-clip-text text-transparent animate-gradient">
+                Remembering
+              </span>
+              <motion.span
+                className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] via-[#FFD700] to-[#D4AF37] blur-2xl opacity-30"
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              ></motion.span>
+            </span>
+          </motion.h2>
+
+          <motion.p 
+            className={`${inter.className} text-gray-300 text-xl md:text-2xl mb-12 max-w-3xl mx-auto leading-relaxed`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+          >
+            Where culinary artistry meets timeless elegance. Experience the extraordinary.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1 }}
+          >
+            <motion.button
+              onClick={() => setCurrentPage('reserve')}
+              className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-semibold text-lg overflow-hidden"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Reserve Your Table"
+            >
+              <span className="relative z-10 flex items-center gap-3">
+                Reserve Your Table
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </span>
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-[#FFD700] to-[#D4AF37]"
+                initial={{ x: '-100%' }}
+                whileHover={{ x: 0 }}
+                transition={{ duration: 0.3 }}
+              ></motion.div>
+              <div className="absolute inset-0 bg-white/20 blur-xl group-hover:bg-white/30 transition-colors"></div>
+            </motion.button>
+          </motion.div>
+        </motion.div>
+
+        {/* Enhanced Scroll Indicator */}
+        <motion.div 
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center cursor-pointer"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
+          onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+        >
+          <span className={`${inter.className} text-xs tracking-[0.3em] text-[#D4AF37] mb-3 font-medium`}>EXPLORE</span>
+          <motion.div 
+            className="w-6 h-10 border-2 border-[#D4AF37]/50 rounded-full p-1"
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <motion.div
+              className="w-1 h-2 bg-[#D4AF37] rounded-full mx-auto"
+              animate={{ y: [0, 12, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            ></motion.div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* About Section with Enhanced Design */}
+      <section id="about" className="relative py-40 px-8 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black"></div>
+        
+        <div className="relative max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
+          >
+            <span className={`${inter.className} text-sm tracking-[0.3em] text-[#D4AF37] font-medium mb-4 block`}>DISCOVER</span>
+            <h2 className={`${playfair.className} text-5xl md:text-6xl font-bold mb-6`}>
+              Our <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">Story</span>
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/20 to-transparent rounded-2xl blur-2xl group-hover:blur-3xl transition-all duration-500"></div>
+              <img
+                src="https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1000"
+                alt="Luxury Interior"
+                loading="lazy"
+                className="relative rounded-2xl shadow-2xl object-cover w-full h-[500px] border border-[#D4AF37]/20"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-2xl"></div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="space-y-6"
+            >
+              <h3 className={`${playfair.className} text-4xl font-bold text-[#D4AF37]`}>About Us</h3>
+              <p className={`${inter.className} text-gray-300 leading-relaxed text-lg`}>
+                Restaurant OS is a fusion of world-class culinary artistry and cutting-edge digital design. 
+                Our AI-curated menu adapts to your preferences, ensuring a dining experience unlike any other.
+              </p>
+              <p className={`${inter.className} text-gray-300 leading-relaxed text-lg`}>
+                Every element — from lighting to music — evolves with your mood, creating a truly immersive fine dining atmosphere.
+              </p>
+              
+              <div className="grid grid-cols-3 gap-6 pt-8">
+                {[
+                  { icon: Star, label: "Michelin Rated", value: "5★" },
+                  { icon: Sparkles, label: "Years Excellence", value: "15+" },
+                  { icon: UtensilsCrossed, label: "Signature Dishes", value: "50+" }
+                ].map((stat, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    className="text-center p-4 rounded-xl bg-[#D4AF37]/5 border border-[#D4AF37]/20 backdrop-blur-sm"
+                  >
+                    <stat.icon className="text-[#D4AF37] mx-auto mb-2" size={24} />
+                    <div className={`${playfair.className} text-2xl font-bold text-white mb-1`}>{stat.value}</div>
+                    <div className={`${inter.className} text-xs text-gray-400`}>{stat.label}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Menu Categories Section */}
+      <section id="menu" className="relative py-40 px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0d0d0d] to-black"></div>
+        
+        <div className="relative max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-20"
+          >
+            <span className={`${inter.className} text-sm tracking-[0.3em] text-[#D4AF37] font-medium mb-4 block`}>EXPLORE</span>
+            <h2 className={`${playfair.className} text-5xl md:text-6xl font-bold mb-6`}>
+              Our <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">Menu</span>
+            </h2>
+            <p className={`${inter.className} text-gray-400 text-lg max-w-2xl mx-auto`}>
+              Discover our carefully curated selection across five exquisite categories
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            {menuCategories.map((category, i) => (
+              <Link key={i} href={category.path}>
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: i * 0.1 }}
+                  onHoverStart={() => setHoveredItem(i)}
+                  onHoverEnd={() => setHoveredItem(null)}
+                  className="group relative cursor-pointer h-[400px]"
+                >
+                  {/* Card Container */}
+                  <div className="relative h-full rounded-2xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-black border border-[#D4AF37]/20 hover:border-[#D4AF37]/60 transition-all duration-500">
+                    {/* Image Section */}
+                    <div className="relative h-full overflow-hidden">
+                      <motion.img 
+                        src={category.image} 
+                        alt={category.name} 
+                        loading="lazy" 
+                        className="w-full h-full object-cover"
+                        animate={{ scale: hoveredItem === i ? 1.1 : 1 }}
+                        transition={{ duration: 0.6 }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30"></div>
+                      
+                      {/* Hover Overlay */}
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-t from-[#D4AF37]/30 to-transparent"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: hoveredItem === i ? 1 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      ></motion.div>
+
+                      {/* Content */}
+                      <div className="absolute inset-0 flex flex-col justify-end p-8">
+                        <motion.div
+                          initial={{ y: 20 }}
+                          animate={{ y: hoveredItem === i ? 0 : 20 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <h3 className={`${playfair.className} text-3xl font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors`}>
+                            {category.name}
+                          </h3>
+                          <p className={`${inter.className} text-gray-300 text-sm mb-4`}>
+                            {category.desc}
+                          </p>
+                          <div className="flex items-center gap-2 text-[#D4AF37]">
+                            <span className={`${inter.className} text-sm font-medium`}>View Menu</span>
+                            <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
+                          </div>
+                        </motion.div>
+                      </div>
+                    </div>
+
+                    {/* Glow Effect */}
+                    <motion.div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                      style={{
+                        background: "radial-gradient(circle at center, rgba(212,175,55,0.15), transparent 70%)"
+                      }}
+                    ></motion.div>
+                  </div>
+                </motion.div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Reserve Section */}
+      <section className="relative py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black"></div>
+        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1600')] opacity-5 bg-cover bg-center"></div>
+        
+        <motion.div 
+          className="relative max-w-4xl mx-auto text-center px-6"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.div
+            className="inline-flex items-center gap-2 mb-8 px-6 py-2 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30"
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <Sparkles className="text-[#D4AF37]" size={18} />
+            <span className={`${inter.className} text-sm tracking-widest text-[#D4AF37] font-medium`}>BOOK NOW</span>
+          </motion.div>
+          
+          <h2 className={`${playfair.className} text-5xl md:text-6xl font-bold mb-6`}>
+            Reserve Your <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">Experience</span>
+          </h2>
+          <p className={`${inter.className} text-gray-300 text-lg mb-12 max-w-2xl mx-auto`}>
+            Experience the fusion of innovation and taste — secure your fine dining reservation today.
+          </p>
+          
+          <motion.button 
+            onClick={() => setCurrentPage('reserve')}
+            className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-semibold text-lg overflow-hidden"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            aria-label="Book Your Table"
+          >
+            <span className="relative z-10 flex items-center gap-3">
+              Book Your Table
+              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            </span>
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-[#FFD700] to-[#D4AF37]"
+              initial={{ x: '-100%' }}
+              whileHover={{ x: 0 }}
+              transition={{ duration: 0.3 }}
+            ></motion.div>
+          </motion.button>
+        </motion.div>
+      </section>
+
+      {/* Enhanced Footer */}
+      <footer className="relative border-t border-[#D4AF37]/20 py-16">
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black"></div>
+        
+        <div className="relative max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 mb-4">
+                <UtensilsCrossed className="text-[#D4AF37]" size={24} />
+                <span className={`${playfair.className} text-xl font-bold bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent`}>
+                  RESTAURANT OS
+                </span>
+              </div>
+              <p className={`${inter.className} text-gray-400 text-sm leading-relaxed`}>
+                Where culinary artistry meets timeless elegance.
+              </p>
+            </div>
+            
+            <div>
+              <h4 className={`${playfair.className} text-lg font-bold text-[#D4AF37] mb-4`}>Quick Links</h4>
+              <div className={`${inter.className} space-y-2 text-sm`}>
+                {['About', 'Menu'].map(item => (
+                  <button
+                    key={item}
+                    onClick={() => document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: "smooth" })}
+                    className="block text-gray-400 hover:text-[#D4AF37] transition-colors"
+                  >
+                    {item}
+                  </button>
+                ))}
+                {['Reserve', 'Contact'].map(item => (
+                  <button
+                    key={item}
+                    onClick={() => setCurrentPage(item.toLowerCase())}
+                    className="block text-gray-400 hover:text-[#D4AF37] transition-colors"
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div>
+              <h4 className={`${playfair.className} text-lg font-bold text-[#D4AF37] mb-4`}>Contact</h4>
+              <div className={`${inter.className} space-y-3 text-sm text-gray-400`}>
+                <div className="flex items-start gap-2">
+                  <MapPin size={16} className="text-[#D4AF37] mt-1 shrink-0" />
+                  <span>123 Gourmet Avenue<br/>New York, NY 10001</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Phone size={16} className="text-[#D4AF37] shrink-0" />
+                  <span>(212) 555-0123</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Mail size={16} className="text-[#D4AF37] shrink-0" />
+                  <span>info@restaurantos.com</span>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className={`${playfair.className} text-lg font-bold text-[#D4AF37] mb-4`}>Hours</h4>
+              <div className={`${inter.className} space-y-2 text-sm text-gray-400`}>
+                <div className="flex items-start gap-2">
+                  <Clock size={16} className="text-[#D4AF37] mt-1 shrink-0" />
+                  <div>
+                    <p>Mon - Thu: 5:00 PM - 10:00 PM</p>
+                    <p>Fri - Sat: 5:00 PM - 11:00 PM</p>
+                    <p>Sunday: 4:00 PM - 9:00 PM</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="pt-8 border-t border-[#D4AF37]/10 text-center">
+            <p className={`${inter.className} text-sm text-gray-500`}>
+              © {new Date().getFullYear()} Restaurant OS. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </footer>
+      </>
+      )}
+
+      {/* Reservation Page */}
+      {currentPage === 'reserve' && (
+        <div className="min-h-screen pt-32 pb-16 px-6 relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black"></div>
+          
+          <div className="relative max-w-3xl mx-auto">
+            <motion.button 
+              onClick={() => setCurrentPage('home')}
+              className={`${inter.className} mb-8 text-[#D4AF37] hover:text-[#FFD700] transition-colors flex items-center gap-2`}
+              whileHover={{ x: -5 }}
+              aria-label="Back to Home"
+            >
+              <ArrowRight size={20} className="rotate-180" />
+              Back to Home
+            </motion.button>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 className={`${playfair.className} text-5xl font-bold mb-4`}>
+                Reserve Your <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">Table</span>
+              </h1>
+              <p className={`${inter.className} text-gray-400 mb-12 text-lg`}>
+                Fill out the form below to secure your reservation at Restaurant OS.
+              </p>
+              
+              <div className="bg-gradient-to-br from-[#1a1a1a] to-black border border-[#D4AF37]/20 rounded-2xl p-8 md:p-12 backdrop-blur-sm">
+                <form onSubmit={handleReservation} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Full Name *</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={reservationData.name}
+                        onChange={(e) => setReservationData({...reservationData, name: e.target.value})}
+                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
+                        placeholder="John Doe"
+                        aria-label="Full Name"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Email Address *</label>
+                      <input 
+                        type="email" 
+                        required
+                        value={reservationData.email}
+                        onChange={(e) => setReservationData({...reservationData, email: e.target.value})}
+                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
+                        placeholder="john@example.com"
+                        aria-label="Email Address"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Phone Number *</label>
+                    <input 
+                      type="tel" 
+                      required
+                      value={reservationData.phone}
+                      onChange={(e) => setReservationData({...reservationData, phone: e.target.value})}
+                      className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
+                      placeholder="+1 (555) 000-0000"
+                      aria-label="Phone Number"
+                    />
+                  </div>
+                  
+                  <div className="grid md:grid-cols-3 gap-6">
+                    <div>
+                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Date *</label>
+                      <input 
+                        type="date" 
+                        required
+                        value={reservationData.date}
+                        onChange={(e) => setReservationData({...reservationData, date: e.target.value})}
+                        min={new Date().toISOString().split('T')[0]}
+                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
+                        aria-label="Reservation Date"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Time *</label>
+                      <input 
+                        type="time" 
+                        required
+                        value={reservationData.time}
+                        onChange={(e) => setReservationData({...reservationData, time: e.target.value})}
+                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
+                        aria-label="Reservation Time"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Guests *</label>
+                      <select 
+                        required
+                        value={reservationData.guests}
+                        onChange={(e) => setReservationData({...reservationData, guests: e.target.value})}
+                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
+                        aria-label="Number of Guests"
+                      >
+                        <option value="">Select</option>
+                        {[1, 2, 3, 4, 5, 6].map(num => (
+                          <option key={num} value={num}>{num} {num === 1 ? 'Guest' : 'Guests'}</option>
+                        ))}
+                        <option value="7+">7+ Guests</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Special Requests (Optional)</label>
+                    <textarea 
+                      value={reservationData.requests}
+                      onChange={(e) => setReservationData({...reservationData, requests: e.target.value})}
+                      className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 min-h-[120px] transition-all resize-none"
+                      placeholder="Any dietary restrictions or special occasions?"
+                      aria-label="Special Requests"
+                    />
+                  </div>
+                  
+                  <motion.button 
+                    type="submit"
+                    className="w-full py-5 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-semibold text-lg"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    aria-label="Confirm Reservation"
+                  >
+                    Confirm Reservation
+                  </motion.button>
+                </form>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      )}
+
+      {/* Contact Page */}
+      {currentPage === 'contact' && (
+        <div className="min-h-screen pt-32 pb-16 px-6 relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black"></div>
+          
+          <div className="relative max-w-6xl mx-auto">
+            <motion.button 
+              onClick={() => setCurrentPage('home')}
+              className={`${inter.className} mb-8 text-[#D4AF37] hover:text-[#FFD700] transition-colors flex items-center gap-2`}
+              whileHover={{ x: -5 }}
+              aria-label="Back to Home"
+            >
+              <ArrowRight size={20} className="rotate-180" />
+              Back to Home
+            </motion.button>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 className={`${playfair.className} text-5xl font-bold mb-4`}>
+                Get In <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">Touch</span>
+              </h1>
+              <p className={`${inter.className} text-gray-400 mb-12 text-lg`}>
+                We'd love to hear from you. Reach out to Restaurant OS.
+              </p>
+              
+              <div className="grid md:grid-cols-2 gap-12">
+                {/* Contact Information */}
+                <div className="space-y-8">
+                  <div className="bg-gradient-to-br from-[#1a1a1a] to-black border border-[#D4AF37]/20 rounded-2xl p-8">
+                    <h2 className={`${playfair.className} text-2xl font-bold text-[#D4AF37] mb-6`}>Contact Information</h2>
+                    <div className="space-y-6">
+                      {[
+                        { icon: MapPin, title: "Address", content: ["123 Gourmet Avenue", "New York, NY 10001"] },
+                        { icon: Phone, title: "Phone", content: ["(212) 555-0123"] },
+                        { icon: Mail, title: "Email", content: ["info@restaurantos.com"] },
+                        { icon: Clock, title: "Hours", content: ["Mon - Thu: 5:00 PM - 10:00 PM", "Fri - Sat: 5:00 PM - 11:00 PM", "Sun: 4:00 PM - 9:00 PM"] }
+                      ].map((item, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, delay: idx * 0.1 }}
+                          className="flex gap-4"
+                        >
+                          <div className="shrink-0">
+                            <div className="w-12 h-12 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center">
+                              <item.icon className="text-[#D4AF37]" size={20} />
+                            </div>
+                          </div>
+                          <div>
+                            <h3 className={`${inter.className} text-white font-semibold mb-1`}>{item.title}</h3>
+                            {item.content.map((line, i) => (
+                              <p key={i} className={`${inter.className} text-gray-400 text-sm`}>{line}</p>
+                            ))}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Contact Form */}
+                <div className="bg-gradient-to-br from-[#1a1a1a] to-black border border-[#D4AF37]/20 rounded-2xl p-8">
+                  <h2 className={`${playfair.className} text-2xl font-bold text-[#D4AF37] mb-6`}>Send a Message</h2>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Your Name *</label>
+                      <input 
+                        type="text" 
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
+                        placeholder="John Doe"
+                        aria-label="Your Name"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Your Email *</label>
+                      <input 
+                        type="email" 
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
+                        placeholder="john@example.com"
+                        aria-label="Your Email"
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Your Message *</label>
+                      <textarea 
+                        required
+                        value={formData.message}
+                        onChange={(e) => setFormData({...formData, message: e.target.value})}
+                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 min-h-[180px] transition-all resize-none"
+                        placeholder="Tell us how we can help you..."
+                        aria-label="Your Message"
+                      />
+                    </div>
+                    
+                    <motion.button 
+                      type="submit"
+                      className="w-full py-5 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-semibold text-lg"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      aria-label="Send Message"
+                    >
+                      Send Message
+                    </motion.button>
+                  </form>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      )}
+
+      {/* Global Styles */}
+      <style jsx global>{`
+        @keyframes blob {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          25% { transform: translate(20px, -50px) scale(1.1); }
+          50% { transform: translate(-20px, 20px) scale(0.9); }
+          75% { transform: translate(50px, 50px) scale(1.05); }
+        }
+        .animate-blob {
+          animation: blob 20s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+        @keyframes gradient {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .animate-gradient {
+          background-size: 200% 200%;
+          animation: gradient 3s ease infinite;
+        }
+      `}</style>
+    </div>
+  );
+}
