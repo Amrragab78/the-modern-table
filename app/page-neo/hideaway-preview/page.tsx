@@ -22,8 +22,10 @@ const menuItems = [
 export default function HideawayPreview() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   
-  // Scroll progress for parallax effect
+  // Scroll progress for parallax effect (exact same as homepage)
   const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
 
   // Disable scroll when mobile menu is open
   useEffect(() => {
@@ -165,13 +167,10 @@ export default function HideawayPreview() {
 
       {/* Hero Section with Parallax */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Parallax Background */}
+        {/* Animated Background - Exact same as homepage */}
         <motion.div 
           className="absolute inset-0"
-          style={{
-            y: useTransform(scrollYProgress, [0, 1], [0, 300]),
-            opacity: useTransform(scrollYProgress, [0, 0.5], [1, 0])
-          }}
+          style={{ opacity, scale }}
         >
           <img
             src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=2400"
@@ -181,15 +180,11 @@ export default function HideawayPreview() {
           <div className="absolute inset-0 bg-gradient-to-b from-[var(--brand-espresso)]/40 via-[var(--brand-espresso)]/30 to-[var(--brand-sand)]"></div>
         </motion.div>
 
-        {/* Hero Content with Fade and Move Up */}
+        {/* Hero Content */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          style={{
-            y: useTransform(scrollYProgress, [0, 0.5], [0, -100]),
-            opacity: useTransform(scrollYProgress, [0, 0.3, 0.5], [1, 0.8, 0])
-          }}
+          transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
           className="relative z-10 text-center px-6 max-w-4xl"
         >
           <h2 className={`${playfair.className} text-5xl md:text-7xl font-bold text-white mb-6`}>
