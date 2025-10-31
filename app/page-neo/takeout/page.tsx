@@ -17,8 +17,6 @@ interface CartItem extends MenuItem {
   quantity: number;
 }
 
-type PaymentMethod = 'card' | 'apple' | 'google' | null;
-
 export default function TakeoutPage() {
   const [selectedCategory, setSelectedCategory] = useState<'appetizers' | 'seafood' | 'meats' | 'pasta' | 'desserts' | 'beverages'>('appetizers');
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -47,7 +45,6 @@ export default function TakeoutPage() {
       }
       return [...prevCart, { ...item, quantity: 1 }];
     });
-    // Cart updates silently - no auto-open
   };
 
   const updateQuantity = (itemName: string, delta: number) => {
@@ -86,7 +83,6 @@ export default function TakeoutPage() {
 
     try {
       if (paymentType === 'offline') {
-        // Handle Pay at Pickup
         const response = await fetch('/api/create-offline-order', {
           method: 'POST',
           headers: {
@@ -106,11 +102,9 @@ export default function TakeoutPage() {
         }
 
         if (data.success) {
-          // Redirect to success page with offline order details
           window.location.href = `/success?order_id=${data.orderId}&name=${encodeURIComponent(data.customerName)}&payment_type=offline`;
         }
       } else {
-        // Handle Stripe Online Payment
         const response = await fetch('/api/create-checkout-session', {
           method: 'POST',
           headers: {
@@ -129,7 +123,6 @@ export default function TakeoutPage() {
           return;
         }
 
-        // Redirect to Stripe Checkout
         if (url) {
           window.location.href = url;
         }
@@ -143,52 +136,47 @@ export default function TakeoutPage() {
   const currentItems = menu[selectedCategory];
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative">
-      {/* Background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-black via-[#0a0a0a] to-black z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(212,175,55,0.03),transparent_50%)]"></div>
-      </div>
-
+    <div className={`${inter.className} min-h-screen bg-[var(--brand-ivory)]`}>
       {/* Navbar */}
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(212,175,55,0.1)] border-b border-[#D4AF37]/30"
+        className="fixed top-0 left-0 w-full z-50 bg-[var(--brand-ivory)]/95 backdrop-blur-sm border-b border-[var(--brand-border)]"
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex justify-between items-center">
-          <Link href="/page-neo">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex justify-between items-center">
+          <Link href="/page-neo/hideaway-preview">
             <motion.div 
-              className="flex items-center gap-3 cursor-pointer"
-              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2 cursor-pointer"
+              whileHover={{ scale: 1.02 }}
             >
-              <UtensilsCrossed className="text-[#D4AF37]" size={28} />
-              <h1 className={`${playfair.className} text-2xl md:text-3xl font-normal tracking-[0.2em]`}>
-                RESTAURANT <span className="text-[#D4AF37] font-bold">OS</span>
+              <UtensilsCrossed className="text-[var(--brand-gold)]" size={24} />
+              <h1 className={`${playfair.className} text-xl md:text-2xl font-semibold text-[var(--brand-espresso)]`}>
+                The Hideaway
               </h1>
             </motion.div>
           </Link>
           
           <div className="flex items-center gap-4">
-            <Link href="/page-neo">
+            <Link href="/page-neo/hideaway-preview">
               <motion.button
-                className={`${inter.className} flex items-center gap-2 text-[#D4AF37] hover:text-[#FFD700] transition-colors`}
+                className="flex items-center gap-2 text-[var(--brand-espresso)] hover:text-[var(--brand-pine)] transition-colors"
                 whileHover={{ x: -5 }}
               >
                 <ArrowLeft size={20} />
-                Back to Menu
+                <span className="hidden md:inline">Back</span>
               </motion.button>
             </Link>
             
             <motion.button
               onClick={() => setShowCart(!showCart)}
-              className="relative p-3 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30 hover:bg-[#D4AF37]/20 transition-colors"
+              className="relative p-3 rounded-lg bg-[var(--brand-sand)] border border-[var(--brand-border)] hover:bg-[var(--brand-espresso)] hover:text-[var(--brand-ivory)] transition-all"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <ShoppingCart className="text-[#D4AF37]" size={24} />
+              <ShoppingCart className="text-[var(--brand-gold)]" size={22} />
               {cart.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#D4AF37] text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-[var(--brand-gold)] text-[var(--brand-espresso)] text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
                   {cart.reduce((sum, item) => sum + item.quantity, 0)}
                 </span>
               )}
@@ -198,7 +186,7 @@ export default function TakeoutPage() {
       </motion.header>
 
       {/* Main Content */}
-      <div className="relative pt-32 pb-20 px-6">
+      <div className="pt-28 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <motion.div
@@ -206,13 +194,12 @@ export default function TakeoutPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <h1 className={`${playfair.className} text-5xl md:text-6xl font-bold mb-4`}>
-              <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">
-                Order Takeout
-              </span>
+            <h1 className={`${playfair.className} text-4xl md:text-5xl font-bold text-[var(--brand-espresso)] mb-4`}>
+              Order Online
             </h1>
-            <p className={`${inter.className} text-gray-400 text-lg`}>
-              Browse our menu and order for pickup
+            <div className="rule mx-auto"></div>
+            <p className="text-lg text-[var(--brand-muted)] mt-6">
+              Browse our menu and place your order for pickup
             </p>
           </motion.div>
 
@@ -222,10 +209,10 @@ export default function TakeoutPage() {
               <motion.button
                 key={cat.key}
                 onClick={() => setSelectedCategory(cat.key)}
-                className={`px-6 py-3 rounded-full font-medium transition-all ${
+                className={`px-6 py-3 rounded-lg font-medium transition-all ${
                   selectedCategory === cat.key
-                    ? 'bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black'
-                    : 'bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-gray-300 hover:bg-[#D4AF37]/20'
+                    ? 'btn-primary'
+                    : 'btn-outline'
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -235,29 +222,52 @@ export default function TakeoutPage() {
             ))}
           </div>
 
-          {/* Items Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Category Header */}
+          <div className="mb-8">
+            <h2 className={`${playfair.className} text-3xl font-bold text-[var(--brand-espresso)] mb-2`}>
+              {categories.find(c => c.key === selectedCategory)?.label}
+            </h2>
+            <div className="rule"></div>
+          </div>
+
+          {/* Items Grid - Mini Cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {currentItems.map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="bg-gradient-to-br from-[#1a1a1a] to-black border border-[#D4AF37]/20 rounded-xl p-6 hover:border-[#D4AF37]/40 transition-all"
+                className="paper-alt border border-[var(--brand-border)] rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
               >
-                <img src={item.img} alt={item.name} className="w-full h-48 object-cover rounded-lg mb-4" />
-                <h3 className={`${playfair.className} text-xl font-bold text-white mb-2`}>{item.name}</h3>
-                <p className={`${inter.className} text-gray-400 text-sm mb-4 line-clamp-2`}>{item.desc}</p>
-                <div className="flex items-center justify-between">
-                  <span className={`${playfair.className} text-2xl font-bold text-[#D4AF37]`}>{item.price}</span>
-                  <motion.button
-                    onClick={() => addToCart(item)}
-                    className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-semibold text-sm"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Add to Order
-                  </motion.button>
+                <div className="relative h-40 overflow-hidden">
+                  <img 
+                    src={item.img} 
+                    alt={item.name} 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className={`${playfair.className} text-lg font-bold text-[var(--brand-espresso)] mb-2 text-center`}>
+                    {item.name}
+                  </h3>
+                  <p className="text-[var(--brand-muted)] text-sm mb-4 text-center line-clamp-2 min-h-[40px]">
+                    {item.desc}
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <span className={`${playfair.className} text-xl font-semibold gold`}>
+                      {item.price}
+                    </span>
+                    <motion.button
+                      onClick={() => addToCart(item)}
+                      className="w-10 h-10 rounded-full bg-[var(--brand-espresso)] text-[var(--brand-ivory)] flex items-center justify-center hover:bg-[var(--brand-pine)] transition-colors"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      title="Add to cart"
+                    >
+                      <Plus size={20} />
+                    </motion.button>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -273,7 +283,7 @@ export default function TakeoutPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+              className="fixed inset-0 bg-[var(--brand-espresso)]/60 backdrop-blur-sm z-40"
               onClick={() => setShowCart(false)}
             />
             <motion.div
@@ -281,52 +291,67 @@ export default function TakeoutPage() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25 }}
-              className="fixed right-0 top-0 h-full w-full max-w-md bg-gradient-to-br from-[#1a1a1a] to-black border-l border-[#D4AF37]/30 z-50 overflow-y-auto"
+              className="fixed right-0 top-0 h-full w-full max-w-md paper border-l-2 border-[var(--brand-gold)] z-50 overflow-y-auto"
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className={`${playfair.className} text-3xl font-bold text-[#D4AF37]`}>Your Order</h2>
-                  <button onClick={() => setShowCart(false)} className="text-gray-400 hover:text-white">
-                    <X size={24} />
+                  <h2 className={`${playfair.className} text-3xl font-bold text-[var(--brand-espresso)]`}>
+                    Your Order
+                  </h2>
+                  <button 
+                    onClick={() => setShowCart(false)} 
+                    className="text-[var(--brand-muted)] hover:text-[var(--brand-espresso)] transition-colors"
+                  >
+                    <X size={28} />
                   </button>
                 </div>
 
                 {cart.length === 0 ? (
-                  <p className="text-gray-400 text-center py-12">Your cart is empty</p>
+                  <div className="text-center py-16">
+                    <ShoppingCart size={48} className="text-[var(--brand-muted)] mx-auto mb-4 opacity-30" />
+                    <p className="text-[var(--brand-muted)]">Your cart is empty</p>
+                  </div>
                 ) : (
                   <>
-                    <div className="space-y-4 mb-6">
+                    <div className="space-y-4 mb-6 max-h-[40vh] overflow-y-auto">
                       {cart.map((item, i) => (
                         <motion.div
                           key={i}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          className="bg-black/40 border border-[#D4AF37]/20 rounded-lg p-4"
+                          className="paper-alt border border-[var(--brand-border)] rounded-lg p-4"
                         >
                           <div className="flex justify-between items-start mb-2">
-                            <h3 className={`${inter.className} font-semibold text-white`}>{item.name}</h3>
-                            <button onClick={() => removeItem(item.name)} className="text-gray-400 hover:text-red-500">
+                            <h3 className={`${inter.className} font-semibold text-[var(--brand-espresso)]`}>
+                              {item.name}
+                            </h3>
+                            <button 
+                              onClick={() => removeItem(item.name)} 
+                              className="text-[var(--brand-muted)] hover:text-red-600 transition-colors"
+                            >
                               <X size={18} />
                             </button>
                           </div>
-                          <p className="text-sm text-gray-400 mb-3">{item.price} each</p>
+                          <p className="text-sm text-[var(--brand-muted)] mb-3">{item.price} each</p>
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                               <button
                                 onClick={() => updateQuantity(item.name, -1)}
-                                className="w-8 h-8 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/30 flex items-center justify-center hover:bg-[#D4AF37]/30"
+                                className="w-8 h-8 rounded-full border-2 border-[var(--brand-border)] flex items-center justify-center hover:bg-[var(--brand-sand)] transition-colors"
                               >
-                                <Minus size={16} className="text-[#D4AF37]" />
+                                <Minus size={16} className="text-[var(--brand-espresso)]" />
                               </button>
-                              <span className="text-white font-bold w-8 text-center">{item.quantity}</span>
+                              <span className="text-[var(--brand-espresso)] font-bold w-8 text-center">
+                                {item.quantity}
+                              </span>
                               <button
                                 onClick={() => updateQuantity(item.name, 1)}
-                                className="w-8 h-8 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/30 flex items-center justify-center hover:bg-[#D4AF37]/30"
+                                className="w-8 h-8 rounded-full border-2 border-[var(--brand-border)] flex items-center justify-center hover:bg-[var(--brand-sand)] transition-colors"
                               >
-                                <Plus size={16} className="text-[#D4AF37]" />
+                                <Plus size={16} className="text-[var(--brand-espresso)]" />
                               </button>
                             </div>
-                            <span className="text-[#D4AF37] font-bold">
+                            <span className="gold font-bold">
                               ${(parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2)}
                             </span>
                           </div>
@@ -334,37 +359,45 @@ export default function TakeoutPage() {
                       ))}
                     </div>
 
-                    <div className="border-t border-[#D4AF37]/20 pt-4 mb-6">
-                      <div className="flex justify-between items-center mb-6">
-                        <span className={`${playfair.className} text-2xl font-bold text-white`}>Total</span>
-                        <span className={`${playfair.className} text-3xl font-bold text-[#D4AF37]`}>${getTotal()}</span>
+                    <div className="border-t-2 border-[var(--brand-gold)] pt-6 mb-6">
+                      <div className="flex justify-between items-center mb-8">
+                        <span className={`${playfair.className} text-2xl font-bold text-[var(--brand-espresso)]`}>
+                          Total
+                        </span>
+                        <span className={`${playfair.className} text-3xl font-bold gold`}>
+                          ${getTotal()}
+                        </span>
                       </div>
 
-                      <form onSubmit={handleCheckout} className="space-y-4">
+                      <form onSubmit={handleCheckout} className="space-y-5">
                         <div>
-                          <label className={`${inter.className} block text-sm text-gray-300 mb-2`}>Your Name *</label>
+                          <label className="block text-sm font-medium text-[var(--brand-espresso)] mb-2">
+                            Your Name *
+                          </label>
                           <input
                             type="text"
                             required
                             value={checkoutData.name}
                             onChange={(e) => setCheckoutData({...checkoutData, name: e.target.value})}
-                            className="w-full p-3 bg-black/40 border border-[#D4AF37]/20 rounded-lg text-white focus:border-[#D4AF37] focus:outline-none"
+                            className="w-full p-3 paper-alt border border-[var(--brand-border)] rounded-lg text-[var(--brand-espresso)] focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold)]/20 transition-all"
                             placeholder="John Doe"
                           />
                         </div>
                         <div>
-                          <label className={`${inter.className} block text-sm text-gray-300 mb-2`}>Phone Number *</label>
+                          <label className="block text-sm font-medium text-[var(--brand-espresso)] mb-2">
+                            Phone Number *
+                          </label>
                           <input
                             type="tel"
                             required
                             value={checkoutData.phone}
                             onChange={(e) => setCheckoutData({...checkoutData, phone: e.target.value})}
-                            className="w-full p-3 bg-black/40 border border-[#D4AF37]/20 rounded-lg text-white focus:border-[#D4AF37] focus:outline-none"
+                            className="w-full p-3 paper-alt border border-[var(--brand-border)] rounded-lg text-[var(--brand-espresso)] focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold)]/20 transition-all"
                             placeholder="+1 (555) 000-0000"
                           />
                         </div>
                         <div>
-                          <label className={`${inter.className} block text-sm text-gray-300 mb-2 flex items-center gap-2`}>
+                          <label className="block text-sm font-medium text-[var(--brand-espresso)] mb-2 flex items-center gap-2">
                             <Clock size={16} />
                             Pickup Time *
                           </label>
@@ -373,43 +406,49 @@ export default function TakeoutPage() {
                             required
                             value={checkoutData.pickupTime}
                             onChange={(e) => setCheckoutData({...checkoutData, pickupTime: e.target.value})}
-                            className="w-full p-3 bg-black/40 border border-[#D4AF37]/20 rounded-lg text-white focus:border-[#D4AF37] focus:outline-none"
+                            className="w-full p-3 paper-alt border border-[var(--brand-border)] rounded-lg text-[var(--brand-espresso)] focus:border-[var(--brand-gold)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-gold)]/20 transition-all"
                           />
                         </div>
 
                         <div>
-                          <label className={`${inter.className} block text-sm text-gray-300 mb-3`}>Payment Method *</label>
+                          <label className="block text-sm font-medium text-[var(--brand-espresso)] mb-3">
+                            Payment Method *
+                          </label>
                           <div className="space-y-3">
-                            <label className="flex items-center gap-3 p-3 bg-black/40 border border-[#D4AF37]/20 rounded-lg cursor-pointer hover:border-[#D4AF37]/40 transition-colors">
+                            <label className="flex items-center gap-3 p-4 paper-alt border-2 border-[var(--brand-border)] rounded-lg cursor-pointer hover:border-[var(--brand-gold)] transition-colors">
                               <input
                                 type="radio"
                                 name="paymentType"
                                 value="online"
                                 checked={paymentType === 'online'}
                                 onChange={(e) => setPaymentType(e.target.value as 'online' | 'offline')}
-                                className="w-4 h-4 text-[#D4AF37] bg-black border-[#D4AF37]/30 focus:ring-[#D4AF37] focus:ring-2"
+                                className="w-5 h-5 text-[var(--brand-gold)]"
                               />
-                              <span className={`${inter.className} text-white`}>Pay Online with Stripe</span>
+                              <span className="text-[var(--brand-espresso)] font-medium">
+                                Pay Online with Stripe
+                              </span>
                             </label>
-                            <label className="flex items-center gap-3 p-3 bg-black/40 border border-[#D4AF37]/20 rounded-lg cursor-pointer hover:border-[#D4AF37]/40 transition-colors">
+                            <label className="flex items-center gap-3 p-4 paper-alt border-2 border-[var(--brand-border)] rounded-lg cursor-pointer hover:border-[var(--brand-gold)] transition-colors">
                               <input
                                 type="radio"
                                 name="paymentType"
                                 value="offline"
                                 checked={paymentType === 'offline'}
                                 onChange={(e) => setPaymentType(e.target.value as 'online' | 'offline')}
-                                className="w-4 h-4 text-[#D4AF37] bg-black border-[#D4AF37]/30 focus:ring-[#D4AF37] focus:ring-2"
+                                className="w-5 h-5 text-[var(--brand-gold)]"
                               />
-                              <span className={`${inter.className} text-white`}>Pay at Pickup</span>
+                              <span className="text-[var(--brand-espresso)] font-medium">
+                                Pay at Pickup
+                              </span>
                             </label>
                           </div>
                         </div>
 
                         <motion.button
                           type="submit"
-                          whileHover={{ scale: 1.03 }}
-                          whileTap={{ scale: 0.97 }}
-                          className="w-full py-5 mt-6 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-semibold text-lg"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full btn-primary py-4 text-lg mt-6"
                         >
                           {paymentType === 'online' ? 'Pay with Stripe' : 'Complete Order'}
                         </motion.button>

@@ -1,0 +1,62 @@
+/* Brand Theme Variables */
+:root {
+  --brand-sand: #F2E7DC;
+  --brand-ivory: #FBF7F2;
+  --brand-espresso: #3B2F2F;
+  --brand-pine: #1F3A34;
+  --brand-gold: #D9B26D;
+  --brand-muted: #6E6862;
+  --brand-border: #E5D9CC;
+}
+
+/* Helper Classes */
+.paper {
+  background-color: var(--brand-sand);
+  color: var(--brand-espresso);
+}
+
+.paper-alt {
+  background-color: var(--brand-ivory);
+  color: var(--brand-espresso);
+}
+
+.rule {
+  width: 60px;
+  height: 2px;
+  background-color: var(--brand-gold);
+  margin: 1rem 0;
+}
+
+.gold {
+  color: var(--brand-gold);
+}
+
+.btn-primary {
+  background-color: var(--brand-espresso);
+  color: var(--brand-ivory);
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 2px solid var(--brand-espresso);
+}
+
+.btn-primary:hover {
+  background-color: var(--brand-pine);
+  border-color: var(--brand-pine);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--brand-espresso);
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 2px solid var(--brand-espresso);
+}
+
+.btn-outline:hover {
+  background-color: var(--brand-espresso);
+  color: var(--brand-ivory);
+}
