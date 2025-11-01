@@ -196,14 +196,13 @@ export default function NeoLuxuryPage() {
     });
   };
 
-  return (
-    <div className="min-h-screen bg-[#051622] text-[#F2F2F2] overflow-hidden relative">
+return (
+    <div className="min-h-screen bg-[#FBF7F2] text-[#3B2F2F] overflow-hidden relative">
       {/* Animated Background Gradient */}
-      <div className="fixed inset-0 bg-gradient-to-br from-[#051622] via-[#0a2540] to-[#051622] z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(229,199,119,0.03),transparent_50%)]"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#E5C777] rounded-full mix-blend-multiply filter blur-[128px] opacity-5 animate-blob"></div>
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#8DA9C4] rounded-full mix-blend-multiply filter blur-[128px] opacity-5 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-[#E5C777] rounded-full mix-blend-multiply filter blur-[128px] opacity-5 animate-blob animation-delay-4000"></div>
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-[#FBF7F2]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(1200px_600px_at_30%_10%,rgba(217,178,109,0.08),transparent),radial-gradient(900px_500px_at_80%_20%,rgba(31,58,52,0.05),transparent)]"></div>
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#FBF7F2] to-transparent"></div>
       </div>
 
       {currentPage === 'home' && (
@@ -215,8 +214,8 @@ export default function NeoLuxuryPage() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-[#051622]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(229,199,119,0.1)] border-b border-[#E5C777]/30"
-            : "bg-[#051622]/20 backdrop-blur-md border-b border-[#E5C777]/10"
+            ? "bg-[#FBF7F2]/90 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.06)] border-b border-[#E5D9CC]"
+            : "bg-[#FBF7F2]/70 backdrop-blur-md border-b border-[#E5D9CC]"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex justify-between items-center">
@@ -226,17 +225,17 @@ export default function NeoLuxuryPage() {
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <div className="relative">
-              <UtensilsCrossed className="text-[#E5C777] relative z-10" size={28} />
-              <div className="absolute inset-0 bg-[#E5C777] blur-xl opacity-50"></div>
+              <UtensilsCrossed className="text-[#3B2F2F] relative z-10" size={28} />
+              <div className="absolute inset-0 bg-[#D9B26D] blur-xl opacity-30"></div>
             </div>
-            <h1 className={`${playfair.className} text-2xl md:text-3xl font-normal tracking-[0.2em] text-[#F2F2F2]`}>
-              RESTAURANT <span className="text-[#E5C777] font-bold">OS</span>
+            <h1 className={`${playfair.className} text-2xl md:text-3xl font-normal tracking-[0.18em] text-[#3B2F2F]`}>
+              THE&nbsp;MODERN&nbsp;<span className="text-[#D9B26D] font-bold">TABLE</span>
             </h1>
           </motion.div>
           {/* Mobile Hamburger Button */}
           <motion.button
             onClick={() => setShowMobileMenu(true)}
-            className="md:hidden text-[#E5C777] p-2"
+            className="md:hidden text-[#3B2F2F] p-2"
             whileTap={{ scale: 0.95 }}
             aria-label="Open Menu"
           >
@@ -246,44 +245,44 @@ export default function NeoLuxuryPage() {
           <nav className={`${inter.className} hidden md:flex gap-8 text-sm tracking-wider font-medium items-center`}>
             <motion.button
               onClick={() => setCurrentPage('reserve')}
-              className="relative group cursor-pointer text-[#F2F2F2]"
+              className="relative group cursor-pointer text-[#3B2F2F]"
               whileHover={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              Reserve
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E5C777] group-hover:w-full transition-all duration-300"></span>
+              Reservations
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D9B26D] group-hover:w-full transition-all duration-300"></span>
             </motion.button>
             
             <Link href="/page-neo/dining-menu">
               <motion.button
-                className="relative group cursor-pointer text-[#F2F2F2]"
+                className="relative group cursor-pointer text-[#3B2F2F]"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Dining Menu
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E5C777] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D9B26D] group-hover:w-full transition-all duration-300"></span>
               </motion.button>
             </Link>
             
             <Link href="/page-neo/takeout">
               <motion.button
-                className="relative group cursor-pointer text-[#F2F2F2]"
+                className="relative group cursor-pointer text-[#3B2F2F]"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                Take Out
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E5C777] group-hover:w-full transition-all duration-300"></span>
+                Order Online
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D9B26D] group-hover:w-full transition-all duration-300"></span>
               </motion.button>
             </Link>
             
             <motion.button
               onClick={() => setCurrentPage('contact')}
-              className="relative group cursor-pointer text-[#F2F2F2]"
+              className="relative group cursor-pointer text-[#3B2F2F]"
               whileHover={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               Contact
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E5C777] group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D9B26D] group-hover:w-full transition-all duration-300"></span>
             </motion.button>
 
             {/* Menu Dropdown - Last Item (rightmost) */}
@@ -293,28 +292,28 @@ export default function NeoLuxuryPage() {
               onMouseLeave={() => setShowMenuDropdown(false)}
             >
               <motion.button
-                className="relative group cursor-pointer text-[#F2F2F2] flex items-center gap-1"
+                className="relative group cursor-pointer text-[#3B2F2F] flex items-center gap-1"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Menu
                 <ChevronDown size={14} className={`transition-transform ${showMenuDropdown ? 'rotate-180' : ''}`} />
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E5C777] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D9B26D] group-hover:w-full transition-all duration-300"></span>
               </motion.button>
               
               {showMenuDropdown && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="absolute top-full left-0 mt-2 w-56 bg-[#051622]/95 backdrop-blur-xl border border-[#E5C777]/30 rounded-xl shadow-2xl overflow-hidden z-[100]"
+                  className="absolute top-full left-0 mt-2 w-56 bg-[#FBF7F2]/95 backdrop-blur-xl border border-[#E5D9CC] rounded-xl shadow-2xl overflow-hidden z-[100]"
                 >
                   {menuCategories.map((category, idx) => (
                     <Link key={idx} href={category.path}>
                       <motion.div
-                        className="px-4 py-3 hover:bg-[#E5C777]/10 transition-colors cursor-pointer border-b border-[#E5C777]/10 last:border-none"
+                        className="px-4 py-3 hover:bg-[#D9B26D]/10 transition-colors cursor-pointer border-b border-[#E5D9CC] last:border-none"
                         whileHover={{ x: 5 }}
                       >
-                        <div className="text-[#F2F2F2] font-medium text-sm">{category.name}</div>
+                        <div className="text-[#3B2F2F] font-medium text-sm">{category.name}</div>
                         <div className="text-[#8DA9C4] text-xs">{category.desc}</div>
                       </motion.div>
                     </Link>
@@ -334,7 +333,7 @@ export default function NeoLuxuryPage() {
           style={{ opacity, scale }}
         >
           <motion.img
-            src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=2400"
+            src="https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=2400"
             alt="Fine Dining Experience"
             loading="eager"
             className="absolute inset-0 w-full h-full object-cover"
@@ -342,7 +341,7 @@ export default function NeoLuxuryPage() {
             animate={{ scale: 1.05 }}
             transition={{ duration: 20, ease: 'linear', repeat: Infinity, repeatType: "reverse" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#051622]/80 via-[#051622]/60 to-[#051622]"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#051622]/40 via-[#051622]/20 to-[#051622]/10"></div>
         </motion.div>
 
       {/* Floating Particles */}
@@ -383,7 +382,7 @@ export default function NeoLuxuryPage() {
           </motion.div>
 
           <motion.h2 
-            className={`${playfair.className} text-5xl md:text-6xl leading-[1.1] font-bold mb-8`}
+            className={`${playfair.className} text-5xl md:text-6xl leading-[1.1] font-bold mb-8 text-white`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -417,13 +416,13 @@ export default function NeoLuxuryPage() {
           >
             <motion.button
               onClick={() => setCurrentPage('reserve')}
-              className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-[#E5C777] text-[#051622] font-semibold text-lg overflow-hidden shadow-lg"
+              className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-[#D9B26D] text-[#3B2F2F] font-semibold text-lg overflow-hidden shadow-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              aria-label="Reserve Your Table"
+              aria-label="Reservations"
             >
               <span className="relative z-10 flex items-center gap-3">
-                Reserve Your Table
+                Reservations
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </span>
               <div className="absolute inset-0 bg-[#8DA9C4]/0 group-hover:bg-[#8DA9C4]/20 transition-colors blur-xl"></div>
@@ -445,14 +444,14 @@ export default function NeoLuxuryPage() {
           transition={{ duration: 0.8, delay: 1.2 }}
           onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
         >
-          <span className={`${inter.className} text-xs tracking-[0.3em] text-[#D4AF37] mb-3 font-medium`}>EXPLORE</span>
+          <span className={`${inter.className} text-xs tracking-[0.3em] text-[#D9B26D] mb-3 font-medium`}>EXPLORE</span>
           <motion.div 
-            className="w-6 h-10 border-2 border-[#D4AF37]/50 rounded-full p-1"
+            className="w-6 h-10 border-2 border-[#D9B26D]/50 rounded-full p-1"
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
             <motion.div
-              className="w-1 h-2 bg-[#D4AF37] rounded-full mx-auto"
+              className="w-1 h-2 bg-[#D9B26D] rounded-full mx-auto"
               animate={{ y: [0, 12, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             ></motion.div>
@@ -462,7 +461,7 @@ export default function NeoLuxuryPage() {
 
       {/* About Section with Enhanced Design */}
       <section id="about" className="relative py-40 px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FBF7F2] via-[#FBF7F2] to-[#FBF7F2]"></div>
         
         <div className="relative max-w-7xl mx-auto">
           <motion.div
@@ -472,9 +471,9 @@ export default function NeoLuxuryPage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <span className={`${inter.className} text-sm tracking-[0.3em] text-[#D4AF37] font-medium mb-4 block`}>DISCOVER</span>
+            <span className={`${inter.className} text-sm tracking-[0.3em] text-[#D9B26D] font-medium mb-4 block`}>DISCOVER</span>
             <h2 className={`${playfair.className} text-5xl md:text-6xl font-bold mb-6`}>
-              Our <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">Story</span>
+              Our <span className="bg-gradient-to-r from-[#D9B26D] to-[#D9B26D] bg-clip-text text-transparent">Story</span>
             </h2>
           </motion.div>
 
@@ -503,12 +502,12 @@ export default function NeoLuxuryPage() {
               transition={{ duration: 0.8 }}
               className="space-y-6"
             >
-              <h3 className={`${playfair.className} text-4xl font-bold text-[#D4AF37]`}>About Us</h3>
-              <p className={`${inter.className} text-gray-300 leading-relaxed text-lg`}>
-                Restaurant OS is a fusion of world-class culinary artistry and cutting-edge digital design. 
+              <h3 className={`${playfair.className} text-4xl font-bold text-[#D9B26D]`}>About Us</h3>
+              <p className={`${inter.className} text-[#6E6862] leading-relaxed text-lg`}>
+                The Modern Table is a fusion of world-class culinary artistry and cutting-edge digital design. 
                 Our AI-curated menu adapts to your preferences, ensuring a dining experience unlike any other.
               </p>
-              <p className={`${inter.className} text-gray-300 leading-relaxed text-lg`}>
+              <p className={`${inter.className} text-[#6E6862] leading-relaxed text-lg`}>
                 Every element — from lighting to music — evolves with your mood, creating a truly immersive fine dining atmosphere.
               </p>
               
@@ -524,11 +523,11 @@ export default function NeoLuxuryPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: idx * 0.1 }}
-                    className="text-center p-4 rounded-xl bg-[#D4AF37]/5 border border-[#D4AF37]/20 backdrop-blur-sm"
+                    className="text-center p-4 rounded-xl bg-[#D9B26D]/10 border border-[#E5D9CC] backdrop-blur-sm"
                   >
-                    <stat.icon className="text-[#D4AF37] mx-auto mb-2" size={24} />
-                    <div className={`${playfair.className} text-2xl font-bold text-white mb-1`}>{stat.value}</div>
-                    <div className={`${inter.className} text-xs text-gray-400`}>{stat.label}</div>
+                    <stat.icon className="text-[#D9B26D] mx-auto mb-2" size={24} />
+                    <div className={`${playfair.className} text-2xl font-bold text-[#3B2F2F] mb-1`}>{stat.value}</div>
+                    <div className={`${inter.className} text-xs text-[#6E6862]`}>{stat.label}</div>
                   </motion.div>
                 ))}
               </div>
@@ -539,7 +538,7 @@ export default function NeoLuxuryPage() {
 
       {/* Menu Categories Section */}
       <section id="menu" className="relative py-40 px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0d0d0d] to-black"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FBF7F2] via-[#FBF7F2] to-[#FBF7F2]"></div>
         
         <div className="relative max-w-7xl mx-auto">
           <motion.div
@@ -549,11 +548,11 @@ export default function NeoLuxuryPage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-20"
           >
-            <span className={`${inter.className} text-sm tracking-[0.3em] text-[#D4AF37] font-medium mb-4 block`}>EXPLORE</span>
+            <span className={`${inter.className} text-sm tracking-[0.3em] text-[#D9B26D] font-medium mb-4 block`}>EXPLORE</span>
             <h2 className={`${playfair.className} text-5xl md:text-6xl font-bold mb-6`}>
-              Our <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">Menu</span>
+              Our <span className="bg-gradient-to-r from-[#D9B26D] to-[#D9B26D] bg-clip-text text-transparent">Menu</span>
             </h2>
-            <p className={`${inter.className} text-gray-400 text-lg max-w-2xl mx-auto`}>
+            <p className={`${inter.className} text-[#6E6862] text-lg max-w-2xl mx-auto`}>
               Discover our carefully curated selection across five exquisite categories
             </p>
           </motion.div>
@@ -630,7 +629,7 @@ export default function NeoLuxuryPage() {
 
       {/* CTA Reserve Section */}
       <section className="relative py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FBF7F2] via-[#FBF7F2] to-[#FBF7F2]"></div>
         <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1600')] opacity-5 bg-cover bg-center"></div>
         
         <motion.div 
@@ -641,24 +640,24 @@ export default function NeoLuxuryPage() {
           transition={{ duration: 0.8 }}
         >
           <motion.div
-            className="inline-flex items-center gap-2 mb-8 px-6 py-2 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30"
+            className="inline-flex items-center gap-2 mb-8 px-6 py-2 rounded-full bg-[#D9B26D]/10 border border-[#E5D9CC]"
             animate={{ y: [0, -5, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <Sparkles className="text-[#D4AF37]" size={18} />
-            <span className={`${inter.className} text-sm tracking-widest text-[#D4AF37] font-medium`}>BOOK NOW</span>
+            <Sparkles className="text-[#D9B26D]" size={18} />
+            <span className={`${inter.className} text-sm tracking-widest text-[#D9B26D] font-medium`}>BOOK NOW</span>
           </motion.div>
           
           <h2 className={`${playfair.className} text-5xl md:text-6xl font-bold mb-6`}>
-            Reserve Your <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">Experience</span>
+            Reservations <span className="bg-gradient-to-r from-[#D9B26D] to-[#D9B26D] bg-clip-text text-transparent">Experience</span>
           </h2>
-          <p className={`${inter.className} text-gray-300 text-lg mb-12 max-w-2xl mx-auto`}>
+          <p className={`${inter.className} text-[#6E6862] text-lg mb-12 max-w-2xl mx-auto`}>
             Experience the fusion of innovation and taste — secure your fine dining reservation today.
           </p>
           
           <motion.button 
             onClick={() => setCurrentPage('reserve')}
-            className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-semibold text-lg overflow-hidden"
+            className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-[#D9B26D] to-[#D9B26D] text-[#3B2F2F] font-semibold text-lg overflow-hidden"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Book Your Table"
@@ -668,7 +667,7 @@ export default function NeoLuxuryPage() {
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </span>
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-[#FFD700] to-[#D4AF37]"
+              className="absolute inset-0 bg-gradient-to-r from-[#D9B26D] to-[#D9B26D]"
               initial={{ x: '-100%' }}
               whileHover={{ x: 0 }}
               transition={{ duration: 0.3 }}
@@ -678,19 +677,19 @@ export default function NeoLuxuryPage() {
       </section>
 
       {/* Enhanced Footer */}
-      <footer className="relative border-t border-[#D4AF37]/20 py-16">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black"></div>
+      <footer className="relative border-t border-[#E5D9CC] py-16">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FBF7F2] via-[#FBF7F2] to-[#FBF7F2]"></div>
         
         <div className="relative max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="space-y-4">
-              <div className="flex items-center gap-3 mb-4">
-                <UtensilsCrossed className="text-[#D4AF37]" size={24} />
-                <span className={`${playfair.className} text-xl font-bold bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent`}>
-                  RESTAURANT OS
+            <div className="flex items-center gap-3 mb-4">
+                <UtensilsCrossed className="text-[#D9B26D]" size={24} />
+                <span className={`${playfair.className} text-xl font-bold text-[#3B2F2F]`}>
+                  THE MODERN TABLE
                 </span>
               </div>
-              <p className={`${inter.className} text-gray-400 text-sm leading-relaxed`}>
+              <p className={`${inter.className} text-[#6E6862] text-sm leading-relaxed`}>
                 Where culinary artistry meets timeless elegance.
               </p>
             </div>
@@ -707,11 +706,11 @@ export default function NeoLuxuryPage() {
                     {item}
                   </button>
                 ))}
-                {['Reserve', 'Contact'].map(item => (
+                {['Reservations', 'Contact'].map(item => (
                   <button
                     key={item}
                     onClick={() => setCurrentPage(item.toLowerCase())}
-                    className="block text-gray-400 hover:text-[#D4AF37] transition-colors"
+                    className="block text-[#6E6862] hover:text-[#D9B26D] transition-colors"
                   >
                     {item}
                   </button>
@@ -721,18 +720,18 @@ export default function NeoLuxuryPage() {
             
             <div>
               <h4 className={`${playfair.className} text-lg font-bold text-[#D4AF37] mb-4`}>Contact</h4>
-              <div className={`${inter.className} space-y-3 text-sm text-gray-400`}>
+              <div className={`${inter.className} space-y-3 text-sm text-[#6E6862]`}>
                 <div className="flex items-start gap-2">
-                  <MapPin size={16} className="text-[#D4AF37] mt-1 shrink-0" />
-                  <span>123 Gourmet Avenue<br/>New York, NY 10001</span>
+                  <MapPin size={16} className="text-[#D9B26D] mt-1 shrink-0" />
+                  <span>—<br/>—</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Phone size={16} className="text-[#D4AF37] shrink-0" />
-                  <span>(212) 555-0123</span>
+                  <Phone size={16} className="text-[#D9B26D] shrink-0" />
+                  <span>—</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Mail size={16} className="text-[#D4AF37] shrink-0" />
-                  <span>info@restaurantos.com</span>
+                  <Mail size={16} className="text-[#D9B26D] shrink-0" />
+                  <span>contact@themoderntable.example</span>
                 </div>
               </div>
             </div>
@@ -752,9 +751,9 @@ export default function NeoLuxuryPage() {
             </div>
           </div>
           
-          <div className="pt-8 border-t border-[#D4AF37]/10 text-center">
-            <p className={`${inter.className} text-sm text-gray-500`}>
-              © {new Date().getFullYear()} Restaurant OS. All rights reserved.
+          <div className="pt-8 border-t border-[#E5D9CC] text-center">
+            <p className={`${inter.className} text-sm text-[#6E6862]`}>
+              © {new Date().getFullYear()} The Modern Table. All rights reserved.
             </p>
           </div>
         </div>
@@ -907,12 +906,12 @@ export default function NeoLuxuryPage() {
       {/* Contact Page */}
       {currentPage === 'contact' && (
         <div className="min-h-screen pt-32 pb-16 px-6 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#FBF7F2] via-[#FBF7F2] to-[#FBF7F2]"></div>
           
           <div className="relative max-w-6xl mx-auto">
             <motion.button 
               onClick={() => setCurrentPage('home')}
-              className={`${inter.className} mb-8 text-[#D4AF37] hover:text-[#FFD700] transition-colors flex items-center gap-2`}
+              className={`${inter.className} mb-8 text-[#D9B26D] hover:text-[#D9B26D] transition-colors flex items-center gap-2`}
               whileHover={{ x: -5 }}
               aria-label="Back to Home"
             >
@@ -926,22 +925,22 @@ export default function NeoLuxuryPage() {
               transition={{ duration: 0.8 }}
             >
               <h1 className={`${playfair.className} text-5xl font-bold mb-4`}>
-                Get In <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">Touch</span>
+                Get In <span className="bg-gradient-to-r from-[#D9B26D] to-[#D9B26D] bg-clip-text text-transparent">Touch</span>
               </h1>
-              <p className={`${inter.className} text-gray-400 mb-12 text-lg`}>
-                We'd love to hear from you. Reach out to Restaurant OS.
+              <p className={`${inter.className} text-[#6E6862] mb-12 text-lg`}>
+                We'd love to hear from you. Reach out to The Modern Table.
               </p>
               
               <div className="grid md:grid-cols-2 gap-12">
                 {/* Contact Information */}
                 <div className="space-y-8">
-                  <div className="bg-gradient-to-br from-[#1a1a1a] to-black border border-[#D4AF37]/20 rounded-2xl p-8">
-                    <h2 className={`${playfair.className} text-2xl font-bold text-[#D4AF37] mb-6`}>Contact Information</h2>
+                  <div className="bg-gradient-to-br from-[#E5D9CC] to-[#FBF7F2] border border-[#E5D9CC] rounded-2xl p-8">
+                    <h2 className={`${playfair.className} text-2xl font-bold text-[#D9B26D] mb-6`}>Contact Information</h2>
                     <div className="space-y-6">
                       {[
-                        { icon: MapPin, title: "Address", content: ["123 Gourmet Avenue", "New York, NY 10001"] },
-                        { icon: Phone, title: "Phone", content: ["(212) 555-0123"] },
-                        { icon: Mail, title: "Email", content: ["info@restaurantos.com"] },
+                        { icon: MapPin, title: "Address", content: ["—", "—"] },
+                        { icon: Phone, title: "Phone", content: ["—"] },
+                        { icon: Mail, title: "Email", content: ["contact@themoderntable.example"] },
                         { icon: Clock, title: "Hours", content: ["Mon - Thu: 5:00 PM - 10:00 PM", "Fri - Sat: 5:00 PM - 11:00 PM", "Sun: 4:00 PM - 9:00 PM"] }
                       ].map((item, idx) => (
                         <motion.div
@@ -952,14 +951,14 @@ export default function NeoLuxuryPage() {
                           className="flex gap-4"
                         >
                           <div className="shrink-0">
-                            <div className="w-12 h-12 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center">
-                              <item.icon className="text-[#D4AF37]" size={20} />
+                            <div className="w-12 h-12 rounded-xl bg-[#D9B26D]/10 border border-[#E5D9CC] flex items-center justify-center">
+                              <item.icon className="text-[#D9B26D]" size={20} />
                             </div>
                           </div>
                           <div>
-                            <h3 className={`${inter.className} text-white font-semibold mb-1`}>{item.title}</h3>
+                            <h3 className={`${inter.className} text-[#3B2F2F] font-semibold mb-1`}>{item.title}</h3>
                             {item.content.map((line, i) => (
-                              <p key={i} className={`${inter.className} text-gray-400 text-sm`}>{line}</p>
+                              <p key={i} className={`${inter.className} text-[#6E6862] text-sm`}>{line}</p>
                             ))}
                           </div>
                         </motion.div>
@@ -969,42 +968,42 @@ export default function NeoLuxuryPage() {
                 </div>
 
                 {/* Contact Form */}
-                <div className="bg-gradient-to-br from-[#1a1a1a] to-black border border-[#D4AF37]/20 rounded-2xl p-8">
-                  <h2 className={`${playfair.className} text-2xl font-bold text-[#D4AF37] mb-6`}>Send a Message</h2>
+                <div className="bg-gradient-to-br from-[#E5D9CC] to-[#FBF7F2] border border-[#E5D9CC] rounded-2xl p-8">
+                  <h2 className={`${playfair.className} text-2xl font-bold text-[#D9B26D] mb-6`}>Send a Message</h2>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Your Name *</label>
+                      <label className={`${inter.className} block text-sm font-medium text-[#6E6862] mb-2`}>Your Name *</label>
                       <input 
                         type="text" 
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
+                        className="w-full p-4 bg-[#FBF7F2] border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all"
                         placeholder="John Doe"
                         aria-label="Your Name"
                       />
                     </div>
                     
                     <div>
-                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Your Email *</label>
+                      <label className={`${inter.className} block text-sm font-medium text-[#6E6862] mb-2`}>Your Email *</label>
                       <input 
                         type="email" 
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
+                        className="w-full p-4 bg-[#FBF7F2] border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all"
                         placeholder="john@example.com"
                         aria-label="Your Email"
                       />
                     </div>
                     
                     <div>
-                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Your Message *</label>
+                      <label className={`${inter.className} block text-sm font-medium text-[#6E6862] mb-2`}>Your Message *</label>
                       <textarea 
                         required
                         value={formData.message}
                         onChange={(e) => setFormData({...formData, message: e.target.value})}
-                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 min-h-[180px] transition-all resize-none"
+                        className="w-full p-4 bg-[#FBF7F2] border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 min-h-[180px] transition-all resize-none"
                         placeholder="Tell us how we can help you..."
                         aria-label="Your Message"
                       />
@@ -1012,7 +1011,7 @@ export default function NeoLuxuryPage() {
                     
                     <motion.button 
                       type="submit"
-                      className="w-full py-5 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-semibold text-lg"
+                      className="w-full py-5 rounded-xl bg-gradient-to-r from-[#D9B26D] to-[#D9B26D] text-[#3B2F2F] font-semibold text-lg"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       aria-label="Send Message"
@@ -1035,12 +1034,12 @@ export default function NeoLuxuryPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[100] bg-[#051622] md:hidden"
+            className="fixed inset-0 z-[100] bg-[#FBF7F2] md:hidden"
           >
             {/* Close Button */}
             <motion.button
               onClick={() => setShowMobileMenu(false)}
-              className="absolute top-6 right-6 text-[#E5C777] p-2"
+              className="absolute top-6 right-6 text-[#3B2F2F] p-2"
               whileTap={{ scale: 0.95 }}
               aria-label="Close Menu"
             >
@@ -1061,7 +1060,7 @@ export default function NeoLuxuryPage() {
                     setCurrentPage('home');
                     setShowMobileMenu(false);
                   }}
-                  className="text-4xl font-bold text-[#F2F2F2] hover:text-[#E5C777] transition-colors"
+                  className="text-4xl font-bold text-[#3B2F2F] hover:text-[#D9B26D] transition-colors"
                   whileTap={{ scale: 0.95 }}
                 >
                   Home
@@ -1070,7 +1069,7 @@ export default function NeoLuxuryPage() {
                 {/* Dining Menu */}
                 <Link href="/page-neo/dining-menu" className="w-full text-center">
                   <motion.div
-                    className="text-4xl font-bold text-[#F2F2F2] hover:text-[#E5C777] transition-colors"
+                    className="text-4xl font-bold text-[#3B2F2F] hover:text-[#D9B26D] transition-colors"
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setShowMobileMenu(false)}
                   >
@@ -1078,27 +1077,27 @@ export default function NeoLuxuryPage() {
                   </motion.div>
                 </Link>
 
-                {/* Take Out */}
+                {/* Order Online */}
                 <Link href="/page-neo/takeout" className="w-full text-center">
                   <motion.div
-                    className="text-4xl font-bold text-[#F2F2F2] hover:text-[#E5C777] transition-colors"
+                    className="text-4xl font-bold text-[#3B2F2F] hover:text-[#D9B26D] transition-colors"
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setShowMobileMenu(false)}
                   >
-                    Take Out
+                    Order Online
                   </motion.div>
                 </Link>
 
-                {/* Reserve */}
+                {/* Reservations */}
                 <motion.button
                   onClick={() => {
                     setCurrentPage('reserve');
                     setShowMobileMenu(false);
                   }}
-                  className="text-4xl font-bold text-[#F2F2F2] hover:text-[#E5C777] transition-colors"
+                  className="text-4xl font-bold text-[#3B2F2F] hover:text-[#D9B26D] transition-colors"
                   whileTap={{ scale: 0.95 }}
                 >
-                  Reserve
+                  Reservations
                 </motion.button>
 
                 {/* Contact */}
@@ -1107,7 +1106,7 @@ export default function NeoLuxuryPage() {
                     setCurrentPage('contact');
                     setShowMobileMenu(false);
                   }}
-                  className="text-4xl font-bold text-[#F2F2F2] hover:text-[#E5C777] transition-colors"
+                  className="text-4xl font-bold text-[#3B2F2F] hover:text-[#D9B26D] transition-colors"
                   whileTap={{ scale: 0.95 }}
                 >
                   Contact
@@ -1117,7 +1116,7 @@ export default function NeoLuxuryPage() {
                 <div className="w-full">
                   <motion.button
                     onClick={() => setShowMobileCategoriesDropdown(!showMobileCategoriesDropdown)}
-                    className="text-4xl font-bold text-[#F2F2F2] hover:text-[#E5C777] transition-colors flex items-center justify-center gap-2 w-full"
+                    className="text-4xl font-bold text-[#3B2F2F] hover:text-[#D9B26D] transition-colors flex items-center justify-center gap-2 w-full"
                     whileTap={{ scale: 0.95 }}
                   >
                     Menu Categories
@@ -1140,7 +1139,7 @@ export default function NeoLuxuryPage() {
                           <Link key={idx} href={category.path}>
                             <motion.div
                               onClick={() => setShowMobileMenu(false)}
-                              className="text-xl text-[#8DA9C4] hover:text-[#E5C777] transition-colors text-center py-2"
+                              className="text-xl text-[#8DA9C4] hover:text-[#D9B26D] transition-colors text-center py-2"
                               whileTap={{ scale: 0.95 }}
                             >
                               {category.name}

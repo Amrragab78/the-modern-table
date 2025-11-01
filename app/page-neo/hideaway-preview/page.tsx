@@ -76,19 +76,17 @@ export default function HideawayPreview() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[var(--brand-gold)] group-hover:w-full transition-all duration-300"></span>
               </span>
             </Link>
-            <button 
-              onClick={scrollToReservations}
-              className="text-[var(--brand-espresso)] hover:text-[var(--brand-pine)] transition-colors relative group"
-            >
-              Contact
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[var(--brand-gold)] group-hover:w-full transition-all duration-300"></span>
-            </button>
-            <button 
-              onClick={scrollToReservations}
-              className="btn-primary"
-            >
-              Reservations
-            </button>
+            <Link href="/page-neo/contact">
+              <span className="text-[var(--brand-espresso)] hover:text-[var(--brand-pine)] transition-colors relative group cursor-pointer">
+                Contact
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[var(--brand-gold)] group-hover:w-full transition-all duration-300"></span>
+              </span>
+            </Link>
+            <Link href="/page-neo/reservations">
+              <button className="btn-primary">
+                Reservations
+              </button>
+            </Link>
           </nav>
 
           {/* Mobile Hamburger */}
@@ -145,20 +143,24 @@ export default function HideawayPreview() {
                     Order Online
                   </motion.div>
                 </Link>
-                <motion.button
-                  onClick={scrollToReservations}
-                  className="text-3xl font-semibold text-[var(--brand-ivory)] hover:text-[var(--brand-gold)] transition-colors"
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Contact
-                </motion.button>
-                <motion.button
-                  onClick={scrollToReservations}
-                  className="text-3xl font-semibold text-[var(--brand-gold)] hover:text-[var(--brand-ivory)] transition-colors"
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Reservations
-                </motion.button>
+                <Link href="/page-neo/contact">
+                  <motion.div
+                    onClick={() => setShowMobileMenu(false)}
+                    className="text-3xl font-semibold text-[var(--brand-ivory)] hover:text-[var(--brand-gold)] transition-colors cursor-pointer"
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Contact
+                  </motion.div>
+                </Link>
+                <Link href="/page-neo/reservations">
+                  <motion.div
+                    onClick={() => setShowMobileMenu(false)}
+                    className="text-3xl font-semibold text-[var(--brand-gold)] hover:text-[var(--brand-ivory)] transition-colors cursor-pointer"
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Reservations
+                  </motion.div>
+                </Link>
               </motion.nav>
             </div>
           </motion.div>
@@ -193,15 +195,16 @@ export default function HideawayPreview() {
           <p className="text-xl md:text-2xl text-[var(--brand-ivory)] mb-8 max-w-2xl mx-auto">
             Modern American dining with warmth and elegance.
           </p>
-          <motion.button
-            onClick={scrollToReservations}
-            className="btn-primary inline-flex items-center gap-2"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Reserve a Table
-            <ArrowRight size={20} />
-          </motion.button>
+          <Link href="/page-neo/reservations">
+            <motion.button
+              className="btn-primary inline-flex items-center gap-2"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Reserve a Table
+              <ArrowRight size={20} />
+            </motion.button>
+          </Link>
         </motion.div>
       </section>
 
