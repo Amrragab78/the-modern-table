@@ -145,20 +145,20 @@ export default function TakeoutPage() {
         className="fixed top-0 left-0 w-full z-50 bg-[var(--brand-ivory)]/95 backdrop-blur-sm border-b border-[var(--brand-border)]"
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex justify-between items-center">
-          <Link href="/page-neo/hideaway-preview">
+          <Link href="/page-neo">
             <motion.div 
               className="flex items-center gap-2 cursor-pointer"
               whileHover={{ scale: 1.02 }}
             >
               <UtensilsCrossed className="text-[var(--brand-gold)]" size={24} />
-              <h1 className={`${playfair.className} text-xl md:text-2xl font-semibold text-[var(--brand-espresso)]`}>
-                The Hideaway
+              <h1 className={`${playfair.className} text-xl md:text-2xl font-bold text-[var(--brand-espresso)]`} style={{ textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}>
+                THE MODERN TABLE
               </h1>
             </motion.div>
           </Link>
           
           <div className="flex items-center gap-4">
-            <Link href="/page-neo/hideaway-preview">
+            <Link href="/page-neo">
               <motion.button
                 className="flex items-center gap-2 text-[var(--brand-espresso)] hover:text-[var(--brand-pine)] transition-colors"
                 whileHover={{ x: -5 }}

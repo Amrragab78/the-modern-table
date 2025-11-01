@@ -11,13 +11,21 @@ const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"] }
 
 export default function ReservationsPage() {
   return (
-    <div className={`${inter.className} min-h-screen bg-[var(--brand-ivory)]`}>
+    <div 
+      className={`${inter.className} min-h-screen w-full relative bg-cover bg-center bg-no-repeat bg-fixed`}
+      style={{
+        backgroundImage: "url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=2400')"
+      }}
+    >
+      {/* Cream Overlay */}
+      <div className="absolute inset-0 bg-[rgba(251,247,242,0.65)] pointer-events-none" />
+      
       {/* Navbar */}
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="fixed top-0 left-0 w-full z-50 bg-[var(--brand-ivory)]/95 backdrop-blur-sm border-b border-[var(--brand-border)]"
+        className="fixed top-0 left-0 w-full z-50 bg-[var(--brand-ivory)]/95 backdrop-blur-sm border-b border-[var(--brand-border)] relative"
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex justify-between items-center">
           <Link href="/page-neo/hideaway-preview">
@@ -45,7 +53,7 @@ export default function ReservationsPage() {
       </motion.header>
 
       {/* Main Content */}
-      <div className="pt-28 pb-20 px-6">
+      <div className="pt-28 pb-20 px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

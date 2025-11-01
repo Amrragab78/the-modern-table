@@ -228,8 +228,8 @@ return (
               <UtensilsCrossed className="text-[#3B2F2F] relative z-10" size={28} />
               <div className="absolute inset-0 bg-[#D9B26D] blur-xl opacity-30"></div>
             </div>
-            <h1 className={`${playfair.className} text-2xl md:text-3xl font-normal tracking-[0.18em] text-[#3B2F2F]`}>
-              THE&nbsp;MODERN&nbsp;<span className="text-[#D9B26D] font-bold">TABLE</span>
+            <h1 className={`${playfair.className} text-2xl md:text-3xl font-bold tracking-[0.18em] text-[#3B2F2F]`} style={{ textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}>
+              THE&nbsp;MODERN&nbsp;TABLE
             </h1>
           </motion.div>
           {/* Mobile Hamburger Button */}
@@ -763,185 +763,211 @@ return (
 
       {/* Reservation Page */}
       {currentPage === 'reserve' && (
-        <div className="min-h-screen pt-32 pb-16 px-6 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0a0a0a] to-black"></div>
+        <div className="min-h-screen flex flex-col relative">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0">
+            <img 
+              src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=2400" 
+              alt="Restaurant Interior" 
+              className="w-full h-full object-cover opacity-20"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(251,247,242,0.9)] to-[rgba(251,247,242,0.98)]"></div>
           
-          <div className="relative max-w-3xl mx-auto">
-            <motion.button 
-              onClick={() => setCurrentPage('home')}
-              className={`${inter.className} mb-8 text-[#D4AF37] hover:text-[#FFD700] transition-colors flex items-center gap-2`}
-              whileHover={{ x: -5 }}
-              aria-label="Back to Home"
-            >
-              <ArrowRight size={20} className="rotate-180" />
-              Back to Home
-            </motion.button>
+          <div className="relative flex-1 flex items-center justify-center py-24 px-6">
+            <div className="w-full max-w-3xl">
+              <motion.button 
+                onClick={() => setCurrentPage('home')}
+                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#D9B26D] text-[#3B2F2F] font-semibold text-base overflow-hidden shadow-lg mb-6"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Back to Home"
+              >
+                <ArrowRight size={20} className="rotate-180 group-hover:-translate-x-1 transition-transform" />
+                <span className="relative z-10">Back to Home</span>
+                <motion.div
+                  className="absolute inset-0 shadow-[0_0_20px_rgba(217,178,109,0.4)]"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                ></motion.div>
+              </motion.button>
             
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h1 className={`${playfair.className} text-5xl font-bold mb-4`}>
-                Reserve Your <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">Table</span>
-              </h1>
-              <p className={`${inter.className} text-gray-400 mb-12 text-lg`}>
-                Fill out the form below to secure your reservation at Restaurant OS.
-              </p>
-              
-              <div className="bg-gradient-to-br from-[#1a1a1a] to-black border border-[#D4AF37]/20 rounded-2xl p-8 md:p-12 backdrop-blur-sm">
-                <form onSubmit={handleReservation} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Full Name *</label>
-                      <input 
-                        type="text" 
-                        required
-                        value={reservationData.name}
-                        onChange={(e) => setReservationData({...reservationData, name: e.target.value})}
-                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
-                        placeholder="John Doe"
-                        aria-label="Full Name"
-                      />
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <h1 className={`${playfair.className} text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#D9B26D] to-[#B8995F] bg-clip-text text-transparent`}>
+                  Reserve Your Table
+                </h1>
+                <p className={`${inter.className} text-[#2F3D36] mb-8 text-lg`}>
+                  Fill out the form below to secure your reservation at The Modern Table.
+                </p>
+                
+                <div className="bg-white/50 backdrop-blur-sm border border-[#E5D9CC] rounded-2xl p-8 md:p-12 shadow-lg">
+                  <form onSubmit={handleReservation} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Full Name *</label>
+                        <input 
+                          type="text" 
+                          required
+                          value={reservationData.name}
+                          onChange={(e) => setReservationData({...reservationData, name: e.target.value})}
+                          className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all placeholder:text-[#3B2F2F]/40"
+                          placeholder="John Doe"
+                          aria-label="Full Name"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Email Address *</label>
+                        <input 
+                          type="email" 
+                          required
+                          value={reservationData.email}
+                          onChange={(e) => setReservationData({...reservationData, email: e.target.value})}
+                          className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all placeholder:text-[#3B2F2F]/40"
+                          placeholder="john@example.com"
+                          aria-label="Email Address"
+                        />
+                      </div>
                     </div>
                     
                     <div>
-                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Email Address *</label>
+                      <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Phone Number *</label>
                       <input 
-                        type="email" 
+                        type="tel" 
                         required
-                        value={reservationData.email}
-                        onChange={(e) => setReservationData({...reservationData, email: e.target.value})}
-                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
-                        placeholder="john@example.com"
-                        aria-label="Email Address"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Phone Number *</label>
-                    <input 
-                      type="tel" 
-                      required
-                      value={reservationData.phone}
-                      onChange={(e) => setReservationData({...reservationData, phone: e.target.value})}
-                      className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
-                      placeholder="+1 (555) 000-0000"
-                      aria-label="Phone Number"
-                    />
-                  </div>
-                  
-                  <div className="grid md:grid-cols-3 gap-6">
-                    <div>
-                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Date *</label>
-                      <input 
-                        type="date" 
-                        required
-                        value={reservationData.date}
-                        onChange={(e) => setReservationData({...reservationData, date: e.target.value})}
-                        min={new Date().toISOString().split('T')[0]}
-                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
-                        aria-label="Reservation Date"
+                        value={reservationData.phone}
+                        onChange={(e) => setReservationData({...reservationData, phone: e.target.value})}
+                        className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all placeholder:text-[#3B2F2F]/40"
+                        placeholder="+1 (555) 000-0000"
+                        aria-label="Phone Number"
                       />
                     </div>
                     
-                    <div>
-                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Time *</label>
-                      <input 
-                        type="time" 
-                        required
-                        value={reservationData.time}
-                        onChange={(e) => setReservationData({...reservationData, time: e.target.value})}
-                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
-                        aria-label="Reservation Time"
-                      />
+                    <div className="grid md:grid-cols-3 gap-6">
+                      <div>
+                        <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Date *</label>
+                        <input 
+                          type="date" 
+                          required
+                          value={reservationData.date}
+                          onChange={(e) => setReservationData({...reservationData, date: e.target.value})}
+                          min={new Date().toISOString().split('T')[0]}
+                          className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all"
+                          aria-label="Reservation Date"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Time *</label>
+                        <input 
+                          type="time" 
+                          required
+                          value={reservationData.time}
+                          onChange={(e) => setReservationData({...reservationData, time: e.target.value})}
+                          className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all"
+                          aria-label="Reservation Time"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Guests *</label>
+                        <select 
+                          required
+                          value={reservationData.guests}
+                          onChange={(e) => setReservationData({...reservationData, guests: e.target.value})}
+                          className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all"
+                          aria-label="Number of Guests"
+                        >
+                          <option value="">Select</option>
+                          {[1, 2, 3, 4, 5, 6].map(num => (
+                            <option key={num} value={num}>{num} {num === 1 ? 'Guest' : 'Guests'}</option>
+                          ))}
+                          <option value="7+">7+ Guests</option>
+                        </select>
+                      </div>
                     </div>
                     
                     <div>
-                      <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Guests *</label>
-                      <select 
-                        required
-                        value={reservationData.guests}
-                        onChange={(e) => setReservationData({...reservationData, guests: e.target.value})}
-                        className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 transition-all"
-                        aria-label="Number of Guests"
-                      >
-                        <option value="">Select</option>
-                        {[1, 2, 3, 4, 5, 6].map(num => (
-                          <option key={num} value={num}>{num} {num === 1 ? 'Guest' : 'Guests'}</option>
-                        ))}
-                        <option value="7+">7+ Guests</option>
-                      </select>
+                      <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Special Requests (Optional)</label>
+                      <textarea 
+                        value={reservationData.requests}
+                        onChange={(e) => setReservationData({...reservationData, requests: e.target.value})}
+                        className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 min-h-[120px] transition-all resize-none placeholder:text-[#3B2F2F]/40"
+                        placeholder="Any dietary restrictions or special occasions?"
+                        aria-label="Special Requests"
+                      />
                     </div>
-                  </div>
-                  
-                  <div>
-                    <label className={`${inter.className} block text-sm font-medium text-gray-300 mb-2`}>Special Requests (Optional)</label>
-                    <textarea 
-                      value={reservationData.requests}
-                      onChange={(e) => setReservationData({...reservationData, requests: e.target.value})}
-                      className="w-full p-4 bg-black/40 border border-[#D4AF37]/20 text-white rounded-xl focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/20 min-h-[120px] transition-all resize-none"
-                      placeholder="Any dietary restrictions or special occasions?"
-                      aria-label="Special Requests"
-                    />
-                  </div>
-                  
-                  <motion.button 
-                    type="submit"
-                    className="w-full py-5 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#FFD700] text-black font-semibold text-lg"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    aria-label="Confirm Reservation"
-                  >
-                    Confirm Reservation
-                  </motion.button>
-                </form>
-              </div>
-            </motion.div>
+                    
+                    <motion.button 
+                      type="submit"
+                      className="w-full py-5 rounded-full bg-[#D9B26D] text-[#3B2F2F] font-semibold text-lg shadow-[0_4px_20px_rgba(217,178,109,0.4)] hover:shadow-[0_8px_30px_rgba(217,178,109,0.6)] transition-all"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      aria-label="Confirm Reservation"
+                    >
+                      Confirm Reservation
+                    </motion.button>
+                  </form>
+                </div>
+              </motion.div>
+            </div>
           </div>
         </div>
       )}
 
       {/* Contact Page */}
       {currentPage === 'contact' && (
-        <div className="min-h-screen pt-32 pb-16 px-6 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#FBF7F2] via-[#FBF7F2] to-[#FBF7F2]"></div>
+        <div className="min-h-screen flex flex-col relative">
+          {/* Warm Cream Background */}
+          <div className="absolute inset-0 bg-[#FBF7F2]"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(217,178,109,0.05),transparent_50%)]"></div>
           
-          <div className="relative max-w-6xl mx-auto">
-            <motion.button 
-              onClick={() => setCurrentPage('home')}
-              className={`${inter.className} mb-8 text-[#D9B26D] hover:text-[#D9B26D] transition-colors flex items-center gap-2`}
-              whileHover={{ x: -5 }}
-              aria-label="Back to Home"
-            >
-              <ArrowRight size={20} className="rotate-180" />
-              Back to Home
-            </motion.button>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h1 className={`${playfair.className} text-5xl font-bold mb-4`}>
-                Get In <span className="bg-gradient-to-r from-[#D9B26D] to-[#D9B26D] bg-clip-text text-transparent">Touch</span>
-              </h1>
-              <p className={`${inter.className} text-[#6E6862] mb-12 text-lg`}>
-                We'd love to hear from you. Reach out to The Modern Table.
-              </p>
+          <div className="relative flex-1 flex items-center justify-center py-24 px-6">
+            <div className="w-full max-w-5xl">
+              <motion.button 
+                onClick={() => setCurrentPage('home')}
+                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#D9B26D] text-[#3B2F2F] font-semibold text-base overflow-hidden shadow-lg mb-6"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Back to Home"
+              >
+                <ArrowRight size={20} className="rotate-180 group-hover:-translate-x-1 transition-transform" />
+                <span className="relative z-10">Back to Home</span>
+                <motion.div
+                  className="absolute inset-0 shadow-[0_0_20px_rgba(217,178,109,0.4)]"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                ></motion.div>
+              </motion.button>
               
-              <div className="grid md:grid-cols-2 gap-12">
-                {/* Contact Information */}
-                <div className="space-y-8">
-                  <div className="bg-gradient-to-br from-[#E5D9CC] to-[#FBF7F2] border border-[#E5D9CC] rounded-2xl p-8">
-                    <h2 className={`${playfair.className} text-2xl font-bold text-[#D9B26D] mb-6`}>Contact Information</h2>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <h1 className={`${playfair.className} text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-[#D9B26D] to-[#B8995F] bg-clip-text text-transparent`}>
+                  Get In Touch
+                </h1>
+                <p className={`${inter.className} text-[#3B2F2F] mb-8 text-lg`}>
+                  We'd love to hear from you. Reach out to The Modern Table.
+                </p>
+                
+                <div className="grid md:grid-cols-2 gap-8">
+                  {/* Contact Information */}
+                  <div className="bg-white/50 backdrop-blur-sm border border-[#E5D9CC] rounded-2xl p-8 shadow-lg">
+                    <h2 className={`${playfair.className} text-2xl font-bold text-[#3B2F2F] mb-6`}>Contact Information</h2>
                     <div className="space-y-6">
                       {[
-                        { icon: MapPin, title: "Address", content: ["—", "—"] },
-                        { icon: Phone, title: "Phone", content: ["—"] },
+                        { icon: MapPin, title: "Address", content: ["Downtown – Your City, USA"] },
+                        { icon: Phone, title: "Phone", content: ["(555) 000-0000"] },
                         { icon: Mail, title: "Email", content: ["contact@themoderntable.example"] },
-                        { icon: Clock, title: "Hours", content: ["Mon - Thu: 5:00 PM - 10:00 PM", "Fri - Sat: 5:00 PM - 11:00 PM", "Sun: 4:00 PM - 9:00 PM"] }
+                        { icon: Clock, title: "Hours", content: ["Tue - Thu: 5PM - 10PM", "Fri - Sat: 5PM - 11PM", "Sun: 4PM - 9PM", "Mon: Closed"] }
                       ].map((item, idx) => (
                         <motion.div
                           key={idx}
@@ -951,77 +977,77 @@ return (
                           className="flex gap-4"
                         >
                           <div className="shrink-0">
-                            <div className="w-12 h-12 rounded-xl bg-[#D9B26D]/10 border border-[#E5D9CC] flex items-center justify-center">
-                              <item.icon className="text-[#D9B26D]" size={20} />
+                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#D9B26D] to-[#B8995F] flex items-center justify-center shadow-md">
+                              <item.icon className="text-white" size={20} />
                             </div>
                           </div>
                           <div>
                             <h3 className={`${inter.className} text-[#3B2F2F] font-semibold mb-1`}>{item.title}</h3>
                             {item.content.map((line, i) => (
-                              <p key={i} className={`${inter.className} text-[#6E6862] text-sm`}>{line}</p>
+                              <p key={i} className={`${inter.className} text-[#3B2F2F]/70 text-sm leading-relaxed`}>{line}</p>
                             ))}
                           </div>
                         </motion.div>
                       ))}
                     </div>
                   </div>
-                </div>
 
-                {/* Contact Form */}
-                <div className="bg-gradient-to-br from-[#E5D9CC] to-[#FBF7F2] border border-[#E5D9CC] rounded-2xl p-8">
-                  <h2 className={`${playfair.className} text-2xl font-bold text-[#D9B26D] mb-6`}>Send a Message</h2>
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                      <label className={`${inter.className} block text-sm font-medium text-[#6E6862] mb-2`}>Your Name *</label>
-                      <input 
-                        type="text" 
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="w-full p-4 bg-[#FBF7F2] border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all"
-                        placeholder="John Doe"
-                        aria-label="Your Name"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className={`${inter.className} block text-sm font-medium text-[#6E6862] mb-2`}>Your Email *</label>
-                      <input 
-                        type="email" 
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="w-full p-4 bg-[#FBF7F2] border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all"
-                        placeholder="john@example.com"
-                        aria-label="Your Email"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className={`${inter.className} block text-sm font-medium text-[#6E6862] mb-2`}>Your Message *</label>
-                      <textarea 
-                        required
-                        value={formData.message}
-                        onChange={(e) => setFormData({...formData, message: e.target.value})}
-                        className="w-full p-4 bg-[#FBF7F2] border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 min-h-[180px] transition-all resize-none"
-                        placeholder="Tell us how we can help you..."
-                        aria-label="Your Message"
-                      />
-                    </div>
-                    
-                    <motion.button 
-                      type="submit"
-                      className="w-full py-5 rounded-xl bg-gradient-to-r from-[#D9B26D] to-[#D9B26D] text-[#3B2F2F] font-semibold text-lg"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      aria-label="Send Message"
-                    >
-                      Send Message
-                    </motion.button>
-                  </form>
+                  {/* Contact Form */}
+                  <div className="bg-white/50 backdrop-blur-sm border border-[#E5D9CC] rounded-2xl p-8 shadow-lg">
+                    <h2 className={`${playfair.className} text-2xl font-bold text-[#3B2F2F] mb-6`}>Send a Message</h2>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div>
+                        <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Your Name *</label>
+                        <input 
+                          type="text" 
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({...formData, name: e.target.value})}
+                          className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all placeholder:text-[#3B2F2F]/40"
+                          placeholder="John Doe"
+                          aria-label="Your Name"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Your Email *</label>
+                        <input 
+                          type="email" 
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData({...formData, email: e.target.value})}
+                          className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all placeholder:text-[#3B2F2F]/40"
+                          placeholder="john@example.com"
+                          aria-label="Your Email"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Your Message *</label>
+                        <textarea 
+                          required
+                          value={formData.message}
+                          onChange={(e) => setFormData({...formData, message: e.target.value})}
+                          className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 min-h-[150px] transition-all resize-none placeholder:text-[#3B2F2F]/40"
+                          placeholder="Tell us how we can help you..."
+                          aria-label="Your Message"
+                        />
+                      </div>
+                      
+                      <motion.button 
+                        type="submit"
+                        className="w-full py-5 rounded-full bg-[#D9B26D] text-[#3B2F2F] font-semibold text-lg shadow-[0_4px_20px_rgba(217,178,109,0.4)] hover:shadow-[0_8px_30px_rgba(217,178,109,0.6)] transition-all"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        aria-label="Send Message"
+                      >
+                        Send Message
+                      </motion.button>
+                    </form>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
         </div>
       )}
