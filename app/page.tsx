@@ -228,7 +228,7 @@ return (
               <UtensilsCrossed className="text-[#3B2F2F] relative z-10" size={28} />
               <div className="absolute inset-0 bg-[#D9B26D] blur-xl opacity-30"></div>
             </div>
-            <h1 className={`${playfair.className} text-2xl md:text-3xl font-bold tracking-[0.18em] text-[#3B2F2F]`} style={{ textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}>
+            <h1 className="font-playfair font-bold tracking-[0.25em] text-[#d4af37] text-2xl hover:text-[#e0c060] transition-all duration-300">
               THE&nbsp;MODERN&nbsp;TABLE
             </h1>
           </motion.div>
