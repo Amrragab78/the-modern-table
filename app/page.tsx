@@ -369,27 +369,41 @@ return (
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
           className="relative z-10 max-w-5xl mx-auto"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="inline-flex items-center gap-2 mb-6 px-6 py-2 rounded-full bg-[#051622]/30 border border-[#E5C777]/30 backdrop-blur-sm"
-          >
-            <Sparkles className="text-[#E5C777]" size={18} />
-            <span className={`${inter.className} text-sm tracking-widest text-[#E5C777] font-medium`}>CULINARY EXCELLENCE</span>
-          </motion.div>
+          {/* Semi-transparent dark blur overlay */}
+          <div className="absolute inset-0 -inset-x-12 -inset-y-12 bg-black/40 backdrop-blur-md rounded-3xl"></div>
+          
+          <div className="relative">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="inline-flex items-center gap-2 mb-6 px-6 py-2 rounded-full bg-[#051622]/30 border border-[#E5C777]/30 backdrop-blur-sm"
+            >
+              <Sparkles className="text-[#E5C777]" size={18} />
+              <span className={`${inter.className} text-sm tracking-widest text-[#E5C777] font-medium`}>CULINARY EXCELLENCE</span>
+            </motion.div>
 
-          <motion.h1 
-            className="text-6xl font-bold tracking-wide text-[#d4af37] font-playfair mb-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            The Modern Table
-          </motion.h1>
+            <motion.h1 
+              className="text-5xl md:text-6xl font-bold tracking-wide text-[#d4af37] font-playfair mb-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+            >
+              The Modern Table
+            </motion.h1>
+
+            <motion.p
+              className={`${playfair.className} text-xl md:text-2xl text-[#d4af37]/90 mb-8 font-medium italic`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+            >
+              Modern Taste. Classic Craft.
+            </motion.p>
+          </div>
 
           <motion.p 
             className={`${inter.className} text-gray-300 text-xl md:text-2xl mb-12 max-w-3xl mx-auto leading-relaxed`}
