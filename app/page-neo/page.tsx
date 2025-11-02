@@ -243,15 +243,16 @@ return (
           </motion.button>
 
           <nav className={`${inter.className} hidden md:flex gap-8 text-sm tracking-wider font-medium items-center`}>
-            <motion.button
-              onClick={() => setCurrentPage('reserve')}
-              className="relative group cursor-pointer text-[#3B2F2F]"
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              Reservations
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D9B26D] group-hover:w-full transition-all duration-300"></span>
-            </motion.button>
+            <Link href="/reservations">
+              <motion.button
+                className="relative group cursor-pointer text-[#3B2F2F]"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                Reservations
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D9B26D] group-hover:w-full transition-all duration-300"></span>
+              </motion.button>
+            </Link>
             
             <Link href="/page-neo/dining-menu">
               <motion.button
@@ -414,25 +415,26 @@ return (
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
           >
-            <motion.button
-              onClick={() => setCurrentPage('reserve')}
-              className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-[#D9B26D] text-[#3B2F2F] font-semibold text-lg overflow-hidden shadow-lg"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              aria-label="Reservations"
-            >
-              <span className="relative z-10 flex items-center gap-3">
-                Reservations
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </span>
-              <div className="absolute inset-0 bg-[#8DA9C4]/0 group-hover:bg-[#8DA9C4]/20 transition-colors blur-xl"></div>
-              <motion.div
-                className="absolute inset-0 shadow-[0_0_30px_rgba(141,169,196,0.4)]"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              ></motion.div>
-            </motion.button>
+            <Link href="/reservations">
+              <motion.button
+                className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-[#D9B26D] text-[#3B2F2F] font-semibold text-lg overflow-hidden shadow-lg"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Reservations"
+              >
+                <span className="relative z-10 flex items-center gap-3">
+                  Reservations
+                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                </span>
+                <div className="absolute inset-0 bg-[#8DA9C4]/0 group-hover:bg-[#8DA9C4]/20 transition-colors blur-xl"></div>
+                <motion.div
+                  className="absolute inset-0 shadow-[0_0_30px_rgba(141,169,196,0.4)]"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                ></motion.div>
+              </motion.button>
+            </Link>
           </motion.div>
         </motion.div>
 
@@ -655,24 +657,25 @@ return (
             Experience the fusion of innovation and taste — secure your fine dining reservation today.
           </p>
           
-          <motion.button 
-            onClick={() => setCurrentPage('reserve')}
-            className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-[#D9B26D] to-[#D9B26D] text-[#3B2F2F] font-semibold text-lg overflow-hidden"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            aria-label="Book Your Table"
-          >
-            <span className="relative z-10 flex items-center gap-3">
-              Book Your Table
-              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-            </span>
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-[#D9B26D] to-[#D9B26D]"
-              initial={{ x: '-100%' }}
-              whileHover={{ x: 0 }}
-              transition={{ duration: 0.3 }}
-            ></motion.div>
-          </motion.button>
+          <Link href="/reservations">
+            <motion.button 
+              className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-[#D9B26D] to-[#D9B26D] text-[#3B2F2F] font-semibold text-lg overflow-hidden"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Book Your Table"
+            >
+              <span className="relative z-10 flex items-center gap-3">
+                Book Your Table
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </span>
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-[#D9B26D] to-[#D9B26D]"
+                initial={{ x: '-100%' }}
+                whileHover={{ x: 0 }}
+                transition={{ duration: 0.3 }}
+              ></motion.div>
+            </motion.button>
+          </Link>
         </motion.div>
       </section>
 
@@ -1115,16 +1118,15 @@ return (
                 </Link>
 
                 {/* Reservations */}
-                <motion.button
-                  onClick={() => {
-                    setCurrentPage('reserve');
-                    setShowMobileMenu(false);
-                  }}
-                  className="text-4xl font-bold text-[#3B2F2F] hover:text-[#D9B26D] transition-colors"
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Reservations
-                </motion.button>
+                <Link href="/reservations" className="w-full text-center">
+                  <motion.div
+                    className="text-4xl font-bold text-[#3B2F2F] hover:text-[#D9B26D] transition-colors"
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowMobileMenu(false)}
+                  >
+                    Reservations
+                  </motion.div>
+                </Link>
 
                 {/* Contact */}
                 <motion.button
