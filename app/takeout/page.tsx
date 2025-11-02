@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { UtensilsCrossed, ArrowLeft, ShoppingCart, Plus, Minus, X, Clock } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
-import { menu, MenuItem } from "../../data/menuData";
+import { menu, MenuItem } from "../data/menuData";
 import { loadStripe } from "@stripe/stripe-js";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400","600","700"] });
@@ -145,7 +145,7 @@ export default function TakeoutPage() {
         className="fixed top-0 left-0 w-full z-50 bg-[var(--brand-ivory)]/95 backdrop-blur-sm border-b border-[var(--brand-border)]"
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex justify-between items-center">
-          <Link href="/page-neo">
+          <Link href="/">
             <motion.div 
               className="flex items-center gap-2 cursor-pointer"
               whileHover={{ scale: 1.02 }}
@@ -158,7 +158,7 @@ export default function TakeoutPage() {
           </Link>
           
           <div className="flex items-center gap-4">
-            <Link href="/page-neo">
+            <Link href="/">
               <motion.button
                 className="flex items-center gap-2 text-[var(--brand-espresso)] hover:text-[var(--brand-pine)] transition-colors"
                 whileHover={{ x: -5 }}

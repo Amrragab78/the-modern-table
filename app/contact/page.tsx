@@ -28,7 +28,7 @@ export default function ContactPage() {
         className="fixed top-0 left-0 w-full z-50 bg-[var(--brand-ivory)]/95 backdrop-blur-md border-b border-[var(--brand-border)] shadow-sm"
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex justify-between items-center">
-          <Link href="/page-neo/hideaway-preview">
+          <Link href="/">
             <motion.div 
               className="flex items-center gap-3 cursor-pointer"
               whileHover={{ scale: 1.02 }}
@@ -40,7 +40,7 @@ export default function ContactPage() {
             </motion.div>
           </Link>
           
-          <Link href="/page-neo/hideaway-preview">
+          <Link href="/">
             <motion.button
               className={`${inter.className} flex items-center gap-2 text-[var(--brand-espresso)] hover:text-[var(--brand-gold)] transition-colors font-medium`}
               whileHover={{ x: -5 }}
@@ -187,7 +187,7 @@ export default function ContactPage() {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="text-center mt-16"
           >
-            <Link href="/page-neo/reservations">
+            <Link href="/reservations">
               <motion.button
                 className={`${inter.className} inline-flex items-center gap-3 px-10 py-4 rounded-full bg-[var(--brand-gold)] text-[var(--brand-espresso)] font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300`}
                 whileHover={{ scale: 1.05 }}

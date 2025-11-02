@@ -5,14 +5,14 @@ import { motion } from "framer-motion";
 import { UtensilsCrossed, ArrowLeft } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
-import { menu } from "../../data/menuData";
+import { menu } from "../data/menuData";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400","600","700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300","400","500","600"] });
 
-export default function AppetizersPage() {
+export default function DessertsPage() {
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-  const dishes = menu.appetizers;
+  const dishes = menu.desserts;
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden relative">
@@ -31,7 +31,7 @@ export default function AppetizersPage() {
         className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(212,175,55,0.1)] border-b border-[#D4AF37]/30"
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex justify-between items-center">
-          <Link href="/page-neo">
+          <Link href="/">
             <motion.div 
               className="flex items-center gap-3 cursor-pointer"
               whileHover={{ scale: 1.05 }}
@@ -46,7 +46,7 @@ export default function AppetizersPage() {
               </h1>
             </motion.div>
           </Link>
-          <Link href="/page-neo">
+          <Link href="/">
             <motion.button
               className={`${inter.className} flex items-center gap-2 text-[#D4AF37] hover:text-[#FFD700] transition-colors`}
               whileHover={{ x: -5 }}
@@ -73,11 +73,11 @@ export default function AppetizersPage() {
             </span>
             <h1 className={`${playfair.className} text-6xl md:text-7xl font-bold mb-6`}>
               <span className="bg-gradient-to-r from-[#D4AF37] to-[#FFD700] bg-clip-text text-transparent">
-                Appetizers
+                Divine Desserts
               </span>
             </h1>
             <p className={`${inter.className} text-gray-400 text-lg max-w-2xl mx-auto`}>
-              Start your culinary journey with our exquisite selection of starters
+              Sweet conclusions to perfect your dining experience
             </p>
           </motion.div>
 

@@ -52,7 +52,7 @@ export default function ReservationsPage() {
         className="fixed top-0 left-0 w-full z-50 bg-[var(--brand-ivory)]/95 backdrop-blur-sm border-b border-[var(--brand-border)] relative"
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex justify-between items-center">
-          <Link href="/page-neo">
+          <Link href="/">
             <motion.div 
               className="flex items-center gap-2 cursor-pointer"
               whileHover={{ scale: 1.02 }}
@@ -64,7 +64,7 @@ export default function ReservationsPage() {
             </motion.div>
           </Link>
           
-          <Link href="/page-neo">
+          <Link href="/">
             <motion.button
               className="flex items-center gap-2 text-[var(--brand-espresso)] hover:text-[var(--brand-pine)] transition-colors"
               whileHover={{ x: -5 }}

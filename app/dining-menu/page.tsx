@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, UtensilsCrossed } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
-import { menu } from "../../data/menuData";
+import { menu } from "../data/menuData";
 import Image from "next/image";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400","600","700"] });
@@ -45,7 +45,7 @@ export default function DiningMenuPage() {
         className="fixed top-0 left-0 w-full z-50 bg-[var(--brand-ivory)]/95 backdrop-blur-xl shadow-sm border-b border-[var(--brand-border)]"
       >
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex justify-between items-center">
-          <Link href="/page-neo">
+          <Link href="/">
             <motion.div 
               className="flex items-center gap-3 cursor-pointer"
               whileHover={{ scale: 1.05 }}
@@ -57,7 +57,7 @@ export default function DiningMenuPage() {
             </motion.div>
           </Link>
           
-          <Link href="/page-neo">
+          <Link href="/">
             <motion.button
               className="group relative inline-flex items-center gap-3 px-8 py-3 rounded-full bg-[var(--brand-gold)] text-[var(--brand-espresso)] font-semibold text-base overflow-hidden shadow-lg"
               whileHover={{ scale: 1.05 }}
