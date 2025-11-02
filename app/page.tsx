@@ -382,24 +382,14 @@ return (
             <span className={`${inter.className} text-sm tracking-widest text-[#E5C777] font-medium`}>CULINARY EXCELLENCE</span>
           </motion.div>
 
-          <motion.h2 
-            className={`${playfair.className} text-5xl md:text-6xl leading-[1.1] font-bold mb-8 text-white`}
+          <motion.h1 
+            className={`${playfair.className} text-5xl font-extrabold text-[#C6A667] tracking-wide drop-shadow-md mb-8`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            An Evening Worth{" "}
-            <span className="relative inline-block">
-              <span className="relative z-10 bg-gradient-to-r from-[#E5C777] via-[#8DA9C4] to-[#E5C777] bg-clip-text text-transparent animate-gradient">
-                Remembering
-              </span>
-              <motion.span
-                className="absolute inset-0 bg-gradient-to-r from-[#E5C777] via-[#8DA9C4] to-[#E5C777] blur-2xl opacity-30"
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              ></motion.span>
-            </span>
-          </motion.h2>
+            The Modern Table
+          </motion.h1>
 
           <motion.p 
             className={`${inter.className} text-gray-300 text-xl md:text-2xl mb-12 max-w-3xl mx-auto leading-relaxed`}
