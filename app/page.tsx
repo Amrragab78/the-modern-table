@@ -327,8 +327,8 @@ export default function App() {
               <Menu size={18} />
             </div>
             <div>
-              <div className="text-sm uppercase tracking-widest text-muted-foreground">Restaurant OS</div>
-              <div className="text-lg font-semibold -mt-1">The Modern Table</div>
+              <div className="text-sm uppercase tracking-widest text-muted-foreground">The Modern Table</div>
+              <div className="text-lg font-semibold -mt-1">Fine Dining Experience</div>
             </div>
           </div>
           <nav className="hidden md:flex items-center gap-2">

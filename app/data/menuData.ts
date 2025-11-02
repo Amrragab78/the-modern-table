@@ -1,4 +1,4 @@
-// Restaurant OS - Curated Menu (36 Premium Dishes)
+// The Modern Table - Curated Menu (36 Premium Dishes)
 // All images are high-quality, royalty-free food images
 
 export interface MenuItem {
