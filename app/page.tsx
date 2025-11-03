@@ -289,38 +289,16 @@ return (
             {/* Menu Dropdown - Last Item (rightmost) */}
             <div 
               className="relative"
-              onMouseEnter={() => setShowMenuDropdown(true)}
-              onMouseLeave={() => setShowMenuDropdown(false)}
             >
               <motion.button
+                onClick={() => setShowMobileMenu(true)}
                 className="relative group cursor-pointer text-black hover:text-[#D4AF37] flex items-center gap-1"
                 whileHover={{ scale: 1.1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
               >
                 Menu
-                <ChevronDown size={14} className={`transition-transform ${showMenuDropdown ? 'rotate-180' : ''}`} />
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] group-hover:w-full transition-all duration-300"></span>
               </motion.button>
-              
-              {showMenuDropdown && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="absolute top-full left-0 mt-4 w-64 bg-black/85 backdrop-blur-2xl border border-[#D4AF37]/30 rounded-xl shadow-[0_0_25px_rgba(212,175,55,0.25)] overflow-hidden z-[100]"
-                >
-                  {menuCategories.map((category, idx) => (
-                    <Link key={idx} href={category.path}>
-                      <motion.div
-                        className="px-4 py-3 hover:bg-[#D4AF37]/15 transition-colors cursor-pointer border-b border-[#E5D9CC] last:border-none"
-                        whileHover={{ x: 5 }}
-                      >
-                        <div className="text-white font-medium text-sm">{category.name}</div>
-                        <div className="text-gray-300 text-xs">{category.desc}</div>
-                      </motion.div>
-                    </Link>
-                  ))}
-                </motion.div>
-              )}
             </div>
           </nav>
         </div>
