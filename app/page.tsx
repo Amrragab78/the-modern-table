@@ -242,48 +242,48 @@ return (
             <Menu size={28} />
           </motion.button>
 
-          <nav className={`${inter.className} hidden md:flex gap-8 text-sm tracking-wider font-medium items-center`}>
+          <nav className={`${playfair.className} hidden md:flex gap-10 text-base tracking-[0.12em] font-bold uppercase items-center text-[#1A1A1A]`}>
             <Link href="/reservations">
               <motion.button
-                className="relative group cursor-pointer text-[#3B2F2F]"
+                className="relative group cursor-pointer text-black hover:text-[#D4AF37]"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Reservations
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D9B26D] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] group-hover:w-full transition-all duration-300"></span>
               </motion.button>
             </Link>
             
             <Link href="/dining-menu">
               <motion.button
-                className="relative group cursor-pointer text-[#3B2F2F]"
+                className="relative group cursor-pointer text-black hover:text-[#D4AF37]"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Dining Menu
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D9B26D] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] group-hover:w-full transition-all duration-300"></span>
               </motion.button>
             </Link>
             
             <Link href="/takeout">
               <motion.button
-                className="relative group cursor-pointer text-[#3B2F2F]"
+                className="relative group cursor-pointer text-black hover:text-[#D4AF37]"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Order Online
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D9B26D] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] group-hover:w-full transition-all duration-300"></span>
               </motion.button>
             </Link>
             
             <motion.button
               onClick={() => setCurrentPage('contact')}
-              className="relative group cursor-pointer text-[#3B2F2F]"
+              className="relative group cursor-pointer text-black hover:text-[#D4AF37]"
               whileHover={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               Contact
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D9B26D] group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] group-hover:w-full transition-all duration-300"></span>
             </motion.button>
 
             {/* Menu Dropdown - Last Item (rightmost) */}
@@ -293,29 +293,29 @@ return (
               onMouseLeave={() => setShowMenuDropdown(false)}
             >
               <motion.button
-                className="relative group cursor-pointer text-[#3B2F2F] flex items-center gap-1"
+                className="relative group cursor-pointer text-black hover:text-[#D4AF37] flex items-center gap-1"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Menu
                 <ChevronDown size={14} className={`transition-transform ${showMenuDropdown ? 'rotate-180' : ''}`} />
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D9B26D] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] group-hover:w-full transition-all duration-300"></span>
               </motion.button>
               
               {showMenuDropdown && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="absolute top-full left-0 mt-2 w-56 bg-[#FBF7F2]/95 backdrop-blur-xl border border-[#E5D9CC] rounded-xl shadow-2xl overflow-hidden z-[100]"
+                  className="absolute top-full left-0 mt-4 w-64 bg-black/85 backdrop-blur-2xl border border-[#D4AF37]/30 rounded-xl shadow-[0_0_25px_rgba(212,175,55,0.25)] overflow-hidden z-[100]"
                 >
                   {menuCategories.map((category, idx) => (
                     <Link key={idx} href={category.path}>
                       <motion.div
-                        className="px-4 py-3 hover:bg-[#D9B26D]/10 transition-colors cursor-pointer border-b border-[#E5D9CC] last:border-none"
+                        className="px-4 py-3 hover:bg-[#D4AF37]/15 transition-colors cursor-pointer border-b border-[#E5D9CC] last:border-none"
                         whileHover={{ x: 5 }}
                       >
-                        <div className="text-[#3B2F2F] font-medium text-sm">{category.name}</div>
-                        <div className="text-[#8DA9C4] text-xs">{category.desc}</div>
+                        <div className="text-white font-medium text-sm">{category.name}</div>
+                        <div className="text-gray-300 text-xs">{category.desc}</div>
                       </motion.div>
                     </Link>
                   ))}
