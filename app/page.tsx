@@ -373,7 +373,7 @@ return (
           className="relative z-10 max-w-5xl mx-auto"
         >
           {/* Semi-transparent dark blur overlay */}
-          <div className="absolute inset-0 -inset-x-12 -inset-y-12 bg-black/40 backdrop-blur-md rounded-3xl"></div>
+          <div className="absolute inset-0 -inset-x-12 -inset-y-12 bg-black/20 backdrop-blur-sm rounded-3xl"></div>
           
           <div className="relative">
             <motion.div
