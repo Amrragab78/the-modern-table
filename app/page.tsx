@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { UtensilsCrossed, ArrowRight, Sparkles, Star, Phone, Mail, MapPin, Clock, ChevronDown, Menu, X } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
+import ContactForm from "./components/ContactForm";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400","600","700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300","400","500","600"] });
@@ -109,7 +110,6 @@ const menuItems = [
   ];
 
 export default function NeoLuxuryPage() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [reservationData, setReservationData] = useState({
     name: '',
     email: '',
@@ -166,16 +166,6 @@ export default function NeoLuxuryPage() {
       document.body.style.overflow = 'unset';
     };
   }, [showMobileMenu]);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      alert('Please fill in all fields');
-      return;
-    }
-    alert('Thank you for contacting us! We will get back to you shortly.');
-    setFormData({ name: '', email: '', message: '' });
-  };
 
   const handleReservation = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -245,45 +235,45 @@ return (
           <nav className={`${playfair.className} hidden md:flex gap-10 text-base tracking-[0.12em] font-bold uppercase items-center text-[#1A1A1A]`}>
             <Link href="/reservations">
               <motion.button
-                className="relative group cursor-pointer text-black hover:text-[#D4AF37]"
+                className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Reservations
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
               </motion.button>
             </Link>
             
             <Link href="/dining-menu">
               <motion.button
-                className="relative group cursor-pointer text-black hover:text-[#D4AF37]"
+                className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Dining Menu
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
               </motion.button>
             </Link>
             
             <Link href="/takeout">
               <motion.button
-                className="relative group cursor-pointer text-black hover:text-[#D4AF37]"
+                className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Order Online
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
               </motion.button>
             </Link>
             
             <motion.button
               onClick={() => setCurrentPage('contact')}
-              className="relative group cursor-pointer text-black hover:text-[#D4AF37]"
+              className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
               whileHover={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               Contact
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
             </motion.button>
 
             {/* Menu Dropdown - Last Item (rightmost) */}
@@ -292,12 +282,12 @@ return (
             >
               <motion.button
                 onClick={() => setShowMobileMenu(true)}
-                className="relative group cursor-pointer text-black hover:text-[#D4AF37] flex items-center gap-1"
+                className="relative group cursor-pointer text-[#3B2F2F] hover:text-black flex items-center gap-1"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 10 }}
               >
                 Menu
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#D4AF37] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
               </motion.button>
             </div>
           </nav>
@@ -980,55 +970,7 @@ return (
                   {/* Contact Form */}
                   <div className="bg-white/50 backdrop-blur-sm border border-[#E5D9CC] rounded-2xl p-8 shadow-lg">
                     <h2 className={`${playfair.className} text-2xl font-bold text-[#3B2F2F] mb-6`}>Send a Message</h2>
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div>
-                        <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Your Name *</label>
-                        <input 
-                          type="text" 
-                          required
-                          value={formData.name}
-                          onChange={(e) => setFormData({...formData, name: e.target.value})}
-                          className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all placeholder:text-[#3B2F2F]/40"
-                          placeholder="John Doe"
-                          aria-label="Your Name"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Your Email *</label>
-                        <input 
-                          type="email" 
-                          required
-                          value={formData.email}
-                          onChange={(e) => setFormData({...formData, email: e.target.value})}
-                          className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 transition-all placeholder:text-[#3B2F2F]/40"
-                          placeholder="john@example.com"
-                          aria-label="Your Email"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>Your Message *</label>
-                        <textarea 
-                          required
-                          value={formData.message}
-                          onChange={(e) => setFormData({...formData, message: e.target.value})}
-                          className="w-full p-4 bg-white border border-[#E5D9CC] text-[#3B2F2F] rounded-xl focus:border-[#D9B26D] focus:outline-none focus:ring-2 focus:ring-[#D9B26D]/20 min-h-[150px] transition-all resize-none placeholder:text-[#3B2F2F]/40"
-                          placeholder="Tell us how we can help you..."
-                          aria-label="Your Message"
-                        />
-                      </div>
-                      
-                      <motion.button 
-                        type="submit"
-                        className="w-full py-5 rounded-full bg-[#D9B26D] text-[#3B2F2F] font-semibold text-lg shadow-[0_4px_20px_rgba(217,178,109,0.4)] hover:shadow-[0_8px_30px_rgba(217,178,109,0.6)] transition-all"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        aria-label="Send Message"
-                      >
-                        Send Message
-                      </motion.button>
-                    </form>
+                    <ContactForm />
                   </div>
                 </div>
               </motion.div>
