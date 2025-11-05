@@ -15,13 +15,25 @@ export async function POST(request: Request) {
 
     // 1. Basic Validation
     if (!name || !email || !message) {
-      return NextResponse.json({ message: 'Missing required fields: name, email, and message are required.' }, { status: 400 });
+      return NextResponse.json(
+        { 
+          success: false,
+          error: 'Missing required fields: name, email, and message are required.' 
+        }, 
+        { status: 400 }
+      );
     }
 
     // 2. Email Validation (Simple regex check)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        return NextResponse.json({ message: 'Invalid email format.' }, { status: 400 });
+      return NextResponse.json(
+        { 
+          success: false,
+          error: 'Invalid email format.' 
+        }, 
+        { status: 400 }
+      );
     }
 
     // 3. **The Critical Step: Replace this block with your actual email sending logic**
@@ -40,11 +52,31 @@ export async function POST(request: Request) {
     // await sendEmailService({ to: 'restaurant@example.com', subject: 'New Contact Form Submission', body: `Name: ${name}\nEmail: ${email}\nMessage: ${message}` });
 
     // 4. Return a success response
-    return NextResponse.json({ message: 'Message sent successfully. We will be in touch shortly.' }, { status: 200 });
+    return NextResponse.json(
+      { 
+        success: true,
+        message: 'Message sent successfully. We will be in touch shortly.' 
+      }, 
+      { status: 200 }
+    );
 
-  } catch (error) {
-    console.error('API Error:', error);
-    return NextResponse.json({ message: 'Internal Server Error. Could not process the request.' }, { status: 500 });
+  } catch (error: any) {
+    console.error('Contact form error:', error);
+    
+    // Return more specific error messages
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const errorMessage = isDevelopment 
+      ? `Failed to send message: ${error.message}` 
+      : 'Internal Server Error. Could not process the request.';
+    
+    return NextResponse.json(
+      { 
+        success: false,
+        error: errorMessage,
+        ...(isDevelopment && { details: error.stack })
+      }, 
+      { status: 500 }
+    );
   }
 }
 

@@ -28,9 +28,59 @@ export default function ReservationsPage() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsConfirmed(true);
+
+    // Validate that the selected date/time is in the future
+    const selectedDateTime = new Date(`${formData.date}T${formData.time}`);
+    const now = new Date();
+
+    if (selectedDateTime <= now) {
+      alert('Please select a future date and time for your reservation.');
+      return;
+    }
+
+    // Validate that the time is within business hours (5:00 PM - 10:00 PM)
+    const selectedTime = formData.time;
+    const timeValue = parseInt(selectedTime.split(':')[0]);
+    const isPM = selectedTime.includes('PM');
+    
+    // Convert to 24-hour format for comparison
+    let hour24 = timeValue;
+    if (isPM && timeValue !== 12) {
+      hour24 = timeValue + 12;
+    } else if (!isPM && timeValue === 12) {
+      hour24 = 0;
+    }
+
+    // Business hours: 5:00 PM (17:00) - 10:00 PM (22:00)
+    if (hour24 < 17 || hour24 >= 22) {
+      alert('Please select a time between 5:00 PM and 10:00 PM. Our restaurant is open during these hours.');
+      return;
+    }
+
+    // Submit reservation to API
+    try {
+      const response = await fetch('/api/reserve', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || 'Failed to submit reservation. Please try again.');
+        return;
+      }
+
+      setIsConfirmed(true);
+    } catch (error) {
+      console.error('Reservation submission error:', error);
+      alert('An error occurred while submitting your reservation. Please try again.');
+    }
   };
 
   return (

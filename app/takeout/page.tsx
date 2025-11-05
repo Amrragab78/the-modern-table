@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { UtensilsCrossed, ArrowLeft, ShoppingCart, Plus, Minus, X, Clock } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
@@ -23,6 +23,36 @@ export default function TakeoutPage() {
   const [showCart, setShowCart] = useState(false);
   const [checkoutData, setCheckoutData] = useState({ name: '', phone: '', pickupTime: '' });
   const [paymentType, setPaymentType] = useState<'online' | 'offline'>('online');
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem('restaurantCart');
+      if (savedCart) {
+        const parsedCart = JSON.parse(savedCart);
+        setCart(parsedCart);
+      }
+    } catch (error) {
+      console.error('Error loading cart from localStorage:', error);
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem('restaurantCart', JSON.stringify(cart));
+    } catch (error) {
+      console.error('Error saving cart to localStorage:', error);
+    }
+  }, [cart]);
+
+  // Environment variable validation
+  useEffect(() => {
+    if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+      console.error('Warning: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set. Online payments will not work.');
+    }
+  }, []);
 
   const categories = [
     { key: 'appetizers' as const, label: 'Appetizers' },
@@ -72,6 +102,12 @@ export default function TakeoutPage() {
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Prevent double-clicks
+    if (isProcessing) {
+      return;
+    }
+
     if (!checkoutData.name || !checkoutData.phone || !checkoutData.pickupTime) {
       alert('Please fill in all required fields');
       return;
@@ -80,6 +116,8 @@ export default function TakeoutPage() {
       alert('Your cart is empty');
       return;
     }
+
+    setIsProcessing(true);
 
     try {
       if (paymentType === 'offline') {
@@ -102,6 +140,12 @@ export default function TakeoutPage() {
         }
 
         if (data.success) {
+          // Clear cart from localStorage after successful checkout
+          try {
+            localStorage.removeItem('restaurantCart');
+          } catch (error) {
+            console.error('Error clearing cart from localStorage:', error);
+          }
           window.location.href = `/success?order_id=${data.orderId}&name=${encodeURIComponent(data.customerName)}&payment_type=offline`;
         }
       } else {
@@ -124,12 +168,20 @@ export default function TakeoutPage() {
         }
 
         if (url) {
+          // Clear cart from localStorage after successful checkout
+          try {
+            localStorage.removeItem('restaurantCart');
+          } catch (error) {
+            console.error('Error clearing cart from localStorage:', error);
+          }
           window.location.href = url;
         }
       }
     } catch (error) {
       console.error('Checkout error:', error);
       alert('An error occurred during checkout. Please try again.');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -446,11 +498,21 @@ export default function TakeoutPage() {
 
                         <motion.button
                           type="submit"
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          className="w-full btn-primary py-4 text-lg mt-6"
+                          disabled={isProcessing}
+                          whileHover={{ scale: isProcessing ? 1 : 1.02 }}
+                          whileTap={{ scale: isProcessing ? 1 : 0.98 }}
+                          className={`w-full py-4 text-lg mt-6 ${
+                            isProcessing 
+                              ? 'bg-[var(--brand-muted)] cursor-not-allowed opacity-70' 
+                              : 'btn-primary'
+                          }`}
                         >
-                          {paymentType === 'online' ? 'Pay with Stripe' : 'Complete Order'}
+                          {isProcessing 
+                            ? 'Processing...' 
+                            : paymentType === 'online' 
+                              ? 'Pay with Stripe' 
+                              : 'Complete Order'
+                          }
                         </motion.button>
                       </form>
                     </div>

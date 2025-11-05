@@ -10,6 +10,21 @@ export async function POST(req: NextRequest) {
   try {
     const { items, customerInfo } = await req.json();
 
+    // Validate request data
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return NextResponse.json(
+        { error: 'Invalid request: Cart items are required' },
+        { status: 400 }
+      );
+    }
+
+    if (!customerInfo || !customerInfo.name || !customerInfo.phone || !customerInfo.pickupTime) {
+      return NextResponse.json(
+        { error: 'Invalid request: Customer information is incomplete' },
+        { status: 400 }
+      );
+    }
+
     // Generate custom order ID
     const orderId = `ORD-${nanoid(6).toUpperCase()}`;
 
@@ -44,9 +59,19 @@ export async function POST(req: NextRequest) {
       success: true 
     });
   } catch (error: any) {
-    console.error('Offline order error:', error);
+    console.error('Offline order creation error:', error);
+    
+    // Return more specific error messages
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const errorMessage = isDevelopment 
+      ? `Failed to create offline order: ${error.message}` 
+      : 'Failed to create order. Please try again.';
+    
     return NextResponse.json(
-      { error: error.message },
+      { 
+        error: errorMessage,
+        ...(isDevelopment && { details: error.stack })
+      },
       { status: 500 }
     );
   }
