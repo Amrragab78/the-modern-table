@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { UtensilsCrossed, ArrowRight, Sparkles, Star, Phone, Mail, MapPin, Clock, ChevronDown, Menu, X } from "lucide-react";
+import { UtensilsCrossed, ArrowRight, Sparkles, Star, Phone, Mail, MapPin, Clock, ChevronDown, Menu, X, ShoppingCart } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
 import ContactForm from "./components/ContactForm";
+import { useCart } from "./context/CartContext";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400","600","700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300","400","500","600"] });
@@ -21,7 +22,7 @@ const menuCategories = [
   { name: "Take Out", path: "/takeout", desc: "Order online and pick up", image: "https://images.pexels.com/photos/4253312/pexels-photo-4253312.jpeg?auto=compress&cs=tinysrgb&w=1200" },
 ];
 
-// Sample menu items for preview (no longer used in full menu section)
+// Sample menu items for preview (no longer used in full menu section )
 const menuItems = [
     {
       name: "Lobster Risotto",
@@ -109,7 +110,9 @@ const menuItems = [
     },
   ];
 
-export default function NeoLuxuryPage() {
+export default function NeoLuxuryPage( ) {
+  const { totalCount, isHydrated } = useCart();
+  const [mounted, setMounted] = useState(false);
   const [reservationData, setReservationData] = useState({
     name: '',
     email: '',
@@ -125,6 +128,9 @@ export default function NeoLuxuryPage() {
   const [showMenuDropdown, setShowMenuDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showMobileCategoriesDropdown, setShowMobileCategoriesDropdown] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+  const cartCount = mounted && isHydrated ? totalCount : 0;
 
   // Floating particles state
   const [particles, setParticles] = useState<{ x: number; y: number; opacity: number }[]>([]);
@@ -232,7 +238,22 @@ return (
             <Menu size={28} />
           </motion.button>
 
-          <nav className={`${playfair.className} hidden md:flex gap-10 text-base tracking-[0.12em] font-bold uppercase items-center text-[#1A1A1A]`}>
+          {/* Desktop Navigation - MODIFIED */}
+          <nav className="hidden md:flex items-center gap-10 text-lg font-medium">
+            
+            {/* 1. Home Link (New) */}
+            <Link href="/">
+              <motion.button
+                className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                Home
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
+              </motion.button>
+            </Link>
+
+            {/* 2. Reservations Link */}
             <Link href="/reservations">
               <motion.button
                 className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
@@ -244,6 +265,7 @@ return (
               </motion.button>
             </Link>
             
+            {/* 3. Dining Menu Link */}
             <Link href="/dining-menu">
               <motion.button
                 className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
@@ -255,6 +277,7 @@ return (
               </motion.button>
             </Link>
             
+            {/* 4. Order Online Link */}
             <Link href="/takeout">
               <motion.button
                 className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
@@ -266,6 +289,7 @@ return (
               </motion.button>
             </Link>
             
+            {/* 5. Contact Button (uses setCurrentPage) */}
             <motion.button
               onClick={() => setCurrentPage('contact')}
               className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
@@ -276,20 +300,21 @@ return (
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
             </motion.button>
 
-            {/* Menu Dropdown - Last Item (rightmost) */}
-            <div 
-              className="relative"
-            >
-              <motion.button
-                onClick={() => setShowMobileMenu(true)}
-                className="relative group cursor-pointer text-[#3B2F2F] hover:text-black flex items-center gap-1"
+            {/* 6. Cart Link with Badge (Moved to the end, 'Cart' text removed) */}
+            <Link href="/takeout">
+              <motion.div
+                className="relative group cursor-pointer text-[#3B2F2F] hover:text-black flex items-center"
                 whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                Menu
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
-              </motion.button>
-            </div>
+                <ShoppingCart size={20} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 inline-flex items-center justify-center text-xs font-semibold rounded-full px-1.5 py-0.5 min-w-[20px] h-5 bg-[#D9B26D] text-[#3B2F2F]">
+                    {cartCount}
+                  </span>
+                )}
+              </motion.div>
+            </Link>
           </nav>
         </div>
       </motion.header>
@@ -305,17 +330,19 @@ return (
             src="https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=2400"
             alt="Fine Dining Experience"
             loading="eager"
-            className="absolute inset-0 w-full h-full object-cover"
-            initial={{ scale: 1.2 }}
+            fetchPriority="high"
+            className="absolute inset-0 w-full h-full object-cover min-h-screen"
+            initial={{ scale: 1.05 }}
             animate={{ scale: 1.05 }}
             transition={{ duration: 20, ease: 'linear', repeat: Infinity, repeatType: "reverse" }}
+            style={{ opacity: 1 }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#051622]/40 via-[#051622]/20 to-[#051622]/10"></div>
         </motion.div>
 
       {/* Floating Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {particles.map((p, i) => (
+        {particles.map((p, i ) => (
           <motion.div
             key={i}
             className={`absolute w-1 h-1 rounded-full ${i % 2 === 0 ? 'bg-[#E5C777]' : 'bg-[#8DA9C4]'}`}
@@ -338,10 +365,11 @@ return (
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="relative z-10 max-w-5xl mx-auto"
+          className="relative z-10 max-w-5xl mx-auto [animation:fadeInSafe_0.8s_ease-out_forwards]"
+          style={{ opacity: 1 }}
         >
           {/* Semi-transparent dark blur overlay */}
-          <div className="absolute inset-0 -inset-x-12 -inset-y-12 bg-black/20 backdrop-blur-sm rounded-3xl"></div>
+          <div className="absolute inset-0 -inset-x-12 -inset-y-12 bg-black/20 backdrop-blur-[2px] rounded-3xl"></div>
           
           <div className="relative">
             <motion.div
@@ -349,6 +377,7 @@ return (
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               className="inline-flex items-center gap-2 mb-6 px-6 py-2 rounded-full bg-[#051622]/30 border border-[#E5C777]/30 backdrop-blur-sm"
+              style={{ opacity: 1 }}
             >
               <Sparkles className="text-[#E5C777]" size={18} />
               <span className={`${inter.className} text-sm tracking-widest text-[#E5C777] font-medium`}>CULINARY EXCELLENCE</span>
@@ -359,6 +388,7 @@ return (
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
+              style={{ opacity: 1 }}
             >
               The Modern Table
             </motion.h1>
@@ -368,16 +398,18 @@ return (
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
+              style={{ opacity: 1 }}
             >
               Modern Taste. Classic Craft.
             </motion.p>
           </div>
 
           <motion.p 
-            className={`${inter.className} text-gray-300 text-xl md:text-2xl mb-12 max-w-3xl mx-auto leading-relaxed`}
+            className={`${inter.className} text-lg text-white/90 mb-10 max-w-xl mx-auto`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
+            style={{ opacity: 1 }}
           >
             Where culinary artistry meets timeless elegance. Experience the extraordinary.
           </motion.p>
@@ -386,6 +418,7 @@ return (
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
+            style={{ opacity: 1 }}
           >
             <Link href="/reservations">
               <motion.button
@@ -490,7 +523,7 @@ return (
                   { icon: Star, label: "Michelin Rated", value: "5★" },
                   { icon: Sparkles, label: "Years Excellence", value: "15+" },
                   { icon: UtensilsCrossed, label: "Signature Dishes", value: "50+" }
-                ].map((stat, idx) => (
+                ].map((stat, idx ) => (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, y: 20 }}
@@ -544,56 +577,54 @@ return (
                   className="group relative cursor-pointer h-[400px]"
                 >
                   {/* Card Container */}
-                  <div className="relative h-full rounded-2xl overflow-hidden bg-gradient-to-br from-[#1a1a1a] to-black border border-[#D4AF37]/20 hover:border-[#D4AF37]/60 transition-all duration-500">
+                  <div className="relative h-full overflow-hidden rounded-2xl shadow-xl border border-[#E5D9CC]">
                     {/* Image Section */}
-                    <div className="relative h-full overflow-hidden">
-                      <motion.img 
-                        src={category.image} 
-                        alt={category.name} 
-                        loading="lazy" 
-                        className="w-full h-full object-cover"
-                        animate={{ scale: hoveredItem === i ? 1.1 : 1 }}
-                        transition={{ duration: 0.6 }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30"></div>
-                      
-                      {/* Hover Overlay */}
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-t from-[#D4AF37]/30 to-transparent"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: hoveredItem === i ? 1 : 0 }}
-                        transition={{ duration: 0.3 }}
-                      ></motion.div>
-
-                      {/* Content */}
-                      <div className="absolute inset-0 flex flex-col justify-end p-8">
-                        <motion.div
-                          initial={{ y: 20 }}
-                          animate={{ y: hoveredItem === i ? 0 : 20 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <h3 className={`${playfair.className} text-3xl font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors`}>
-                            {category.name}
-                          </h3>
-                          <p className={`${inter.className} text-gray-300 text-sm mb-4`}>
-                            {category.desc}
-                          </p>
-                          <div className="flex items-center gap-2 text-[#D4AF37]">
-                            <span className={`${inter.className} text-sm font-medium`}>View Menu</span>
-                            <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
-                          </div>
-                        </motion.div>
-                      </div>
-                    </div>
-
-                    {/* Glow Effect */}
+                    <motion.img 
+                      src={category.image} 
+                      alt={category.name} 
+                      loading="lazy" 
+                      className="w-full h-full object-cover"
+                      animate={{ scale: hoveredItem === i ? 1.1 : 1 }}
+                      transition={{ duration: 0.6 }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30"></div>
+                    
+                    {/* Hover Overlay */}
                     <motion.div
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                      style={{
-                        background: "radial-gradient(circle at center, rgba(212,175,55,0.15), transparent 70%)"
-                      }}
+                      className="absolute inset-0 bg-gradient-to-t from-[#D4AF37]/30 to-transparent"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: hoveredItem === i ? 1 : 0 }}
+                      transition={{ duration: 0.3 }}
                     ></motion.div>
+
+                    {/* Content */}
+                    <div className="absolute inset-0 flex flex-col justify-end p-8">
+                      <motion.div
+                        initial={{ y: 20 }}
+                        animate={{ y: hoveredItem === i ? 0 : 20 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <h3 className={`${playfair.className} text-3xl font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors`}>
+                          {category.name}
+                        </h3>
+                        <p className={`${inter.className} text-gray-300 text-sm mb-4`}>
+                          {category.desc}
+                        </p>
+                        <div className="flex items-center gap-2 text-[#D4AF37]">
+                          <span className={`${inter.className} text-sm font-medium`}>View Menu</span>
+                          <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
+                        </div>
+                      </motion.div>
+                    </div>
                   </div>
+
+                  {/* Glow Effect */}
+                  <motion.div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                    style={{
+                      background: "radial-gradient(circle at center, rgba(212,175,55,0.15), transparent 70%)"
+                    }}
+                  ></motion.div>
                 </motion.div>
               </Link>
             ))}
@@ -604,7 +635,7 @@ return (
       {/* CTA Reserve Section */}
       <section className="relative py-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#FBF7F2] via-[#FBF7F2] to-[#FBF7F2]"></div>
-        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1600')] opacity-5 bg-cover bg-center"></div>
+        <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1600' )] opacity-5 bg-cover bg-center"></div>
         
         <motion.div 
           className="relative max-w-4xl mx-auto text-center px-6"
@@ -698,11 +729,12 @@ return (
               <div className={`${inter.className} space-y-3 text-sm text-[#6E6862]`}>
                 <div className="flex items-start gap-2">
                   <MapPin size={16} className="text-[#D9B26D] mt-1 shrink-0" />
-                  <span>—<br/>—</span>
+                  <span>Downtown – Your City, USA  
+123 Modern St, Suite 100</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone size={16} className="text-[#D9B26D] shrink-0" />
-                  <span>—</span>
+                  <span>(555) 000-0000</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail size={16} className="text-[#D9B26D] shrink-0" />
@@ -736,7 +768,7 @@ return (
       </>
       )}
 
-      {/* Reservation Page */}
+      {/* Reservation Page (Original single-page form) */}
       {currentPage === 'reserve' && (
         <div className="min-h-screen flex flex-col relative">
           {/* Background Image with Overlay */}
@@ -747,7 +779,7 @@ return (
               className="w-full h-full object-cover opacity-20"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(251,247,242,0.9)] to-[rgba(251,247,242,0.98)]"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(251,247,242,0.9 )] to-[rgba(251,247,242,0.98)]"></div>
           
           <div className="relative flex-1 flex items-center justify-center py-24 px-6">
             <div className="w-full max-w-3xl">
@@ -1064,6 +1096,23 @@ return (
                   Contact
                 </motion.button>
 
+                {/* Cart - Mobile */}
+                <Link href="/takeout" className="w-full text-center">
+                  <motion.div
+                    className="text-4xl font-bold text-[#3B2F2F] hover:text-[#D9B26D] transition-colors relative inline-flex items-center gap-2"
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setShowMobileMenu(false)}
+                  >
+                    <ShoppingCart size={32} />
+                    Cart
+                    {cartCount > 0 && (
+                      <span className="absolute -top-2 -right-2 inline-flex items-center justify-center text-sm font-semibold rounded-full px-2 py-1 min-w-[24px] h-6 bg-[#D9B26D] text-[#3B2F2F]">
+                        {cartCount}
+                      </span>
+                    )}
+                  </motion.div>
+                </Link>
+
                 {/* Menu Categories Dropdown */}
                 <div className="w-full">
                   <motion.button
@@ -1132,6 +1181,19 @@ return (
         .animate-gradient {
           background-size: 200% 200%;
           animation: gradient 3s ease infinite;
+        }
+        @keyframes fadeInSafe {
+          from { opacity: 0; transform: translateY(50px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        /* Fallback to ensure content is always visible */
+        @media (prefers-reduced-motion: reduce) {
+          * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            transition-delay: 0.01ms !important;
+          }
         }
       `}</style>
     </div>

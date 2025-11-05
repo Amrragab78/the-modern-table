@@ -7,6 +7,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
 import { menu, MenuItem } from "../data/menuData";
 import { loadStripe } from "@stripe/stripe-js";
+import { useCart } from "../context/CartContext";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400","600","700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300","400","500","600"] });
@@ -18,34 +19,12 @@ interface CartItem extends MenuItem {
 }
 
 export default function TakeoutPage() {
+  const { items: cart, addItem, updateQuantity, removeItem, clearCart, totalPrice } = useCart();
   const [selectedCategory, setSelectedCategory] = useState<'appetizers' | 'seafood' | 'meats' | 'pasta' | 'desserts' | 'beverages'>('appetizers');
-  const [cart, setCart] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
   const [checkoutData, setCheckoutData] = useState({ name: '', phone: '', pickupTime: '' });
   const [paymentType, setPaymentType] = useState<'online' | 'offline'>('online');
   const [isProcessing, setIsProcessing] = useState(false);
-
-  // Load cart from localStorage on mount
-  useEffect(() => {
-    try {
-      const savedCart = localStorage.getItem('restaurantCart');
-      if (savedCart) {
-        const parsedCart = JSON.parse(savedCart);
-        setCart(parsedCart);
-      }
-    } catch (error) {
-      console.error('Error loading cart from localStorage:', error);
-    }
-  }, []);
-
-  // Save cart to localStorage whenever it changes
-  useEffect(() => {
-    try {
-      localStorage.setItem('restaurantCart', JSON.stringify(cart));
-    } catch (error) {
-      console.error('Error saving cart to localStorage:', error);
-    }
-  }, [cart]);
 
   // Environment variable validation
   useEffect(() => {
@@ -64,40 +43,13 @@ export default function TakeoutPage() {
   ];
 
   const addToCart = (item: MenuItem) => {
-    setCart(prevCart => {
-      const existingItem = prevCart.find(cartItem => cartItem.name === item.name);
-      if (existingItem) {
-        return prevCart.map(cartItem =>
-          cartItem.name === item.name
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        );
-      }
-      return [...prevCart, { ...item, quantity: 1 }];
+    addItem({
+      name: item.name,
+      price: item.price,
+      quantity: 1,
+      desc: item.desc,
+      img: item.img
     });
-  };
-
-  const updateQuantity = (itemName: string, delta: number) => {
-    setCart(prevCart => {
-      return prevCart.map(item => {
-        if (item.name === itemName) {
-          const newQuantity = item.quantity + delta;
-          return newQuantity > 0 ? { ...item, quantity: newQuantity } : item;
-        }
-        return item;
-      }).filter(item => item.quantity > 0);
-    });
-  };
-
-  const removeItem = (itemName: string) => {
-    setCart(prevCart => prevCart.filter(item => item.name !== itemName));
-  };
-
-  const getTotal = () => {
-    return cart.reduce((total, item) => {
-      const price = parseFloat(item.price.replace('$', ''));
-      return total + (price * item.quantity);
-    }, 0).toFixed(2);
   };
 
   const handleCheckout = async (e: React.FormEvent) => {
@@ -140,12 +92,7 @@ export default function TakeoutPage() {
         }
 
         if (data.success) {
-          // Clear cart from localStorage after successful checkout
-          try {
-            localStorage.removeItem('restaurantCart');
-          } catch (error) {
-            console.error('Error clearing cart from localStorage:', error);
-          }
+          clearCart();
           window.location.href = `/success?order_id=${data.orderId}&name=${encodeURIComponent(data.customerName)}&payment_type=offline`;
         }
       } else {
@@ -168,12 +115,7 @@ export default function TakeoutPage() {
         }
 
         if (url) {
-          // Clear cart from localStorage after successful checkout
-          try {
-            localStorage.removeItem('restaurantCart');
-          } catch (error) {
-            console.error('Error clearing cart from localStorage:', error);
-          }
+          clearCart();
           window.location.href = url;
         }
       }
@@ -417,7 +359,7 @@ export default function TakeoutPage() {
                           Total
                         </span>
                         <span className={`${playfair.className} text-3xl font-bold gold`}>
-                          ${getTotal()}
+                          ${totalPrice}
                         </span>
                       </div>
 
