@@ -243,31 +243,29 @@ return (
 
       {currentPage === 'home' && (
         <>
-      {/* Enhanced Navbar with Glassmorphism */}
+      {/* Cleaner, More Minimal Navbar */}
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-[#FBF7F2]/90 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.06)] border-b border-[#E5D9CC]"
-            : "bg-[#FBF7F2]/70 backdrop-blur-md border-b border-[#E5D9CC]"
+            ? "bg-[#FBF7F2]/95 backdrop-blur-xl shadow-[0_2px_20px_rgba(0,0,0,0.03)]"
+            : "bg-[#FBF7F2]/80 backdrop-blur-md"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-8 md:px-12 py-8 flex justify-between items-center">
           <motion.div 
-            className="flex items-center gap-3"
-            whileHover={{ scale: 1.05 }}
+            className="flex items-center gap-4"
+            whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            <div className="relative">
-              <UtensilsCrossed className="text-[#3B2F2F] relative z-10" size={28} />
-              <div className="absolute inset-0 bg-[#D9B26D] blur-xl opacity-30"></div>
-            </div>
-            <h1 className={`${playfair.className} text-2xl md:text-3xl font-bold tracking-[0.18em] text-[#3B2F2F]`} style={{ textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}>
-              THE&nbsp;MODERN&nbsp;TABLE
+            <UtensilsCrossed className="text-[#D9B26D]" size={24} />
+            <h1 className={`${playfair.className} text-xl md:text-2xl font-semibold tracking-wider text-[#3B2F2F]`}>
+              THE MODERN TABLE
             </h1>
           </motion.div>
+          
           {/* Mobile Hamburger Button */}
           <motion.button
             onClick={() => setShowMobileMenu(true)}
@@ -275,81 +273,69 @@ return (
             whileTap={{ scale: 0.95 }}
             aria-label="Open Menu"
           >
-            <Menu size={28} />
+            <Menu size={26} />
           </motion.button>
 
-          {/* Desktop Navigation - MODIFIED */}
-          <nav className="hidden md:flex items-center gap-10 text-lg font-medium">
-            
-            {/* 1. Home Link (New) */}
+          {/* Desktop Navigation - Cleaner */}
+          <nav className="hidden md:flex items-center gap-12 text-base font-light">
             <Link href="/">
-              <motion.button
-                className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
-                whileHover={{ scale: 1.1 }}
+              <motion.span
+                className="relative cursor-pointer text-[#3B2F2F] hover:text-[#D9B26D] transition-colors duration-300"
+                whileHover={{ y: -2 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Home
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
-              </motion.button>
+              </motion.span>
             </Link>
 
-            {/* 2. Reservations Link */}
             <Link href="/reservations">
-              <motion.button
-                className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
-                whileHover={{ scale: 1.1 }}
+              <motion.span
+                className="relative cursor-pointer text-[#3B2F2F] hover:text-[#D9B26D] transition-colors duration-300"
+                whileHover={{ y: -2 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 Reservations
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
-              </motion.button>
+              </motion.span>
             </Link>
             
-            {/* 3. Dining Menu Link */}
             <Link href="/dining-menu">
-              <motion.button
-                className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
-                whileHover={{ scale: 1.1 }}
+              <motion.span
+                className="relative cursor-pointer text-[#3B2F2F] hover:text-[#D9B26D] transition-colors duration-300"
+                whileHover={{ y: -2 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                Dining Menu
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
-              </motion.button>
+                Menu
+              </motion.span>
             </Link>
             
-            {/* 4. Order Online Link */}
             <Link href="/takeout">
-              <motion.button
-                className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
-                whileHover={{ scale: 1.1 }}
+              <motion.span
+                className="relative cursor-pointer text-[#3B2F2F] hover:text-[#D9B26D] transition-colors duration-300"
+                whileHover={{ y: -2 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                Order Online
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
-              </motion.button>
+                Order
+              </motion.span>
             </Link>
             
-            {/* 5. Contact Button (uses setCurrentPage) */}
             <motion.button
               onClick={() => setCurrentPage('contact')}
-              className="relative group cursor-pointer text-[#3B2F2F] hover:text-black"
-              whileHover={{ scale: 1.1 }}
+              className="relative cursor-pointer text-[#3B2F2F] hover:text-[#D9B26D] transition-colors duration-300"
+              whileHover={{ y: -2 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
               Contact
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
             </motion.button>
 
-            {/* 6. Cart Link with Badge (Moved to the end, 'Cart' text removed) */}
             <Link href="/takeout">
               <motion.div
-                className="relative group cursor-pointer text-[#3B2F2F] hover:text-black flex items-center"
-                whileHover={{ scale: 1.1 }}
+                className="relative cursor-pointer text-[#3B2F2F] hover:text-[#D9B26D] flex items-center transition-colors duration-300"
+                whileHover={{ y: -2 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <ShoppingCart size={20} />
+                <ShoppingCart size={22} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 inline-flex items-center justify-center text-xs font-semibold rounded-full px-1.5 py-0.5 min-w-[20px] h-5 bg-[#D9B26D] text-[#3B2F2F]">
+                  <span className="absolute -top-2 -right-2 inline-flex items-center justify-center text-xs font-semibold rounded-full px-1.5 py-0.5 min-w-[18px] h-5 bg-[#D9B26D] text-white">
                     {cartCount}
                   </span>
                 )}
@@ -407,84 +393,59 @@ return (
         ))}
       </div>
 
-        {/* Hero Content */}
+        {/* Hero Content - Cleaner, More Elegant */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="relative z-10 max-w-5xl mx-auto [animation:fadeInSafe_0.8s_ease-out_forwards]"
-          style={{ opacity: 1 }}
+          transition={{ duration: 1, ease: 'easeOut' }}
+          className="relative z-10 max-w-6xl mx-auto px-8"
         >
-          {/* Semi-transparent dark blur overlay */}
-          <div className="absolute inset-0 -inset-x-12 -inset-y-12 bg-black/20 backdrop-blur-[2px] rounded-3xl"></div>
-          
-          <div className="relative">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="inline-flex items-center gap-2 mb-6 px-6 py-2 rounded-full bg-[#051622]/30 border border-[#E5C777]/30 backdrop-blur-sm"
-              style={{ opacity: 1 }}
-            >
-              <Sparkles className="text-[#E5C777]" size={18} />
-              <span className={`${inter.className} text-sm tracking-widest text-[#E5C777] font-medium`}>CULINARY EXCELLENCE</span>
-            </motion.div>
-
-            <motion.h1 
-              className="text-5xl md:text-6xl font-bold tracking-wide text-[#d4af37] font-playfair mb-4"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              style={{ opacity: 1 }}
-            >
-              The Modern Table
-            </motion.h1>
-
-            <motion.p
-              className={`${playfair.className} text-xl md:text-2xl text-[#d4af37]/90 mb-8 font-medium italic`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              style={{ opacity: 1 }}
-            >
-              Modern Taste. Classic Craft.
-            </motion.p>
-          </div>
-
-          <motion.p 
-            className={`${inter.className} text-lg text-white/90 mb-10 max-w-xl mx-auto`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            style={{ opacity: 1 }}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="inline-flex items-center gap-3 mb-12 px-8 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20"
           >
-            Where culinary artistry meets timeless elegance. Experience the extraordinary.
+            <Sparkles className="text-[#D9B26D]" size={20} />
+            <span className={`${inter.className} text-sm tracking-[0.3em] text-white font-light uppercase`}>Culinary Excellence</span>
+          </motion.div>
+
+          <motion.h1 
+            className={`${playfair.className} text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-8 leading-[0.95]`}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
+            The Modern
+            <br />
+            <span className="text-[#D9B26D]">Table</span>
+          </motion.h1>
+
+          <motion.p
+            className={`${playfair.className} text-2xl md:text-3xl text-white/90 mb-16 font-light italic max-w-2xl`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.7 }}
+          >
+            Where culinary tradition meets modern elegance
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1 }}
-            style={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.9 }}
           >
             <Link href="/reservations">
               <motion.button
-                className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full bg-[#D9B26D] text-[#3B2F2F] font-semibold text-lg overflow-hidden shadow-lg"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label="Reservations"
+                className="group relative inline-flex items-center gap-4 px-12 py-6 rounded-full bg-[#D9B26D] text-[#3B2F2F] font-semibold text-lg overflow-hidden shadow-[0_4px_20px_rgba(217,178,109,0.3)] hover:shadow-[0_8px_40px_rgba(217,178,109,0.4)] transition-all duration-300"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                aria-label="Make a Reservation"
               >
-                <span className="relative z-10 flex items-center gap-3">
-                  Reservations
-                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                <span className="relative z-10 flex items-center gap-4">
+                  Reserve Your Table
+                  <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform duration-300" />
                 </span>
-                <div className="absolute inset-0 bg-[#8DA9C4]/0 group-hover:bg-[#8DA9C4]/20 transition-colors blur-xl"></div>
-                <motion.div
-                  className="absolute inset-0 shadow-[0_0_30px_rgba(141,169,196,0.4)]"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                ></motion.div>
               </motion.button>
             </Link>
           </motion.div>
