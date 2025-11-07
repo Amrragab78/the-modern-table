@@ -113,11 +113,11 @@ const menuItems = [
 
 // Hero slideshow images
 const heroImages = [
-  "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=2400",
-  "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=2400",
-  "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=2400",
-  "https://images.pexels.com/photos/10749578/pexels-photo-10749578.jpeg?auto=compress&cs=tinysrgb&w=2400",
-  "https://images.pexels.com/photos/1639563/pexels-photo-1639563.jpeg?auto=compress&cs=tinysrgb&w=2400"
+  "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=format&fit=crop&w=1920&q=80",
+  "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=format&fit=crop&w=1920&q=80",
+  "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=format&fit=crop&w=1920&q=80",
+  "https://images.pexels.com/photos/10749578/pexels-photo-10749578.jpeg?auto=format&fit=crop&w=1920&q=80",
+  "https://images.pexels.com/photos/1639563/pexels-photo-1639563.jpeg?auto=format&fit=crop&w=1920&q=80"
 ];
 
 // Food showcase slideshow images
@@ -151,12 +151,26 @@ export default function NeoLuxuryPage( ) {
   
   // Hero slideshow state
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
   
   // Showcase slideshow state
   const [currentShowcaseSlide, setCurrentShowcaseSlide] = useState(0);
 
   useEffect(() => setMounted(true), []);
   const cartCount = mounted && isHydrated ? totalCount : 0;
+
+  // Preload all hero images
+  useEffect(() => {
+    const loadedStates: boolean[] = [];
+    heroImages.forEach((src, index) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        loadedStates[index] = true;
+        setImagesLoaded([...loadedStates]);
+      };
+    });
+  }, []);
 
   // Floating particles state
   const [particles, setParticles] = useState<{ x: number; y: number; opacity: number }[]>([]);
