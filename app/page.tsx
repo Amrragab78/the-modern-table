@@ -110,6 +110,14 @@ const menuItems = [
     },
   ];
 
+// Hero slideshow images
+const heroImages = [
+  "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=2400",
+  "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=2400",
+  "https://images.pexels.com/photos/1395319/pexels-photo-1395319.jpeg?auto=compress&cs=tinysrgb&w=2400",
+  "https://images.pexels.com/photos/1579739/pexels-photo-1579739.jpeg?auto=compress&cs=tinysrgb&w=2400"
+];
+
 export default function NeoLuxuryPage( ) {
   const { totalCount, isHydrated } = useCart();
   const [mounted, setMounted] = useState(false);
@@ -128,12 +136,23 @@ export default function NeoLuxuryPage( ) {
   const [showMenuDropdown, setShowMenuDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showMobileCategoriesDropdown, setShowMobileCategoriesDropdown] = useState(false);
+  
+  // Hero slideshow state
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => setMounted(true), []);
   const cartCount = mounted && isHydrated ? totalCount : 0;
 
   // Floating particles state
   const [particles, setParticles] = useState<{ x: number; y: number; opacity: number }[]>([]);
+
+  // Auto-advance slideshow
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000); // Change slide every 5 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   // Scroll-based animation for hero background
   const { scrollYProgress } = useScroll();
@@ -319,24 +338,31 @@ return (
         </div>
       </motion.header>
 
-      {/* Hero Section with Parallax */}
+      {/* Hero Section with Slideshow */}
       <section id="hero" className="relative flex flex-col justify-center items-center text-center h-screen px-4 overflow-hidden">
-        {/* Animated Background */}
+        {/* Slideshow Background */}
         <motion.div 
           className="absolute inset-0"
           style={{ opacity, scale }}
         >
-          <motion.img
-            src="https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=2400"
-            alt="Fine Dining Experience"
-            loading="eager"
-            fetchPriority="high"
-            className="absolute inset-0 w-full h-full object-cover min-h-screen"
-            initial={{ scale: 1.05 }}
-            animate={{ scale: 1.05 }}
-            transition={{ duration: 20, ease: 'linear', repeat: Infinity, repeatType: "reverse" }}
-            style={{ opacity: 1 }}
-          />
+          <AnimatePresence initial={false}>
+            {heroImages.map((image, index) => 
+              index === currentSlide && (
+                <motion.img
+                  key={image}
+                  src={image}
+                  alt={`Restaurant ambiance ${index + 1}`}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  fetchPriority={index === 0 ? "high" : "auto"}
+                  className="absolute inset-0 w-full h-full object-cover min-h-screen"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1.5, ease: "easeInOut" }}
+                />
+              )
+            )}
+          </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-b from-[#051622]/40 via-[#051622]/20 to-[#051622]/10"></div>
         </motion.div>
 
@@ -511,11 +537,16 @@ return (
             >
               <h3 className={`${playfair.className} text-4xl font-bold text-[#D9B26D]`}>About Us</h3>
               <p className={`${inter.className} text-[#6E6862] leading-relaxed text-lg`}>
-                The Modern Table is a fusion of world-class culinary artistry and cutting-edge digital design. 
-                Our AI-curated menu adapts to your preferences, ensuring a dining experience unlike any other.
+                The Modern Table celebrates the art of dining — where culinary tradition meets modern hospitality.
               </p>
               <p className={`${inter.className} text-[#6E6862] leading-relaxed text-lg`}>
-                Every element — from lighting to music — evolves with your mood, creating a truly immersive fine dining atmosphere.
+                Our chefs craft every dish with passion, precision, and locally sourced ingredients,
+              </p>
+              <p className={`${inter.className} text-[#6E6862] leading-relaxed text-lg`}>
+                offering a menu that reflects the vibrant diversity of our community.
+              </p>
+              <p className={`${inter.className} text-[#6E6862] leading-relaxed text-lg`}>
+                Step into an atmosphere designed for comfort, connection, and unforgettable flavors.
               </p>
               
               <div className="grid grid-cols-3 gap-6 pt-8">

@@ -586,27 +586,42 @@ export default function ReservationsPage() {
                   </p>
                 </div>
 
-                <motion.button
-                  onClick={() => {
-                    setIsConfirmed(false);
-                    setCurrentStep(1);
-                    setFormData({
-                      guests: "2",
-                      date: "",
-                      time: "",
-                      name: "",
-                      email: "",
-                      phone: "",
-                      notes: "",
-                      policyAgreed: false
-                    });
-                  }}
-                  className="px-8 py-3 rounded-full border-2 border-[var(--brand-espresso)] text-[var(--brand-espresso)] font-semibold hover:bg-[var(--brand-espresso)] hover:text-[var(--brand-ivory)] transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Make Another Reservation
-                </motion.button>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <motion.button
+                    onClick={() => {
+                      setIsConfirmed(false);
+                      setCurrentStep(1);
+                      setFormData({
+                        guests: "2",
+                        date: "",
+                        time: "",
+                        name: "",
+                        email: "",
+                        phone: "",
+                        notes: "",
+                        policyAgreed: false
+                      });
+                    }}
+                    className="px-8 py-3 rounded-full border-2 border-[var(--brand-espresso)] text-[var(--brand-espresso)] font-semibold hover:bg-[var(--brand-espresso)] hover:text-[var(--brand-ivory)] transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Make Another Reservation
+                  </motion.button>
+
+                  <Link href="/">
+                    <motion.button
+                      className="px-8 py-3 rounded-full bg-[var(--brand-pine)] text-[var(--brand-ivory)] font-semibold hover:bg-[var(--brand-pine)]/90 transition-colors shadow-md"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                      Back to Home
+                    </motion.button>
+                  </Link>
+                </div>
               </motion.div>
             )}
           </motion.div>
