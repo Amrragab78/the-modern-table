@@ -113,12 +113,11 @@ const menuItems = [
 
 // Hero slideshow images
 const heroImages = [
-  "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=2400",
   "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=2400",
-  "https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=2400",
-  "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=2400",
-  "https://images.pexels.com/photos/1395319/pexels-photo-1395319.jpeg?auto=compress&cs=tinysrgb&w=2400",
-  "https://images.pexels.com/photos/1579739/pexels-photo-1579739.jpeg?auto=compress&cs=tinysrgb&w=2400"
+  "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=2400",
+  "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=2400",
+  "https://images.pexels.com/photos/10749578/pexels-photo-10749578.jpeg?auto=compress&cs=tinysrgb&w=2400",
+  "https://images.pexels.com/photos/1639563/pexels-photo-1639563.jpeg?auto=compress&cs=tinysrgb&w=2400"
 ];
 
 // Food showcase slideshow images
@@ -166,7 +165,7 @@ export default function NeoLuxuryPage( ) {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-    }, 5000); // Change slide every 5 seconds
+    }, 7000); // Change slide every 7 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -373,7 +372,7 @@ return (
               )
             )}
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#051622]/40 via-[#051622]/20 to-[#051622]/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
         </motion.div>
 
       {/* Floating Particles */}
