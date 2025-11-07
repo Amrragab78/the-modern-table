@@ -14,6 +14,7 @@ const inter = Inter({ subsets: ["latin"], weight: ["300","400","500","600"] });
 // Menu categories for navigation
 const menuCategories = [
   { name: "Appetizers", path: "/appetizers", desc: "Start your culinary journey", image: "https://images.unsplash.com/photo-1614181843703-b0bfe692f51b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fEFwcGV0aXplcnN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=900" },
+  { name: "Fresh Salads", path: "/salads", desc: "Crisp, vibrant, and healthy", image: "https://images.pexels.com/photos/1059905/pexels-photo-1059905.jpeg?auto=compress&cs=tinysrgb&w=1200" },
   { name: "Seafood Entrées", path: "/seafood", desc: "Fresh from the ocean", image: "https://plus.unsplash.com/premium_photo-1717345994192-f5bc10b61c09?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8U2VhZm9vZHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=900" },
   { name: "Premium Meats", path: "/meats", desc: "The finest cuts", image: "https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=1200" },
   { name: "Artisan Pasta", path: "/pasta", desc: "Handcrafted with tradition", image: "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1200" },
@@ -600,7 +601,7 @@ return (
                       animate={{ scale: hoveredItem === i ? 1.1 : 1 }}
                       transition={{ duration: 0.6 }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/30 to-transparent"></div>
                     
                     {/* Hover Overlay */}
                     <motion.div
