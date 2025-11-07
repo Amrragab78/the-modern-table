@@ -118,6 +118,16 @@ const heroImages = [
   "https://images.pexels.com/photos/1579739/pexels-photo-1579739.jpeg?auto=compress&cs=tinysrgb&w=2400"
 ];
 
+// Food showcase slideshow images
+const showcaseImages = [
+  "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/1099680/pexels-photo-1099680.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1600"
+];
+
 export default function NeoLuxuryPage( ) {
   const { totalCount, isHydrated } = useCart();
   const [mounted, setMounted] = useState(false);
@@ -139,6 +149,9 @@ export default function NeoLuxuryPage( ) {
   
   // Hero slideshow state
   const [currentSlide, setCurrentSlide] = useState(0);
+  
+  // Showcase slideshow state
+  const [currentShowcaseSlide, setCurrentShowcaseSlide] = useState(0);
 
   useEffect(() => setMounted(true), []);
   const cartCount = mounted && isHydrated ? totalCount : 0;
@@ -146,11 +159,19 @@ export default function NeoLuxuryPage( ) {
   // Floating particles state
   const [particles, setParticles] = useState<{ x: number; y: number; opacity: number }[]>([]);
 
-  // Auto-advance slideshow
+  // Auto-advance hero slideshow
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
     }, 5000); // Change slide every 5 seconds
+    return () => clearInterval(interval);
+  }, []);
+
+  // Auto-advance showcase slideshow
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentShowcaseSlide((prev) => (prev + 1) % showcaseImages.length);
+    }, 4500); // Change slide every 4.5 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -660,6 +681,75 @@ return (
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Food Showcase Slideshow - BELOW Menu Section */}
+      <section className="relative py-32 px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FBF7F2] via-[#FBF7F2] to-[#FBF7F2]"></div>
+        
+        <div className="relative max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-12"
+          >
+            <span className={`${inter.className} text-sm tracking-[0.3em] text-[#D9B26D] font-medium mb-4 block`}>GALLERY</span>
+            <h2 className={`${playfair.className} text-4xl md:text-5xl font-bold text-[#3B2F2F] mb-4`}>
+              Culinary <span className="text-[#D9B26D]">Showcase</span>
+            </h2>
+            <p className={`${inter.className} text-[#6E6862] text-base max-w-2xl mx-auto`}>
+              A visual journey through our finest creations
+            </p>
+          </motion.div>
+
+          {/* Slideshow Container */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl border border-[#E5D9CC]"
+          >
+            <AnimatePresence initial={false}>
+              {showcaseImages.map((image, index) => 
+                index === currentShowcaseSlide && (
+                  <motion.img
+                    key={image}
+                    src={image}
+                    alt={`Culinary showcase ${index + 1}`}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 1.2, ease: "easeInOut" }}
+                  />
+                )
+              )}
+            </AnimatePresence>
+            
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"></div>
+
+            {/* Slide Indicators */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+              {showcaseImages.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentShowcaseSlide(index)}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    index === currentShowcaseSlide
+                      ? 'bg-[#D9B26D] w-8'
+                      : 'bg-white/50 hover:bg-white/75'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
