@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
 
 interface ReservationData {
   name: string;
@@ -38,6 +39,36 @@ export async function POST(request: Request) {
     console.log('Party Size:', guests);
     console.log('Special Requests:', notes || 'None');
     console.log('=================================');
+
+    // Insert reservation into Supabase
+    const { data: insertedData, error: insertError } = await supabase
+      .from('reservations')
+      .insert([
+        {
+          name,
+          email,
+          phone: phone || null,
+          date,
+          time,
+          guests: parseInt(guests, 10),
+          special_requests: notes || null,
+          status: 'pending'
+        }
+      ])
+      .select();
+
+    if (insertError) {
+      console.error('Supabase Insert Error:', insertError);
+      return NextResponse.json(
+        { 
+          success: false,
+          error: 'Failed to save reservation to database'
+        }, 
+        { status: 500 }
+      );
+    }
+
+    console.log('Reservation saved to Supabase:', insertedData);
 
     return NextResponse.json(
       { 
