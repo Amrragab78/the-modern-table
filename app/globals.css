@@ -24,4 +24,29 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+/* Enhanced readability - slightly larger fonts */
+h1 {
+  font-size: 110% !important;
+}
+
+h2 {
+  font-size: 110% !important;
+}
+
+h3 {
+  font-size: 110% !important;
+}
+
+button, a {
+  font-size: calc(1rem + 0.1rem);
+}
+
+/* Maintain responsive scaling */
+@media (max-width: 768px) {
+  body {
+    font-size: 1.05rem;
+  }
 }
