@@ -21,7 +21,7 @@ import {
 import { Playfair_Display, Inter } from "next/font/google";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase";
+import { supabaseAdmin as supabase, createClient } from "@/lib/supabase";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "600", "700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"] });
@@ -41,7 +41,7 @@ interface Reservation {
 
 export default function AdminDashboardPage() {
   const router = useRouter();
-  const supabase = createClient();
+  const authClient = createClient();
 
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [filteredReservations, setFilteredReservations] = useState<Reservation[]>([]);
@@ -55,13 +55,13 @@ export default function AdminDashboardPage() {
   // Check authentication
   useEffect(() => {
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } } = await authClient.auth.getSession();
       if (!session) {
         router.push("/admin/login");
       }
     };
     checkAuth();
-  }, [router, supabase.auth]);
+  }, [router, authClient.auth]);
 
   // Fetch reservations
   useEffect(() => {
@@ -71,6 +71,9 @@ export default function AdminDashboardPage() {
   const fetchReservations = async () => {
     try {
       setLoading(true);
+      if (!supabase) {
+        throw new Error("Supabase admin client not initialized");
+      }
       const { data, error } = await supabase
         .from("reservations")
         .select("*")
@@ -116,13 +119,16 @@ export default function AdminDashboardPage() {
   }, [searchTerm, statusFilter, dateFrom, dateTo, reservations]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await authClient.auth.signOut();
     router.push("/admin/login");
   };
 
   const updateStatus = async (id: string, newStatus: string) => {
     setUpdating(id);
     try {
+      if (!supabase) {
+        throw new Error("Supabase admin client not initialized");
+      }
       const { error } = await supabase
         .from("reservations")
         .update({ status: newStatus })

@@ -20,7 +20,7 @@ import {
 import { Playfair_Display, Inter } from "next/font/google";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase";
+import { supabaseAdmin as supabase, createClient } from "@/lib/supabase";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "600", "700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"] });
@@ -37,7 +37,7 @@ interface Order {
 
 export default function AdminOrdersPage() {
   const router = useRouter();
-  const supabase = createClient();
+  const authClient = createClient();
 
   const [orders, setOrders] = useState<Order[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
@@ -48,13 +48,13 @@ export default function AdminOrdersPage() {
   // Check authentication
   useEffect(() => {
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } } = await authClient.auth.getSession();
       if (!session) {
         router.push("/admin/login");
       }
     };
     checkAuth();
-  }, [router, supabase.auth]);
+  }, [router, authClient.auth]);
 
   // Fetch orders
   useEffect(() => {
@@ -64,6 +64,9 @@ export default function AdminOrdersPage() {
   const fetchOrders = async () => {
     try {
       setLoading(true);
+      if (!supabase) {
+        throw new Error("Supabase admin client not initialized");
+      }
       const { data, error } = await supabase
         .from("orders")
         .select("*")
@@ -89,13 +92,16 @@ export default function AdminOrdersPage() {
   }, [statusFilter, orders]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await authClient.auth.signOut();
     router.push("/admin/login");
   };
 
   const updateStatus = async (id: string, newStatus: string) => {
     setUpdating(id);
     try {
+      if (!supabase) {
+        throw new Error("Supabase admin client not initialized");
+      }
       const { error } = await supabase
         .from("orders")
         .update({ status: newStatus })
