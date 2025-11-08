@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 
 // Validate environment variables
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -13,4 +13,9 @@ if (!supabaseAnonKey) {
 }
 
 // Create and export the Supabase client
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createSupabaseClient(supabaseUrl, supabaseAnonKey);
+
+// Export function to create client for client components
+export function createClient() {
+  return createSupabaseClient(supabaseUrl!, supabaseAnonKey!);
+}
