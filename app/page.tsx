@@ -343,6 +343,16 @@ return (
               Contact
             </motion.button>
 
+            <Link href="/admin/login">
+              <motion.button
+                className="border border-[#D9B26D] text-[#D9B26D] hover:bg-[#D9B26D] hover:text-white rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300"
+                whileHover={{ y: -2 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                Admin Login
+              </motion.button>
+            </Link>
+
             <Link href="/takeout">
               <motion.div
                 className="relative cursor-pointer text-[#3B2F2F] hover:text-[#D9B26D] flex items-center transition-colors duration-300"
