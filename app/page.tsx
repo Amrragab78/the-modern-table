@@ -111,13 +111,13 @@ const menuItems = [
     },
   ];
 
-// Hero slideshow images
+// Hero slideshow images - High-quality restaurant ambiance from Pexels
 const heroImages = [
-  "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=format&fit=crop&w=1920&q=80",
-  "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=format&fit=crop&w=1920&q=80",
-  "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=format&fit=crop&w=1920&q=80",
-  "https://images.pexels.com/photos/10749578/pexels-photo-10749578.jpeg?auto=format&fit=crop&w=1920&q=80",
-  "https://images.pexels.com/photos/1639563/pexels-photo-1639563.jpeg?auto=format&fit=crop&w=1920&q=80"
+  "https://images.pexels.com/photos/3201921/pexels-photo-3201921.jpeg?auto=compress&cs=tinysrgb&w=1920",
+  "https://images.pexels.com/photos/5288108/pexels-photo-5288108.jpeg?auto=compress&cs=tinysrgb&w=1920",
+  "https://images.pexels.com/photos/33033815/pexels-photo-33033815.jpeg?auto=compress&cs=tinysrgb&w=1920",
+  "https://images.pexels.com/photos/11795618/pexels-photo-11795618.jpeg?auto=compress&cs=tinysrgb&w=1920",
+  "https://images.pexels.com/photos/6479590/pexels-photo-6479590.jpeg?auto=compress&cs=tinysrgb&w=1920"
 ];
 
 // Food showcase slideshow images
