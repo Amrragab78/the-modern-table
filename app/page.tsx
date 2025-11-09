@@ -343,16 +343,6 @@ return (
               Contact
             </motion.button>
 
-            <Link href="/admin/login">
-              <motion.button
-                className="border border-[#D9B26D] text-[#D9B26D] hover:bg-[#D9B26D] hover:text-white rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-300"
-                whileHover={{ y: -2 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                Admin Login
-              </motion.button>
-            </Link>
-
             <Link href="/takeout">
               <motion.div
                 className="relative cursor-pointer text-[#3B2F2F] hover:text-[#D9B26D] flex items-center transition-colors duration-300"
@@ -790,89 +780,6 @@ return (
         </motion.div>
       </section>
 
-      {/* Enhanced Footer */}
-      <footer className="relative border-t border-[#E5D9CC] py-16">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FBF7F2] via-[#FBF7F2] to-[#FBF7F2]"></div>
-        
-        <div className="relative max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            <div className="space-y-4">
-            <div className="flex items-center gap-3 mb-4">
-                <UtensilsCrossed className="text-[#D9B26D]" size={24} />
-                <span className={`${playfair.className} text-xl font-bold text-[#3B2F2F]`}>
-                  THE MODERN TABLE
-                </span>
-              </div>
-              <p className={`${inter.className} text-[#6E6862] text-sm leading-relaxed`}>
-                Where culinary artistry meets timeless elegance.
-              </p>
-            </div>
-            
-            <div>
-              <h4 className={`${playfair.className} text-lg font-bold text-[#D4AF37] mb-4`}>Quick Links</h4>
-              <div className={`${inter.className} space-y-2 text-sm`}>
-                {['About', 'Menu'].map(item => (
-                  <button
-                    key={item}
-                    onClick={() => document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: "smooth" })}
-                    className="block text-gray-400 hover:text-[#D4AF37] transition-colors"
-                  >
-                    {item}
-                  </button>
-                ))}
-                {['Reservations', 'Contact'].map(item => (
-                  <button
-                    key={item}
-                    onClick={() => setCurrentPage(item.toLowerCase())}
-                    className="block text-[#6E6862] hover:text-[#D9B26D] transition-colors"
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            <div>
-              <h4 className={`${playfair.className} text-lg font-bold text-[#D4AF37] mb-4`}>Contact</h4>
-              <div className={`${inter.className} space-y-3 text-sm text-[#6E6862]`}>
-                <div className="flex items-start gap-2">
-                  <MapPin size={16} className="text-[#D9B26D] mt-1 shrink-0" />
-                  <span>Downtown – Your City, USA  
-123 Modern St, Suite 100</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone size={16} className="text-[#D9B26D] shrink-0" />
-                  <span>(555) 000-0000</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail size={16} className="text-[#D9B26D] shrink-0" />
-                  <span>contact@themoderntable.example</span>
-                </div>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className={`${playfair.className} text-lg font-bold text-[#D4AF37] mb-4`}>Hours</h4>
-              <div className={`${inter.className} space-y-2 text-sm text-gray-400`}>
-                <div className="flex items-start gap-2">
-                  <Clock size={16} className="text-[#D4AF37] mt-1 shrink-0" />
-                  <div>
-                    <p>Mon - Thu: 5:00 PM - 10:00 PM</p>
-                    <p>Fri - Sat: 5:00 PM - 11:00 PM</p>
-                    <p>Sunday: 4:00 PM - 9:00 PM</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="pt-8 border-t border-[#E5D9CC] text-center">
-            <p className={`${inter.className} text-sm text-[#6E6862]`}>
-              © {new Date().getFullYear()} The Modern Table. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
       </>
       )}
 
