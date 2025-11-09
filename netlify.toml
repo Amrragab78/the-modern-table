@@ -2,10 +2,13 @@
   command = "npm run build"
   publish = ".next"
 
-[build.environment]
-  NODE_VERSION = "18"
-  NEXT_TELEMETRY_DISABLED = "1"
+  # Environment variables required for Next.js 16
+  environment = { 
+    NODE_VERSION = "20.11.0", 
+    NEXT_TELEMETRY_DISABLED = "1" 
+  }
 
+# Redirect all routes to the main index for Next.js routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
