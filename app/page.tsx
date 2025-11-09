@@ -359,147 +359,38 @@ return (
         </div>
       </motion.header>
 
-      {/* Hero Section with Slideshow - Enhanced with 3D Depth & Parallax */}
-      <section id="hero" className="relative flex flex-col justify-center items-center text-center h-screen px-4 overflow-hidden" style={{ perspective: '1000px' }}>
-        {/* Slideshow Background with Parallax */}
-        <motion.div 
-          className="absolute inset-0"
-          style={{ 
-            opacity, 
-            scale,
-            y: useTransform(scrollYProgress, [0, 1], [0, 200]),
-          }}
-        >
-          <AnimatePresence initial={false}>
-            {heroImages.map((image, index) => 
-              index === currentSlide && (
-                <motion.img
-                  key={image}
-                  src={image}
-                  alt={`Restaurant ambiance ${index + 1}`}
-                  loading={index === 0 ? "eager" : "lazy"}
-                  fetchPriority={index === 0 ? "high" : "auto"}
-                  className="absolute inset-0 w-full h-full object-cover min-h-screen"
-                  initial={{ opacity: 0, scale: 1.1 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 3, ease: "easeInOut" }}
-                />
-              )
-            )}
-          </AnimatePresence>
-          {/* Enhanced gradient overlay with depth */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
-          <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/20"></div>
-        </motion.div>
-
-      {/* Floating Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {particles.map((p, i ) => (
-          <motion.div
-            key={i}
-            className={`absolute w-1 h-1 rounded-full ${i % 2 === 0 ? 'bg-[#E5C777]' : 'bg-[#8DA9C4]'}`}
-            initial={{ x: p.x, y: p.y, opacity: p.opacity }}
-            animate={{
-              y: [p.y, p.y - (Math.random() * 100 + 50)],
-              opacity: [p.opacity, 0],
-            }}
-            transition={{
-              duration: Math.random() * 3 + 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
+      {/* Hero Section - Cinematic Version */}
+      <section className="relative w-full h-[100vh] overflow-hidden">
+        {/* Background image slideshow wrapper */}
+        <div className="absolute inset-0">
+          <img
+            src="https://images.pexels.com/photos/3201921/pexels-photo-3201921.jpeg"
+            alt="Hero background"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[2500ms] ease-in-out opacity-100"
           />
-        ))}
-      </div>
+          {/* Add other slideshow images here later */}
+        </div>
 
-        {/* Hero Content - Enhanced with 3D Depth Effects */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
-          className="relative z-10 max-w-6xl mx-auto px-8"
-          style={{
-            y: useTransform(scrollYProgress, [0, 1], [0, -50]),
-            transformStyle: 'preserve-3d'
-          }}
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, z: -50 }}
-            animate={{ opacity: 1, scale: 1, z: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="inline-flex items-center gap-3 mb-12 px-8 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg"
-            style={{ transform: 'translateZ(30px)' }}
-          >
-            <Sparkles className="text-[#D9B26D]" size={20} />
-            <span className={`${inter.className} text-sm tracking-[0.3em] text-white font-light uppercase`}>Culinary Excellence</span>
-          </motion.div>
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/40 to-black/70 z-[1]"></div>
 
-          <motion.h1 
-            className={`${playfair.className} text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-8 leading-[0.95] drop-shadow-2xl`}
-            initial={{ opacity: 0, y: 30, rotateX: -15 }}
-            animate={{ opacity: 1, y: 0, rotateX: 0 }}
-            transition={{ duration: 1, delay: 0.5, type: "spring" }}
-            style={{ transform: 'translateZ(50px)' }}
-          >
-            The Modern
-            <br />
-            <span className="text-[#D9B26D]">Table</span>
-          </motion.h1>
-
-          <motion.p
-            className={`${playfair.className} text-2xl md:text-3xl text-white/90 mb-16 font-light italic max-w-2xl drop-shadow-lg`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.7 }}
-            style={{ transform: 'translateZ(40px)' }}
-          >
-            Where culinary tradition meets modern elegance
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1, delay: 0.9, type: "spring" }}
-            style={{ transform: 'translateZ(60px)' }}
-          >
-            <Link href="/reservations">
-              <motion.button
-                className="group relative inline-flex items-center gap-4 px-12 py-6 rounded-full bg-[#D9B26D] text-[#3B2F2F] font-semibold text-lg overflow-hidden shadow-[0_4px_20px_rgba(217,178,109,0.3)] hover:shadow-[0_8px_40px_rgba(217,178,109,0.4)] transition-all duration-300"
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                aria-label="Make a Reservation"
+        {/* Hero text content */}
+        <div className="relative z-[2] flex flex-col items-center justify-center h-full text-center text-white space-y-6 px-4">
+          <div className="bg-black/30 backdrop-blur-md rounded-2xl px-6 py-4 inline-block">
+            <span className={`${inter.className} text-sm tracking-[0.3em] text-[#D9B26D] uppercase`}>Culinary Excellence</span>
+            <h1 className={`${playfair.className} text-5xl md:text-6xl font-serif font-semibold mt-3 drop-shadow-[0_3px_8px_rgba(0,0,0,0.6)]`}>
+              Where culinary tradition meets modern elegance
+            </h1>
+            <div className="mt-8">
+              <a
+                href="/reservations"
+                className={`${inter.className} inline-flex items-center justify-center px-8 py-4 bg-[#D9B26D] text-black font-medium rounded-full shadow-md hover:bg-[#C9A15D] transition-all duration-300`}
               >
-                <span className="relative z-10 flex items-center gap-4">
-                  Reserve Your Table
-                  <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform duration-300" />
-                </span>
-              </motion.button>
-            </Link>
-          </motion.div>
-        </motion.div>
-
-        {/* Enhanced Scroll Indicator */}
-        <motion.div 
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center cursor-pointer"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.2 }}
-          onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
-        >
-          <span className={`${inter.className} text-xs tracking-[0.3em] text-[#D9B26D] mb-3 font-medium`}>EXPLORE</span>
-          <motion.div 
-            className="w-6 h-10 border-2 border-[#D9B26D]/50 rounded-full p-1"
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <motion.div
-              className="w-1 h-2 bg-[#D9B26D] rounded-full mx-auto"
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            ></motion.div>
-          </motion.div>
-        </motion.div>
+                Reserve Your Table →
+              </a>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* About Section with Enhanced Design */}
