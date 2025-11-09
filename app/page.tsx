@@ -359,12 +359,16 @@ return (
         </div>
       </motion.header>
 
-      {/* Hero Section with Slideshow */}
-      <section id="hero" className="relative flex flex-col justify-center items-center text-center h-screen px-4 overflow-hidden">
-        {/* Slideshow Background */}
+      {/* Hero Section with Slideshow - Enhanced with 3D Depth & Parallax */}
+      <section id="hero" className="relative flex flex-col justify-center items-center text-center h-screen px-4 overflow-hidden" style={{ perspective: '1000px' }}>
+        {/* Slideshow Background with Parallax */}
         <motion.div 
           className="absolute inset-0"
-          style={{ opacity, scale }}
+          style={{ 
+            opacity, 
+            scale,
+            y: useTransform(scrollYProgress, [0, 1], [0, 200]),
+          }}
         >
           <AnimatePresence initial={false}>
             {heroImages.map((image, index) => 
@@ -376,15 +380,17 @@ return (
                   loading={index === 0 ? "eager" : "lazy"}
                   fetchPriority={index === 0 ? "high" : "auto"}
                   className="absolute inset-0 w-full h-full object-cover min-h-screen"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
+                  initial={{ opacity: 0, scale: 1.1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 3, ease: "easeInOut" }}
                 />
               )
             )}
           </AnimatePresence>
+          {/* Enhanced gradient overlay with depth */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/20"></div>
         </motion.div>
 
       {/* Floating Particles */}
@@ -407,28 +413,34 @@ return (
         ))}
       </div>
 
-        {/* Hero Content - Cleaner, More Elegant */}
+        {/* Hero Content - Enhanced with 3D Depth Effects */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: 'easeOut' }}
           className="relative z-10 max-w-6xl mx-auto px-8"
+          style={{
+            y: useTransform(scrollYProgress, [0, 1], [0, -50]),
+            transformStyle: 'preserve-3d'
+          }}
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.95, z: -50 }}
+            animate={{ opacity: 1, scale: 1, z: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="inline-flex items-center gap-3 mb-12 px-8 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20"
+            className="inline-flex items-center gap-3 mb-12 px-8 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg"
+            style={{ transform: 'translateZ(30px)' }}
           >
             <Sparkles className="text-[#D9B26D]" size={20} />
             <span className={`${inter.className} text-sm tracking-[0.3em] text-white font-light uppercase`}>Culinary Excellence</span>
           </motion.div>
 
           <motion.h1 
-            className={`${playfair.className} text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-8 leading-[0.95]`}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            className={`${playfair.className} text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight text-white mb-8 leading-[0.95] drop-shadow-2xl`}
+            initial={{ opacity: 0, y: 30, rotateX: -15 }}
+            animate={{ opacity: 1, y: 0, rotateX: 0 }}
+            transition={{ duration: 1, delay: 0.5, type: "spring" }}
+            style={{ transform: 'translateZ(50px)' }}
           >
             The Modern
             <br />
@@ -436,23 +448,25 @@ return (
           </motion.h1>
 
           <motion.p
-            className={`${playfair.className} text-2xl md:text-3xl text-white/90 mb-16 font-light italic max-w-2xl`}
+            className={`${playfair.className} text-2xl md:text-3xl text-white/90 mb-16 font-light italic max-w-2xl drop-shadow-lg`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.7 }}
+            style={{ transform: 'translateZ(40px)' }}
           >
             Where culinary tradition meets modern elegance
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.9 }}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1, delay: 0.9, type: "spring" }}
+            style={{ transform: 'translateZ(60px)' }}
           >
             <Link href="/reservations">
               <motion.button
                 className="group relative inline-flex items-center gap-4 px-12 py-6 rounded-full bg-[#D9B26D] text-[#3B2F2F] font-semibold text-lg overflow-hidden shadow-[0_4px_20px_rgba(217,178,109,0.3)] hover:shadow-[0_8px_40px_rgba(217,178,109,0.4)] transition-all duration-300"
-                whileHover={{ scale: 1.03 }}
+                whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 aria-label="Make a Reservation"
               >
