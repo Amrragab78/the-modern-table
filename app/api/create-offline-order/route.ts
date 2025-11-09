@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { nanoid } from 'nanoid';
+import { supabaseAdmin } from '@/lib/supabase';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-09-30.clover',
@@ -52,6 +53,34 @@ export async function POST(req: NextRequest) {
         }))),
       },
     });
+
+    // Insert order into Supabase orders table using admin client
+    if (!supabaseAdmin) {
+      console.error('Supabase admin client not configured');
+    } else {
+      const { data: orderData, error: orderError } = await supabaseAdmin
+        .from('orders')
+        .insert([{
+          customer_name: customerInfo.name,
+          customer_email: customerInfo.email || '',
+          customer_phone: customerInfo.phone,
+          pickup_time: customerInfo.pickupTime,
+          items: items,
+          total_amount: totalAmount,
+          status: 'pending',
+          payment_method: 'offline',
+          stripe_customer_id: customer.id,
+          order_id: orderId,
+          created_at: new Date().toISOString(),
+        }])
+        .select();
+
+      if (orderError) {
+        console.error('Supabase insert error:', orderError);
+      } else {
+        console.log('Order saved successfully to Supabase:', orderData);
+      }
+    }
 
     return NextResponse.json({ 
       orderId: orderId, 

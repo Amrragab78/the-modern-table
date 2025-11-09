@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { UtensilsCrossed, Mail, Lock, ArrowRight } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "600", "700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"] });
@@ -16,7 +16,6 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const supabase = createClient();
 
   useEffect(() => {
     // Check if user is already logged in

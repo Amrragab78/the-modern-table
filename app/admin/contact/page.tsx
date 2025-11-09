@@ -1,55 +1,55 @@
 import React from "react";
 import {
-  UtensilsCrossed,
-  ShoppingBag,
-  Check,
-  X,
+  Mail,
   ArrowLeft,
-  ShoppingCart,
+  MessageSquare,
   Clock,
+  CheckCircle,
+  Archive,
 } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase";
-import AdminOrdersClient from "./AdminOrdersClient";
+import AdminContactClient from "./AdminContactClient";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "600", "700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"] });
 
-interface Order {
+interface ContactMessage {
   id: string;
-  customer_name: string;
-  customer_email: string;
-  items: any[];
-  total_amount: number;
+  name: string;
+  email: string;
+  phone?: string;
+  subject: string;
+  message: string;
   status: string;
   created_at: string;
 }
 
-export default async function AdminOrdersPage() {
+export default async function AdminContactPage() {
   // Guard against missing admin client on the server
   if (!supabaseAdmin) {
     throw new Error("Supabase admin client is not configured");
   }
 
-  // Fetch orders on the server
+  // Fetch contact messages on the server
   const { data, error } = await supabaseAdmin
-    .from("orders")
-    .select("*")
-    .order('created_at', { ascending: false });
+    .from("contact")
+    .select("*");
 
   if (error) {
-    console.error("Error fetching orders:", error);
+    console.error("Error fetching contact messages:", error);
   }
 
-  const orders: Order[] = data ?? [];
+  const messages: ContactMessage[] = data ?? [];
 
   // Calculate stats
   const stats = {
-    total: orders.length,
-    pending: orders.filter((o) => o.status === "pending").length,
-    fulfilled: orders.filter((o) => o.status === "fulfilled").length,
-    cancelled: orders.filter((o) => o.status === "cancelled").length,
+    total: messages.length,
+    new: messages.filter((m) => m.status === "new").length,
+    read: messages.filter((m) => m.status === "read").length,
+    replied: messages.filter((m) => m.status === "replied").length,
+    archived: messages.filter((m) => m.status === "archived").length,
   };
 
   return (
@@ -66,10 +66,10 @@ export default async function AdminOrdersPage() {
                 <ArrowLeft className="text-[#D9B26D]" size={20} />
               </button>
             </Link>
-            <ShoppingBag className="text-[#D9B26D]" size={32} />
+            <Mail className="text-[#D9B26D]" size={32} />
             <div>
               <h1 className={`${playfair.className} text-2xl font-bold text-[#3B2F2F]`}>
-                Orders Management
+                Contact Messages
               </h1>
               <p className={`${inter.className} text-sm text-[#6E6862]`}>
                 The Modern Table
@@ -81,12 +81,13 @@ export default async function AdminOrdersPage() {
 
       <div className="relative max-w-7xl mx-auto px-6 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
           {[
-            { label: "Total Orders", value: stats.total, icon: ShoppingCart, color: "bg-blue-500" },
-            { label: "Pending", value: stats.pending, icon: Clock, color: "bg-yellow-500" },
-            { label: "Fulfilled", value: stats.fulfilled, icon: Check, color: "bg-green-500" },
-            { label: "Cancelled", value: stats.cancelled, icon: X, color: "bg-red-500" },
+            { label: "Total", value: stats.total, icon: MessageSquare, color: "bg-blue-500" },
+            { label: "New", value: stats.new, icon: Mail, color: "bg-purple-500" },
+            { label: "Read", value: stats.read, icon: CheckCircle, color: "bg-yellow-500" },
+            { label: "Replied", value: stats.replied, icon: CheckCircle, color: "bg-green-500" },
+            { label: "Archived", value: stats.archived, icon: Archive, color: "bg-gray-500" },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -108,7 +109,7 @@ export default async function AdminOrdersPage() {
         </div>
 
         {/* Client-side interactive component for filters and table */}
-        <AdminOrdersClient initialOrders={orders} />
+        <AdminContactClient initialMessages={messages} />
 
         {/* Footer */}
         <p className={`${inter.className} text-center text-[#6E6862] text-sm mt-8`}>

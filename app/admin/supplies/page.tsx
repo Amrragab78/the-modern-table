@@ -1,55 +1,56 @@
 import React from "react";
 import {
-  UtensilsCrossed,
-  ShoppingBag,
-  Check,
-  X,
+  Package,
   ArrowLeft,
-  ShoppingCart,
-  Clock,
+  AlertTriangle,
+  Boxes,
+  TrendingUp,
 } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase";
-import AdminOrdersClient from "./AdminOrdersClient";
+import AdminSuppliesClient from "./AdminSuppliesClient";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "600", "700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"] });
 
-interface Order {
+interface Supply {
   id: string;
-  customer_name: string;
-  customer_email: string;
-  items: any[];
-  total_amount: number;
-  status: string;
-  created_at: string;
+  item_name: string;
+  category: string;
+  quantity: number;
+  unit: string;
+  supplier?: string;
+  last_ordered?: string;
+  restock_level: number;
 }
 
-export default async function AdminOrdersPage() {
+export default async function AdminSuppliesPage() {
   // Guard against missing admin client on the server
   if (!supabaseAdmin) {
     throw new Error("Supabase admin client is not configured");
   }
 
-  // Fetch orders on the server
+  // Fetch supplies on the server
   const { data, error } = await supabaseAdmin
-    .from("orders")
-    .select("*")
-    .order('created_at', { ascending: false });
+    .from("supplies")
+    .select("*");
 
   if (error) {
-    console.error("Error fetching orders:", error);
+    console.error("Error fetching supplies:", error);
   }
 
-  const orders: Order[] = data ?? [];
+  const supplies: Supply[] = data ?? [];
 
   // Calculate stats
+  const restockNeeded = supplies.filter((s) => s.quantity < s.restock_level).length;
+  const categories = [...new Set(supplies.map((s) => s.category))].length;
+
   const stats = {
-    total: orders.length,
-    pending: orders.filter((o) => o.status === "pending").length,
-    fulfilled: orders.filter((o) => o.status === "fulfilled").length,
-    cancelled: orders.filter((o) => o.status === "cancelled").length,
+    total: supplies.length,
+    restockNeeded,
+    categories,
+    wellStocked: supplies.filter((s) => s.quantity >= s.restock_level).length,
   };
 
   return (
@@ -66,10 +67,10 @@ export default async function AdminOrdersPage() {
                 <ArrowLeft className="text-[#D9B26D]" size={20} />
               </button>
             </Link>
-            <ShoppingBag className="text-[#D9B26D]" size={32} />
+            <Package className="text-[#D9B26D]" size={32} />
             <div>
               <h1 className={`${playfair.className} text-2xl font-bold text-[#3B2F2F]`}>
-                Orders Management
+                Supplies Management
               </h1>
               <p className={`${inter.className} text-sm text-[#6E6862]`}>
                 The Modern Table
@@ -83,10 +84,10 @@ export default async function AdminOrdersPage() {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           {[
-            { label: "Total Orders", value: stats.total, icon: ShoppingCart, color: "bg-blue-500" },
-            { label: "Pending", value: stats.pending, icon: Clock, color: "bg-yellow-500" },
-            { label: "Fulfilled", value: stats.fulfilled, icon: Check, color: "bg-green-500" },
-            { label: "Cancelled", value: stats.cancelled, icon: X, color: "bg-red-500" },
+            { label: "Total Items", value: stats.total, icon: Boxes, color: "bg-blue-500" },
+            { label: "Restock Needed", value: stats.restockNeeded, icon: AlertTriangle, color: "bg-red-500" },
+            { label: "Categories", value: stats.categories, icon: Package, color: "bg-purple-500" },
+            { label: "Well Stocked", value: stats.wellStocked, icon: TrendingUp, color: "bg-green-500" },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -108,7 +109,7 @@ export default async function AdminOrdersPage() {
         </div>
 
         {/* Client-side interactive component for filters and table */}
-        <AdminOrdersClient initialOrders={orders} />
+        <AdminSuppliesClient initialSupplies={supplies} />
 
         {/* Footer */}
         <p className={`${inter.className} text-center text-[#6E6862] text-sm mt-8`}>
