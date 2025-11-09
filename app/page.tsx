@@ -115,9 +115,7 @@ const menuItems = [
 const heroImages = [
   "https://images.pexels.com/photos/3201921/pexels-photo-3201921.jpeg?auto=compress&cs=tinysrgb&w=1920",
   "https://images.pexels.com/photos/5288108/pexels-photo-5288108.jpeg?auto=compress&cs=tinysrgb&w=1920",
-  "https://images.pexels.com/photos/33033815/pexels-photo-33033815.jpeg?auto=compress&cs=tinysrgb&w=1920",
-  "https://images.pexels.com/photos/11795618/pexels-photo-11795618.jpeg?auto=compress&cs=tinysrgb&w=1920",
-  "https://images.pexels.com/photos/6479590/pexels-photo-6479590.jpeg?auto=compress&cs=tinysrgb&w=1920"
+  "https://images.pexels.com/photos/33033815/pexels-photo-33033815.jpeg?auto=compress&cs=tinysrgb&w=1920"
 ];
 
 // Food showcase slideshow images
@@ -175,11 +173,11 @@ export default function NeoLuxuryPage( ) {
   // Floating particles state
   const [particles, setParticles] = useState<{ x: number; y: number; opacity: number }[]>([]);
 
-  // Auto-advance hero slideshow
+  // Auto-advance hero slideshow - Slower, more cinematic timing
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-    }, 7000); // Change slide every 7 seconds
+    }, 8000); // Change slide every 8 seconds for elegant pacing
     return () => clearInterval(interval);
   }, []);
 
@@ -381,7 +379,7 @@ return (
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 2.8, ease: "easeInOut" }}
+                  transition={{ duration: 3, ease: "easeInOut" }}
                 />
               )
             )}
