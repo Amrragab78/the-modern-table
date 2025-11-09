@@ -19,7 +19,9 @@
     "next": "16.0.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "react-icons": "^5.5.0",
     "react-payment-icons": "^1.2.6",
+    "recharts": "^3.3.0",
     "stripe": "^19.1.0",
     "three": "^0.180.0"
   },
