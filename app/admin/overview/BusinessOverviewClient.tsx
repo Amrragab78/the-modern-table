@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import {
   ShoppingCart,
@@ -11,12 +11,11 @@ import {
   DollarSign,
   LogOut,
   TrendingUp,
-  Loader2,
 } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { supabase, supabaseAdmin } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import {
   LineChart,
   Line,
@@ -44,103 +43,13 @@ interface RevenueData {
   revenue: number;
 }
 
-export default function BusinessOverviewClient() {
+interface BusinessOverviewClientProps {
+  metrics: Metrics;
+  revenueData: RevenueData[];
+}
+
+export default function BusinessOverviewClient({ metrics, revenueData }: BusinessOverviewClientProps) {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [metrics, setMetrics] = useState<Metrics>({
-    totalOrders: 0,
-    pendingOrders: 0,
-    fulfilledOrders: 0,
-    totalReservations: 0,
-    upcomingReservations: 0,
-    totalRevenue: 0,
-  });
-  const [revenueData, setRevenueData] = useState<RevenueData[]>([]);
-
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
-    try {
-      setLoading(true);
-      setError(false);
-
-      if (!supabaseAdmin) {
-        throw new Error("Supabase admin client not configured");
-      }
-
-      // Fetch orders and reservations in parallel
-      const [ordersRes, reservationsRes] = await Promise.all([
-        supabaseAdmin.from("orders").select("*"),
-        supabaseAdmin.from("reservations").select("*"),
-      ]);
-
-      if (ordersRes.error) throw ordersRes.error;
-      if (reservationsRes.error) throw reservationsRes.error;
-
-      const orders = ordersRes.data || [];
-      const reservations = reservationsRes.data || [];
-
-      // Calculate metrics
-      const totalOrders = orders.length;
-      const pendingOrders = orders.filter((o) => o.status === "pending").length;
-      const fulfilledOrders = orders.filter((o) => o.status === "fulfilled").length;
-      const totalRevenue = orders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
-
-      // Calculate upcoming reservations (next 7 days)
-      const now = new Date();
-      const sevenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-      const upcomingReservations = reservations.filter((r) => {
-        const resDate = new Date(r.date);
-        return resDate >= now && resDate <= sevenDaysFromNow;
-      }).length;
-
-      setMetrics({
-        totalOrders,
-        pendingOrders,
-        fulfilledOrders,
-        totalReservations: reservations.length,
-        upcomingReservations,
-        totalRevenue,
-      });
-
-      // Calculate revenue trend for last 7 days
-      const revenueByDate: Record<string, number> = {};
-      const last7Days: RevenueData[] = [];
-
-      for (let i = 6; i >= 0; i--) {
-        const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-        const dateStr = date.toISOString().split("T")[0];
-        revenueByDate[dateStr] = 0;
-      }
-
-      orders.forEach((order) => {
-        if (order.created_at && order.total_amount) {
-          const orderDate = new Date(order.created_at).toISOString().split("T")[0];
-          if (revenueByDate.hasOwnProperty(orderDate)) {
-            revenueByDate[orderDate] += order.total_amount;
-          }
-        }
-      });
-
-      Object.entries(revenueByDate).forEach(([date, revenue]) => {
-        const dateObj = new Date(date);
-        last7Days.push({
-          date: dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
-          revenue,
-        });
-      });
-
-      setRevenueData(last7Days);
-      setLoading(false);
-    } catch (err) {
-      console.error("Error fetching dashboard data:", err);
-      setError(true);
-      setLoading(false);
-    }
-  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -185,43 +94,6 @@ export default function BusinessOverviewClient() {
       color: "from-[#D9B26D] to-[#C4A05E]",
     },
   ];
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-[#D9B26D] animate-spin mx-auto mb-4" />
-          <p className={`${inter.className} text-[#6E6862]`}>Loading dashboard data...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-center bg-white/60 backdrop-blur-md border border-white/30 rounded-2xl p-8 shadow-lg max-w-md">
-          <div className="text-red-500 mb-4">
-            <svg className="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-          </div>
-          <h3 className={`${playfair.className} text-2xl font-bold text-[#3B2F2F] mb-2`}>
-            Unable to Load Data
-          </h3>
-          <p className={`${inter.className} text-[#6E6862] mb-6`}>
-            Please refresh the page to try again
-          </p>
-          <button
-            onClick={fetchDashboardData}
-            className={`${inter.className} px-6 py-3 bg-gradient-to-r from-[#D9B26D] to-[#C4A05E] text-white rounded-xl font-semibold hover:shadow-lg transition-all`}
-          >
-            Refresh
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-8">

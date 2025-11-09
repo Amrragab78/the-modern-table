@@ -1,6 +1,5 @@
-import React from "react";
-import BusinessOverviewClient from "./overview/BusinessOverviewClient";
+import { redirect } from "next/navigation";
 
-export default async function AdminDashboardPage() {
-  return <BusinessOverviewClient />;
+export default function AdminDashboardPage() {
+  redirect("/admin/overview");
 }
