@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { UtensilsCrossed, Mail, Lock, ArrowRight } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "600", "700"] });
@@ -64,17 +65,19 @@ export default function AdminLoginPage() {
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <motion.div
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-3 mb-4"
-          >
-            <UtensilsCrossed className="text-[#D9B26D]" size={32} />
-            <h1 className={`${playfair.className} text-2xl font-bold text-[#3B2F2F]`}>
-              THE MODERN TABLE
-            </h1>
-          </motion.div>
+          <Link href="https://themoderntable.netlify.app" className="hover:opacity-80 transition">
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-3 mb-4"
+            >
+              <UtensilsCrossed className="text-[#D9B26D]" size={32} />
+              <h1 className={`${playfair.className} text-2xl font-bold text-[#3B2F2F]`}>
+                THE MODERN TABLE
+              </h1>
+            </motion.div>
+          </Link>
           <p className={`${inter.className} text-[#6E6862] text-sm`}>Admin Dashboard</p>
         </div>
 
