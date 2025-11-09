@@ -111,13 +111,6 @@ const menuItems = [
     },
   ];
 
-// Hero slideshow images - High-quality restaurant ambiance from Pexels
-const heroImages = [
-  "https://images.pexels.com/photos/3201921/pexels-photo-3201921.jpeg?auto=compress&cs=tinysrgb&w=1920",
-  "https://images.pexels.com/photos/5288108/pexels-photo-5288108.jpeg?auto=compress&cs=tinysrgb&w=1920",
-  "https://images.pexels.com/photos/33033815/pexels-photo-33033815.jpeg?auto=compress&cs=tinysrgb&w=1920"
-];
-
 // Food showcase slideshow images
 const showcaseImages = [
   "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1600",
@@ -147,39 +140,11 @@ export default function NeoLuxuryPage( ) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showMobileCategoriesDropdown, setShowMobileCategoriesDropdown] = useState(false);
   
-  // Hero slideshow state
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
-  
   // Showcase slideshow state
   const [currentShowcaseSlide, setCurrentShowcaseSlide] = useState(0);
 
   useEffect(() => setMounted(true), []);
   const cartCount = mounted && isHydrated ? totalCount : 0;
-
-  // Preload all hero images
-  useEffect(() => {
-    const loadedStates: boolean[] = [];
-    heroImages.forEach((src, index) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        loadedStates[index] = true;
-        setImagesLoaded([...loadedStates]);
-      };
-    });
-  }, []);
-
-  // Floating particles state
-  const [particles, setParticles] = useState<{ x: number; y: number; opacity: number }[]>([]);
-
-  // Auto-advance hero slideshow - Slower, more cinematic timing
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-    }, 8000); // Change slide every 8 seconds for elegant pacing
-    return () => clearInterval(interval);
-  }, []);
 
   // Auto-advance showcase slideshow
   useEffect(() => {
@@ -189,30 +154,11 @@ export default function NeoLuxuryPage( ) {
     return () => clearInterval(interval);
   }, []);
 
-  // Scroll-based animation for hero background
-  const { scrollYProgress } = useScroll();
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 100);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Generate floating particles only on client, safely
-  useEffect(() => {
-    if (typeof window === "undefined") return; // Prevent SSR crash
-    const handle = requestAnimationFrame(() => {
-      const generated = Array.from({ length: 20 }).map(() => ({
-        x: Math.random() * (window.innerWidth || 1920),
-        y: Math.random() * (window.innerHeight || 1080),
-        opacity: Math.random() * 0.5 + 0.2,
-      }));
-      setParticles(generated);
-    });
-    return () => cancelAnimationFrame(handle);
   }, []);
 
   // Disable scroll when mobile menu is open
