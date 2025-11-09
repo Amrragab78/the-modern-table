@@ -3,18 +3,15 @@
 import React from "react";
 import { motion } from "framer-motion";
 import {
-  UtensilsCrossed,
-  Check,
-  X,
   Calendar,
   Users,
   Clock,
-  ShoppingCart,
-  Package,
-  MessageSquare,
+  Check,
+  X,
+  ArrowUpRight,
+  TrendingUp,
 } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
-import Link from "next/link";
 import AdminDashboardClient from "./AdminDashboardClient";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "600", "700"] });
@@ -46,166 +43,119 @@ interface AdminDashboardWrapperProps {
 }
 
 export default function AdminDashboardWrapper({ reservations, stats }: AdminDashboardWrapperProps) {
+  const summaryCards = [
+    {
+      title: "Total Reservations",
+      value: stats.total,
+      change: "+12%",
+      icon: Calendar,
+      color: "from-blue-500 to-blue-600",
+      bgLight: "bg-blue-50",
+    },
+    {
+      title: "Pending",
+      value: stats.pending,
+      change: `${stats.pending} waiting`,
+      icon: Clock,
+      color: "from-yellow-500 to-yellow-600",
+      bgLight: "bg-yellow-50",
+    },
+    {
+      title: "Confirmed",
+      value: stats.confirmed,
+      change: `${Math.round((stats.confirmed / stats.total) * 100 || 0)}% rate`,
+      icon: Check,
+      color: "from-green-500 to-green-600",
+      bgLight: "bg-green-50",
+    },
+    {
+      title: "Cancelled",
+      value: stats.cancelled,
+      change: `${Math.round((stats.cancelled / stats.total) * 100 || 0)}% rate`,
+      icon: X,
+      color: "from-red-500 to-red-600",
+      bgLight: "bg-red-50",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#FBF7F2]">
-      {/* Background Pattern */}
-      <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(217,178,109,0.05),transparent_50%)]"></div>
-
-      {/* Header */}
-      <header className="relative bg-white/50 backdrop-blur-sm border-b border-[#E5D9CC] shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <UtensilsCrossed className="text-[#D9B26D]" size={32} />
-            <div>
-              <h1 className={`${playfair.className} text-2xl font-bold text-[#3B2F2F]`}>
-                Admin Dashboard
-              </h1>
-              <p className={`${inter.className} text-sm text-[#6E6862]`}>
-                The Modern Table
-              </p>
-            </div>
+    <div className="space-y-8">
+      {/* Welcome Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-md border border-white/30 rounded-2xl p-8 shadow-lg shadow-black/5"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className={`${playfair.className} text-2xl md:text-3xl font-semibold text-[#3B2F2F] mb-2`}>
+              Dashboard Overview
+            </h2>
+            <p className={`${inter.className} text-base text-[#6E6862]`}>
+              Track your restaurant's reservations and performance metrics
+            </p>
           </div>
-
-          <div className="flex items-center gap-4">
-            <Link href="/admin/orders">
-              <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#D9B26D] text-[#3B2F2F] hover:bg-[#B8995F] transition-colors">
-                <ShoppingCart size={18} />
-                <span className={`${inter.className} font-medium`}>Orders</span>
-              </button>
-            </Link>
+          <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#D9B26D] to-[#C4A05E] text-white shadow-lg">
+            <TrendingUp size={18} />
+            <span className={`${inter.className} font-medium text-sm`}>Live Data</span>
           </div>
         </div>
-      </header>
+      </motion.div>
 
-      <div className="relative max-w-7xl mx-auto px-6 py-8">
-        {/* Management Dashboard Navigation */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-8"
-        >
-          <h2 className={`${playfair.className} text-2xl font-bold text-[#3B2F2F] mb-6 text-center`}>
-            Admin Management Dashboard
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <Link href="/admin">
-              <motion.div
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex flex-col items-center gap-3 p-6 bg-white/50 backdrop-blur-sm border-2 border-[#D9B26D] rounded-2xl shadow-lg hover:shadow-xl transition-all cursor-pointer"
-              >
-                <div className="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center">
-                  <Calendar className="text-white" size={24} />
-                </div>
-                <span className={`${inter.className} font-semibold text-[#3B2F2F] text-center`}>
-                  Reservations
-                </span>
-              </motion.div>
-            </Link>
-
-            <Link href="/admin/orders">
-              <motion.div
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex flex-col items-center gap-3 p-6 bg-white/50 backdrop-blur-sm border-2 border-[#E5D9CC] rounded-2xl shadow-lg hover:shadow-xl hover:border-[#D9B26D] transition-all cursor-pointer"
-              >
-                <div className="w-12 h-12 rounded-xl bg-green-500 flex items-center justify-center">
-                  <ShoppingCart className="text-white" size={24} />
-                </div>
-                <span className={`${inter.className} font-semibold text-[#3B2F2F] text-center`}>
-                  Orders
-                </span>
-              </motion.div>
-            </Link>
-
-            <Link href="/admin/contact">
-              <motion.div
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex flex-col items-center gap-3 p-6 bg-white/50 backdrop-blur-sm border-2 border-[#E5D9CC] rounded-2xl shadow-lg hover:shadow-xl hover:border-[#D9B26D] transition-all cursor-pointer"
-              >
-                <div className="w-12 h-12 rounded-xl bg-purple-500 flex items-center justify-center">
-                  <MessageSquare className="text-white" size={24} />
-                </div>
-                <span className={`${inter.className} font-semibold text-[#3B2F2F] text-center`}>
-                  Contact
-                </span>
-              </motion.div>
-            </Link>
-
-            <Link href="/admin/employees">
-              <motion.div
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex flex-col items-center gap-3 p-6 bg-white/50 backdrop-blur-sm border-2 border-[#E5D9CC] rounded-2xl shadow-lg hover:shadow-xl hover:border-[#D9B26D] transition-all cursor-pointer"
-              >
-                <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center">
-                  <Users className="text-white" size={24} />
-                </div>
-                <span className={`${inter.className} font-semibold text-[#3B2F2F] text-center`}>
-                  Employees
-                </span>
-              </motion.div>
-            </Link>
-
-            <Link href="/admin/supplies">
-              <motion.div
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex flex-col items-center gap-3 p-6 bg-white/50 backdrop-blur-sm border-2 border-[#E5D9CC] rounded-2xl shadow-lg hover:shadow-xl hover:border-[#D9B26D] transition-all cursor-pointer"
-              >
-                <div className="w-12 h-12 rounded-xl bg-orange-500 flex items-center justify-center">
-                  <Package className="text-white" size={24} />
-                </div>
-                <span className={`${inter.className} font-semibold text-[#3B2F2F] text-center`}>
-                  Supplies
-                </span>
-              </motion.div>
-            </Link>
-          </div>
-        </motion.div>
-
-        {/* Reservations Section Heading */}
-        <h3 className={`${playfair.className} text-xl font-bold text-[#3B2F2F] mb-6`}>
-          Reservations Overview
-        </h3>
-
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          {[
-            { label: "Total", value: stats.total, icon: Users, color: "bg-blue-500" },
-            { label: "Pending", value: stats.pending, icon: Clock, color: "bg-yellow-500" },
-            { label: "Confirmed", value: stats.confirmed, icon: Check, color: "bg-green-500" },
-            { label: "Cancelled", value: stats.cancelled, icon: X, color: "bg-red-500" },
-          ].map((stat) => (
-            <div
-              key={stat.label}
-              className="bg-white/50 backdrop-blur-sm border border-[#E5D9CC] rounded-2xl p-6 shadow-lg"
+      {/* Summary Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {summaryCards.map((card, index) => {
+          const Icon = card.icon;
+          return (
+            <motion.div
+              key={card.title}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -4, scale: 1.02 }}
+              className="group relative bg-white/60 backdrop-blur-md border border-white/30 rounded-2xl p-6 shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 transition-all cursor-pointer overflow-hidden"
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className={`${inter.className} text-sm text-[#6E6862] mb-1`}>{stat.label}</p>
-                  <p className={`${playfair.className} text-3xl font-bold text-[#3B2F2F]`}>
-                    {stat.value}
-                  </p>
+              {/* Gradient Overlay on Hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${card.color} opacity-0 group-hover:opacity-5 transition-opacity`}></div>
+              
+              <div className="relative">
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`p-3 rounded-xl ${card.bgLight}`}>
+                    <Icon className="text-[#3B2F2F]" size={24} />
+                  </div>
+                  <ArrowUpRight className="text-[#D9B26D] opacity-0 group-hover:opacity-100 transition-opacity" size={20} />
                 </div>
-                <div className={`${stat.color} w-12 h-12 rounded-xl flex items-center justify-center`}>
-                  <stat.icon className="text-white" size={24} />
+                
+                <h3 className={`${inter.className} text-sm font-medium text-[#6E6862] mb-2`}>
+                  {card.title}
+                </h3>
+                
+                <div className="flex items-end justify-between">
+                  <p className={`${playfair.className} text-4xl font-bold text-[#3B2F2F]`}>
+                    {card.value}
+                  </p>
+                  <span className={`${inter.className} text-xs text-[#6E6862] bg-[#E5D9CC]/30 px-2 py-1 rounded-lg`}>
+                    {card.change}
+                  </span>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Client-side interactive component for filters and table */}
-        <AdminDashboardClient initialReservations={reservations} />
-
-        {/* Footer */}
-        <p className={`${inter.className} text-center text-[#6E6862] text-sm mt-8`}>
-          © {new Date().getFullYear()} The Modern Table. All rights reserved.
-        </p>
+            </motion.div>
+          );
+        })}
       </div>
+
+      {/* Reservations Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
+        <h3 className={`${playfair.className} text-xl font-bold text-[#3B2F2F] mb-6`}>
+          Recent Reservations
+        </h3>
+        <AdminDashboardClient initialReservations={reservations} />
+      </motion.div>
     </div>
   );
 }
