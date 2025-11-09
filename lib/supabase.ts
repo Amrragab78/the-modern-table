@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -8,12 +9,38 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error("Missing Supabase public environment variables");
 }
 
-// Public client for general use
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Public client for general use with proper cookie handling
+export const supabase = createBrowserClient(
+  supabaseUrl,
+  supabaseAnonKey,
+  {
+    cookieOptions: {
+      domain:
+        process.env.NODE_ENV === "development"
+          ? undefined // allows localhost
+          : ".themoderntable.netlify.app", // production domain
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    },
+  }
+);
 
 // Helper function to create client for client components (for auth)
 export function createClientHelper() {
-  return createClient(supabaseUrl, supabaseAnonKey);
+  return createBrowserClient(
+    supabaseUrl,
+    supabaseAnonKey,
+    {
+      cookieOptions: {
+        domain:
+          process.env.NODE_ENV === "development"
+            ? undefined // allows localhost
+            : ".themoderntable.netlify.app", // production domain
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      },
+    }
+  );
 }
 
 // Admin-only client (SERVICE ROLE) – used ONLY in server-side code
