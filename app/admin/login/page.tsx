@@ -65,7 +65,7 @@ export default function AdminLoginPage() {
       >
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="https://themoderntable.netlify.app" className="hover:opacity-80 transition">
+          <Link href="/" className="hover:opacity-80 transition">
             <motion.div
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}

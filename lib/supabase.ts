@@ -15,10 +15,7 @@ export const supabase = createBrowserClient(
   supabaseAnonKey,
   {
     cookieOptions: {
-      domain:
-        process.env.NODE_ENV === "development"
-          ? undefined // allows localhost
-          : ".themoderntable.netlify.app", // production domain
+      domain: undefined, // Auto-detect domain (works for localhost, Vercel, Netlify, etc.)
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
     },
@@ -32,10 +29,7 @@ export function createClientHelper() {
     supabaseAnonKey,
     {
       cookieOptions: {
-        domain:
-          process.env.NODE_ENV === "development"
-            ? undefined // allows localhost
-            : ".themoderntable.netlify.app", // production domain
+        domain: undefined, // Auto-detect domain (works for localhost, Vercel, Netlify, etc.)
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
       },
