@@ -48,8 +48,8 @@ export async function POST(req: NextRequest) {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${req.headers.get('origin')}/success?session_id={CHECKOUT_SESSION_ID}&order_id=${orderId}&name=${encodeURIComponent(customerName)}`,
-      cancel_url: `${req.headers.get('origin')}/page-neo/takeout`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/success?session_id={CHECKOUT_SESSION_ID}&order_id=${orderId}&name=${encodeURIComponent(customerName)}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/takeout`,
       metadata: {
         orderId: orderId,
         customerName: customerName,
