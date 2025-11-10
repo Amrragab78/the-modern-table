@@ -14,6 +14,7 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  UtensilsCrossed,
 } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
@@ -42,6 +43,7 @@ export default function AdminSidebarLayout({ children, adminEmail }: AdminSideba
   const navItems = [
     { icon: Home, label: "Dashboard", href: "/admin", exactMatch: true },
     { icon: Calendar, label: "Reservations", href: "/admin/reservations" },
+    { icon: UtensilsCrossed, label: "Menu", href: "/admin/menu" },
     { icon: ShoppingCart, label: "Orders", href: "/admin/orders" },
     { icon: MessageSquare, label: "Contact", href: "/admin/contact" },
     { icon: Users, label: "Employees", href: "/admin/employees" },
