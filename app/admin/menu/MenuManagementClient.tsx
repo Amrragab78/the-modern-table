@@ -14,6 +14,7 @@ import {
 import { Playfair_Display, Inter } from "next/font/google";
 import { MenuItem } from "./page";
 import { createClientHelper } from "@/lib/supabase";
+import imageCompression from "browser-image-compression";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "600", "700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"] });
@@ -108,22 +109,48 @@ export default function MenuManagementClient({ initialMenuItems }: MenuManagemen
       return;
     }
 
-    // Validate file size (max 2MB)
-    if (file.size > 2 * 1024 * 1024) {
-      showNotification('error', 'Image size must be less than 2MB');
+    // Validate file size (max 10MB before compression)
+    if (file.size > 10 * 1024 * 1024) {
+      showNotification('error', 'Image must be less than 10MB');
       return;
     }
 
     setUploadingImage(true);
+    showNotification('success', 'Optimizing image...');
+
+    let uploadFile = file;
 
     try {
-      const fileExt = file.name.split('.').pop();
+      // Compress image if larger than 2MB
+      if (file.size > 2 * 1024 * 1024) {
+        try {
+          const compressionOptions = {
+            maxWidthOrHeight: 1200,
+            maxSizeMB: 2,
+            useWebWorker: true,
+            initialQuality: 0.8,
+          };
+
+          const compressedFile = await imageCompression(file, compressionOptions);
+          uploadFile = compressedFile;
+          
+          console.log(`Original size: ${(file.size / 1024 / 1024).toFixed(2)}MB`);
+          console.log(`Compressed size: ${(compressedFile.size / 1024 / 1024).toFixed(2)}MB`);
+        } catch (compressionError) {
+          console.error('Compression failed:', compressionError);
+          showNotification('error', 'Failed to compress image, uploading original file');
+          uploadFile = file;
+        }
+      }
+
+      // Upload to Supabase
+      const fileExt = uploadFile.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
       const filePath = `menu-items/${fileName}`;
 
       const { data, error } = await supabase.storage
         .from('menu-images')
-        .upload(filePath, file);
+        .upload(filePath, uploadFile);
 
       if (error) throw error;
 
@@ -132,7 +159,7 @@ export default function MenuManagementClient({ initialMenuItems }: MenuManagemen
         .getPublicUrl(filePath);
 
       setFormData({ ...formData, image_url: publicUrl });
-      showNotification('success', 'Image uploaded successfully');
+      showNotification('success', 'Upload complete!');
     } catch (error: any) {
       console.error('Error uploading image:', error);
       showNotification('error', 'Failed to upload image');
