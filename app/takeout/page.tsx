@@ -103,7 +103,9 @@ export default function TakeoutPage() {
           },
           body: JSON.stringify({
             items: cart,
-            customerInfo: checkoutData,
+            customerName: checkoutData.name,
+            phone: checkoutData.phone,
+            pickupTime: checkoutData.pickupTime,
           }),
         });
 

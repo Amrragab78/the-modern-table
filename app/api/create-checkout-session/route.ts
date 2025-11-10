@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(req: NextRequest) {
   try {
-    const { items, customerInfo } = await req.json();
+    const { items, customerName, phone, pickupTime } = await req.json();
 
     // Validate request data
     if (!items || !Array.isArray(items) || items.length === 0) {
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!customerInfo || !customerInfo.name || !customerInfo.phone || !customerInfo.pickupTime) {
+    if (!customerName || !phone || !pickupTime) {
       return NextResponse.json(
         { error: 'Invalid request: Customer information is incomplete' },
         { status: 400 }
@@ -48,13 +48,13 @@ export async function POST(req: NextRequest) {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${req.headers.get('origin')}/success?session_id={CHECKOUT_SESSION_ID}&order_id=${orderId}&name=${encodeURIComponent(customerInfo.name)}`,
+      success_url: `${req.headers.get('origin')}/success?session_id={CHECKOUT_SESSION_ID}&order_id=${orderId}&name=${encodeURIComponent(customerName)}`,
       cancel_url: `${req.headers.get('origin')}/page-neo/takeout`,
       metadata: {
         orderId: orderId,
-        customerName: customerInfo.name,
-        customerPhone: customerInfo.phone,
-        pickupTime: customerInfo.pickupTime,
+        customerName: customerName,
+        customerPhone: phone,
+        pickupTime: pickupTime,
       },
     });
 
@@ -71,10 +71,10 @@ export async function POST(req: NextRequest) {
       const { data: orderData, error: orderError } = await supabaseAdmin
         .from('orders')
         .insert([{
-          customer_name: customerInfo.name,
-          customer_email: customerInfo.email || '',
-          customer_phone: customerInfo.phone,
-          pickup_time: customerInfo.pickupTime,
+          customer_name: customerName,
+          customer_email: '',
+          customer_phone: phone,
+          pickup_time: pickupTime,
           items: items,
           total_amount: totalAmount,
           status: 'pending',
