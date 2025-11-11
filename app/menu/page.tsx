@@ -60,14 +60,11 @@ export default function MenuPage() {
       setError(null);
 
       const supabase = createClientHelper();
-      const now = new Date().toISOString();
       
       const { data, error: fetchError } = await supabase
         .from('menu_items')
         .select('*')
         .eq('available', true)
-        .eq('is_draft', false)
-        .or(`publish_at.is.null,publish_at.lte.${now}`)
         .order('created_at', { ascending: false });
 
       if (fetchError) throw fetchError;

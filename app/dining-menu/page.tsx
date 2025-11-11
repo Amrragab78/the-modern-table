@@ -79,14 +79,11 @@ export default function DiningMenuPage() {
   const fetchMenuItems = async () => {
     try {
       const supabase = createClientHelper();
-      const now = new Date().toISOString();
       
       const { data, error } = await supabase
         .from('menu_items')
         .select('*')
         .eq('available', true)
-        .eq('is_draft', false)
-        .or(`publish_at.is.null,publish_at.lte.${now}`)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
