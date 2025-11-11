@@ -1,17 +1,44 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, UtensilsCrossed } from "lucide-react";
 import { Playfair_Display, Inter } from "next/font/google";
 import Link from "next/link";
-import { menu } from "../data/menuData";
 import Image from "next/image";
+import { createClientHelper } from "@/lib/supabase";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400","600","700"] });
 const inter = Inter({ subsets: ["latin"], weight: ["300","400","500","600"] });
 
+interface MenuItem {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  image_url: string;
+  available: boolean;
+  created_at: string;
+}
+
+type CategoryKey = 'appetizers' | 'seafood' | 'meats' | 'pasta' | 'desserts' | 'beverages';
+
+type MenuByCategory = {
+  [K in CategoryKey]: MenuItem[];
+};
+
 export default function DiningMenuPage() {
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [menu, setMenu] = useState<MenuByCategory>({
+    appetizers: [],
+    seafood: [],
+    meats: [],
+    pasta: [],
+    desserts: [],
+    beverages: []
+  });
+
   const categories = [
     { key: 'appetizers' as const, label: 'APPETIZERS', id: 'appetizers' },
     { key: 'seafood' as const, label: 'SEAFOOD', id: 'seafood' },
@@ -20,6 +47,73 @@ export default function DiningMenuPage() {
     { key: 'desserts' as const, label: 'DESSERTS', id: 'desserts' },
     { key: 'beverages' as const, label: 'BEVERAGES', id: 'beverages' }
   ];
+
+  // Fetch menu items and organize by category
+  useEffect(() => {
+    fetchMenuItems();
+
+    // Set up Realtime subscription
+    const supabase = createClientHelper();
+    const channel = supabase
+      .channel('dining_menu_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'menu_items'
+        },
+        (payload) => {
+          console.log('Dining menu realtime change detected:', payload);
+          fetchMenuItems();
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const fetchMenuItems = async () => {
+    try {
+      const supabase = createClientHelper();
+      
+      const { data, error } = await supabase
+        .from('menu_items')
+        .select('*')
+        .eq('available', true)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      setMenuItems(data || []);
+      organizeMenuByCategory(data || []);
+    } catch (err: any) {
+      console.error('Error fetching menu items:', err);
+    }
+  };
+
+  const organizeMenuByCategory = (items: MenuItem[]) => {
+    const organized: MenuByCategory = {
+      appetizers: [],
+      seafood: [],
+      meats: [],
+      pasta: [],
+      desserts: [],
+      beverages: []
+    };
+
+    items.forEach((item) => {
+      const categoryKey = item.category.toLowerCase() as CategoryKey;
+      if (organized[categoryKey]) {
+        organized[categoryKey].push(item);
+      }
+    });
+
+    setMenu(organized);
+  };
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -160,7 +254,7 @@ export default function DiningMenuPage() {
                     {/* Food Image */}
                     <div className="relative w-full h-56 overflow-hidden">
                       <Image
-                        src={dish.img}
+                        src={dish.image_url}
                         alt={dish.name}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -175,13 +269,13 @@ export default function DiningMenuPage() {
                           {dish.name}
                         </h3>
                         <span className={`${playfair.className} text-xl font-bold text-[var(--brand-gold)] whitespace-nowrap`}>
-                          {dish.price}
+                          ${dish.price.toFixed(2)}
                         </span>
                       </div>
 
                       {/* Description */}
                       <p className={`${inter.className} text-[var(--brand-muted)] text-sm leading-relaxed`}>
-                        {dish.desc}
+                        {dish.description}
                       </p>
                     </div>
                   </motion.div>
