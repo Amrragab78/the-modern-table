@@ -30,6 +30,8 @@ interface FormData {
   category: string;
   available: boolean;
   image_url: string;
+  is_draft: boolean;
+  publish_at: string;
 }
 
 const categories = ["Appetizers", "Meats", "Seafood", "Pasta", "Desserts", "Beverages"];
@@ -51,6 +53,8 @@ export default function MenuManagementClient({ initialMenuItems }: MenuManagemen
     category: "Appetizers",
     available: true,
     image_url: "",
+    is_draft: false,
+    publish_at: "",
   });
 
   const supabase = createClientHelper();
@@ -102,6 +106,8 @@ export default function MenuManagementClient({ initialMenuItems }: MenuManagemen
       category: "Appetizers",
       available: true,
       image_url: "",
+      is_draft: false,
+      publish_at: "",
     });
     setIsModalOpen(true);
   };
@@ -115,6 +121,8 @@ export default function MenuManagementClient({ initialMenuItems }: MenuManagemen
       category: item.category,
       available: item.available,
       image_url: item.image_url,
+      is_draft: (item as any).is_draft || false,
+      publish_at: (item as any).publish_at || "",
     });
     setIsModalOpen(true);
   };
@@ -129,6 +137,8 @@ export default function MenuManagementClient({ initialMenuItems }: MenuManagemen
       category: "Appetizers",
       available: true,
       image_url: "",
+      is_draft: false,
+      publish_at: "",
     });
   };
 
@@ -229,13 +239,15 @@ export default function MenuManagementClient({ initialMenuItems }: MenuManagemen
     setIsLoading(true);
 
     try {
-      const itemData = {
+      const itemData: any = {
         name: formData.name.trim(),
         description: formData.description.trim(),
         price: parseFloat(formData.price),
         category: formData.category,
         available: formData.available,
         image_url: formData.image_url,
+        is_draft: formData.is_draft,
+        publish_at: formData.publish_at ? new Date(formData.publish_at).toISOString() : null,
       };
 
       if (editingItem) {
@@ -578,6 +590,43 @@ export default function MenuManagementClient({ initialMenuItems }: MenuManagemen
                           className="w-20 h-20 rounded-lg object-cover"
                         />
                       )}
+                    </div>
+                  </div>
+
+                  {/* Publishing Options */}
+                  <div className="border-t border-[#E5D9CC] pt-5 mt-2">
+                    <h4 className={`${playfair.className} text-lg font-semibold text-[#3B2F2F] mb-4`}>
+                      Publishing Options
+                    </h4>
+
+                    {/* Draft Toggle */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <input
+                        type="checkbox"
+                        id="is_draft"
+                        checked={formData.is_draft}
+                        onChange={(e) => setFormData({ ...formData, is_draft: e.target.checked })}
+                        className="w-5 h-5 text-[#D9B26D] border-[#E5D9CC] rounded focus:ring-2 focus:ring-[#D9B26D]"
+                      />
+                      <label htmlFor="is_draft" className={`${inter.className} text-sm font-medium text-[#3B2F2F] cursor-pointer`}>
+                        Save as Draft (won't be visible on public menu)
+                      </label>
+                    </div>
+
+                    {/* Schedule Publish Date */}
+                    <div>
+                      <label className={`${inter.className} block text-sm font-medium text-[#3B2F2F] mb-2`}>
+                        Schedule Publish Date (optional)
+                      </label>
+                      <input
+                        type="datetime-local"
+                        value={formData.publish_at}
+                        onChange={(e) => setFormData({ ...formData, publish_at: e.target.value })}
+                        className="w-full px-4 py-3 border border-[#E5D9CC] rounded-lg focus:ring-2 focus:ring-[#D9B26D] focus:border-transparent transition-all"
+                      />
+                      <p className={`${inter.className} text-xs text-[#6E6862] mt-1`}>
+                        Leave empty to publish immediately. Item will only be visible after this date/time.
+                      </p>
                     </div>
                   </div>
 
