@@ -67,7 +67,7 @@ export default function MenuPage() {
         .select('*')
         .eq('available', true)
         .eq('is_draft', false)
-        .or(`(publish_at.is.null,publish_at.lte.${now})`)
+        .or(`publish_at.is.null,publish_at.lte.${now}`)
         .order('created_at', { ascending: false });
 
       if (fetchError) throw fetchError;
