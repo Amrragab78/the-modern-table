@@ -48,34 +48,6 @@ export default function DiningMenuPage() {
     { key: 'beverages' as const, label: 'BEVERAGES', id: 'beverages' }
   ];
 
-  // Fetch menu items and organize by category
-  useEffect(() => {
-    fetchMenuItems();
-
-    // Set up Realtime subscription
-    const supabase = createClientHelper();
-    const channel = supabase
-      .channel('dining_menu_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'menu_items'
-        },
-        (payload) => {
-          console.log('Dining menu realtime change detected:', payload);
-          fetchMenuItems();
-        }
-      )
-      .subscribe();
-
-    // Cleanup subscription on unmount
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
   const fetchMenuItems = async () => {
     try {
       const supabase = createClientHelper();
@@ -114,6 +86,35 @@ export default function DiningMenuPage() {
 
     setMenu(organized);
   };
+
+  // Fetch menu items and organize by category
+  useEffect(() => {
+    fetchMenuItems();
+
+    // Set up Realtime subscription
+    const supabase = createClientHelper();
+    const channel = supabase
+      .channel('dining_menu_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'menu_items'
+        },
+        (payload) => {
+          console.log('Dining menu realtime change detected:', payload);
+          fetchMenuItems();
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      supabase.removeChannel(channel);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
