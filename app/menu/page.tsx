@@ -28,6 +28,30 @@ export default function MenuPage() {
 
   useEffect(() => {
     fetchMenuItems();
+
+    // Set up Realtime subscription
+    const supabase = createClientHelper();
+    const channel = supabase
+      .channel('menu_items_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'menu_items'
+        },
+        (payload) => {
+          console.log('Realtime change detected:', payload);
+          // Refresh menu items when any change occurs
+          fetchMenuItems();
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const fetchMenuItems = async () => {

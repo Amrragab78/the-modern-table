@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus,
@@ -54,6 +54,39 @@ export default function MenuManagementClient({ initialMenuItems }: MenuManagemen
   });
 
   const supabase = createClientHelper();
+
+  // Set up Realtime subscription for live updates
+  useEffect(() => {
+    const channel = supabase
+      .channel('admin_menu_items_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'menu_items'
+        },
+        async (payload) => {
+          console.log('Admin Realtime change detected:', payload);
+          
+          // Refresh menu items from database
+          const { data } = await supabase
+            .from('menu_items')
+            .select('*')
+            .order('created_at', { ascending: false });
+          
+          if (data) {
+            setMenuItems(data);
+          }
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const showNotification = (type: 'success' | 'error', message: string) => {
     setNotification({ type, message });
