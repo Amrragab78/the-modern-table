@@ -86,7 +86,7 @@ export default function DiningMenuPage() {
         .select('*')
         .eq('available', true)
         .eq('is_draft', false)
-        .or(`publish_at.is.null,publish_at.lte.${now}`)
+        .or(`(publish_at.is.null,publish_at.lte.${now})`)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -94,7 +94,7 @@ export default function DiningMenuPage() {
       setMenuItems(data || []);
       organizeMenuByCategory(data || []);
     } catch (err: any) {
-      console.error('Error fetching menu items:', err);
+      console.error('Error fetching menu items:', err?.message || err);
     }
   };
 

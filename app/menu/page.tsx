@@ -67,14 +67,14 @@ export default function MenuPage() {
         .select('*')
         .eq('available', true)
         .eq('is_draft', false)
-        .or(`publish_at.is.null,publish_at.lte.${now}`)
+        .or(`(publish_at.is.null,publish_at.lte.${now})`)
         .order('created_at', { ascending: false });
 
       if (fetchError) throw fetchError;
 
       setMenuItems(data || []);
     } catch (err: any) {
-      console.error('Error fetching menu items:', err);
+      console.error('Error fetching menu items:', err?.message || err);
       setError('Failed to load menu items. Please try again later.');
     } finally {
       setLoading(false);
