@@ -321,23 +321,36 @@ return (
           />
         </div>
 
-        {/* Soft gradient overlay from bottom */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent z-[1]"></div>
+        {/* Subtle gradient overlay from bottom to top */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent z-[1]"></div>
 
-        {/* Hero text content - directly over image */}
-        <div className="relative z-[2] flex flex-col items-center justify-center h-full text-center text-white px-4 md:px-6">
-          <span className={`${inter.className} text-xs md:text-sm tracking-[0.3em] text-[#D9B26D] uppercase mb-4 md:mb-6`}>
+        {/* Hero text content - positioned in lower center */}
+        <div className="relative z-[2] flex flex-col items-center justify-end h-full text-center text-white px-4 md:px-6 pb-24 md:pb-32">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className={`${inter.className} text-xs md:text-sm tracking-[0.3em] text-[#D9B26D] uppercase mb-4 md:mb-6`}
+          >
             Culinary Excellence
-          </span>
-          <h1 className={`${playfair.className} text-4xl md:text-6xl lg:text-7xl font-serif font-semibold leading-tight mb-8 md:mb-10 max-w-5xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)]`}>
+          </motion.span>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className={`${playfair.className} text-4xl md:text-5xl lg:text-6xl font-serif font-semibold leading-tight mb-8 md:mb-10 max-w-4xl text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]`}
+          >
             Where culinary tradition meets modern elegance
-          </h1>
-          <a
+          </motion.h1>
+          <motion.a
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
             href="/reservations"
-            className={`${inter.className} inline-flex items-center justify-center px-5 py-2.5 md:px-6 md:py-3 bg-transparent text-white font-medium rounded-full border-2 border-[#D9B26D] hover:bg-[#D9B26D]/20 backdrop-blur-sm transition-all duration-300 text-sm md:text-base`}
+            className={`${inter.className} inline-flex items-center justify-center px-6 py-3 md:px-8 md:py-3.5 bg-transparent text-[#D9B26D] font-medium rounded-full border-2 border-[#D9B26D] hover:bg-[#D9B26D] hover:text-black backdrop-blur-md transition-all duration-300 text-sm md:text-base`}
           >
             Reserve Your Table →
-          </a>
+          </motion.a>
         </div>
       </section>
 
