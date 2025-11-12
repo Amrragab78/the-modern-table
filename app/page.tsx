@@ -330,7 +330,8 @@ return (
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className={`${inter.className} text-xs md:text-sm tracking-[0.3em] text-[#D9B26D] uppercase mb-4 md:mb-6`}
+            className={`${inter.className} text-xs md:text-sm tracking-[0.35em] text-[#C5A24C] uppercase mb-4 md:mb-6`}
+            style={{ textShadow: '0px 0px 10px rgba(0,0,0,0.4)' }}
           >
             Culinary Excellence
           </motion.span>
@@ -338,7 +339,8 @@ return (
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className={`${playfair.className} text-4xl md:text-5xl lg:text-6xl font-serif font-semibold leading-tight mb-8 md:mb-10 max-w-4xl text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]`}
+            className={`${playfair.className} text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8 md:mb-10 max-w-4xl text-white`}
+            style={{ textShadow: '0px 0px 8px rgba(0,0,0,0.35)' }}
           >
             Where culinary tradition meets modern elegance
           </motion.h1>
@@ -347,7 +349,9 @@ return (
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
             href="/reservations"
-            className={`${inter.className} inline-flex items-center justify-center px-6 py-3 md:px-8 md:py-3.5 bg-transparent text-[#D9B26D] font-medium rounded-full border-2 border-[#D9B26D] hover:bg-[#D9B26D] hover:text-black backdrop-blur-md transition-all duration-300 text-sm md:text-base`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`${inter.className} inline-flex items-center justify-center px-6 py-3 md:px-8 md:py-3.5 bg-gradient-to-r from-[#D9B26D] to-[#B8904D] text-[#2C1F0F] font-semibold rounded-full transition-all duration-300 text-sm md:text-base shadow-[0_4px_20px_rgba(0,0,0,0.25)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.35)] hover:from-[#E5C078] hover:to-[#C49B5A]`}
           >
             Reserve Your Table →
           </motion.a>
