@@ -312,35 +312,32 @@ return (
 
       {/* Hero Section - Cinematic Version */}
       <section className="relative w-full h-[100vh] overflow-hidden">
-        {/* Background image slideshow wrapper */}
+        {/* Background image */}
         <div className="absolute inset-0">
           <img
             src="https://images.pexels.com/photos/3201921/pexels-photo-3201921.jpeg"
             alt="Hero background"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[2500ms] ease-in-out opacity-100"
+            className="absolute inset-0 w-full h-full object-cover"
           />
-          {/* Add other slideshow images here later */}
         </div>
 
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/40 to-black/70 z-[1]"></div>
+        {/* Soft gradient overlay from bottom */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent z-[1]"></div>
 
-        {/* Hero text content */}
-        <div className="relative z-[2] flex flex-col items-center justify-center h-full text-center text-white space-y-6 px-4">
-          <div className="bg-black/30 backdrop-blur-md rounded-2xl px-6 py-4 inline-block">
-            <span className={`${inter.className} text-sm tracking-[0.3em] text-[#D9B26D] uppercase`}>Culinary Excellence</span>
-            <h1 className={`${playfair.className} text-5xl md:text-6xl font-serif font-semibold mt-3 drop-shadow-[0_3px_8px_rgba(0,0,0,0.6)]`}>
-              Where culinary tradition meets modern elegance
-            </h1>
-            <div className="mt-8">
-              <a
-                href="/reservations"
-                className={`${inter.className} inline-flex items-center justify-center px-6 py-3 bg-[#D9B26D] text-black font-medium rounded-full shadow-md hover:bg-[#C9A15D] transition-all duration-300`}
-              >
-                Reserve Your Table →
-              </a>
-            </div>
-          </div>
+        {/* Hero text content - directly over image */}
+        <div className="relative z-[2] flex flex-col items-center justify-center h-full text-center text-white px-4 md:px-6">
+          <span className={`${inter.className} text-xs md:text-sm tracking-[0.3em] text-[#D9B26D] uppercase mb-4 md:mb-6`}>
+            Culinary Excellence
+          </span>
+          <h1 className={`${playfair.className} text-4xl md:text-6xl lg:text-7xl font-serif font-semibold leading-tight mb-8 md:mb-10 max-w-5xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)]`}>
+            Where culinary tradition meets modern elegance
+          </h1>
+          <a
+            href="/reservations"
+            className={`${inter.className} inline-flex items-center justify-center px-5 py-2.5 md:px-6 md:py-3 bg-transparent text-white font-medium rounded-full border-2 border-[#D9B26D] hover:bg-[#D9B26D]/20 backdrop-blur-sm transition-all duration-300 text-sm md:text-base`}
+          >
+            Reserve Your Table →
+          </a>
         </div>
       </section>
 
