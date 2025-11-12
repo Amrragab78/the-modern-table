@@ -118,7 +118,12 @@ const showcaseImages = [
   "https://images.pexels.com/photos/699953/pexels-photo-699953.jpeg?auto=compress&cs=tinysrgb&w=1600",
   "https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=1600",
   "https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=1600",
-  "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1600"
+  "https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/1437267/pexels-photo-1437267.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=1600",
+  "https://images.pexels.com/photos/566566/pexels-photo-566566.jpeg?auto=compress&cs=tinysrgb&w=1600"
 ];
 
 export default function NeoLuxuryPage( ) {
@@ -150,7 +155,7 @@ export default function NeoLuxuryPage( ) {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentShowcaseSlide((prev) => (prev + 1) % showcaseImages.length);
-    }, 4500); // Change slide every 4.5 seconds
+    }, 5000); // Change slide every 5 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -330,7 +335,7 @@ return (
             <div className="mt-8">
               <a
                 href="/reservations"
-                className={`${inter.className} inline-flex items-center justify-center px-8 py-4 bg-[#D9B26D] text-black font-medium rounded-full shadow-md hover:bg-[#C9A15D] transition-all duration-300`}
+                className={`${inter.className} inline-flex items-center justify-center px-6 py-3 bg-[#D9B26D] text-black font-medium rounded-full shadow-md hover:bg-[#C9A15D] transition-all duration-300`}
               >
                 Reserve Your Table →
               </a>
@@ -551,7 +556,7 @@ return (
                     initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 1.2, ease: "easeInOut" }}
+                    transition={{ duration: 3.5, ease: "easeInOut" }}
                   />
                 )
               )}
